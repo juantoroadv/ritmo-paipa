@@ -67,7 +67,7 @@ body.modo-rb .wrap{display:none}
 body.modo-rb #rbVista{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh;
   padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));gap:6px}
 .rbBanda{border:3px solid var(--line);border-radius:10px;padding:6px 10px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 10px;background:var(--panel)}
-.rbSeg{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(46px,15vw,72px);line-height:.9}
+.rbSeg{white-space:nowrap;font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(46px,15vw,72px);line-height:.9}
 .rbTxt{font-family:var(--f-num);font-weight:700;text-transform:uppercase;line-height:1.05}
 .rbTxt b{display:block;font-size:clamp(20px,6vw,28px)} .rbTxt span{font-size:clamp(17px,5vw,22px);font-weight:600}
 .rbKm{text-align:right;font-family:var(--f-num);line-height:1}
@@ -75,6 +75,7 @@ body.modo-rb #rbVista{display:grid;grid-template-rows:auto 1fr auto;height:100vh
 .rbKm small{font-size:13px;color:var(--muted);font-family:var(--f-body)}
 .rbFila{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;font-family:var(--f-num);font-size:clamp(17px,5vw,22px);font-weight:600;border-top:1px solid var(--line);padding-top:4px;flex-wrap:wrap}
 .rbFila b{font-variant-numeric:tabular-nums}
+.rbDist{flex-basis:100%;font-size:clamp(22px,6.5vw,30px);color:var(--accent)}
 .rbBanda.v-ok{border-color:var(--ok)} .rbBanda.v-ok .rbSeg,.rbBanda.v-ok .rbTxt b{color:var(--ok)}
 .rbBanda.v-warn{border-color:var(--warn)} .rbBanda.v-warn .rbSeg,.rbBanda.v-warn .rbTxt b{color:var(--warn)}
 .rbBanda.v-bad{border-color:var(--bad)} .rbBanda.v-bad .rbSeg,.rbBanda.v-bad .rbTxt b{color:var(--bad)}
@@ -198,7 +199,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     <div class="rbSeg" id="rbSeg">--</div>
     <div class="rbTxt"><b id="rbTxt">&nbsp;</b><span id="rbAcc">&nbsp;</span></div>
     <div class="rbKm"><b id="rbKm">0,00</b><small>km GPS</small><div class="rbParcial" id="rbParcial">parcial 0,00</div></div>
-    <div class="rbFila"><span>Ve a <b id="rbVe">--</b></span><span id="rbCtl">--</span></div>
+    <div class="rbFila"><span>Ve a <b id="rbVe">--</b></span><span id="rbCtl">--</span><span class="rbDist" id="rbDist">--</span></div>
   </div>
   <div class="rbLista" id="rbLista"></div>
   <div class="rbBotones">
@@ -215,6 +216,7 @@ const guardar=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const dos=n=>String(n).padStart(2,"0");
 const fmtHora=d=>`${dos(d.getHours())}:${dos(d.getMinutes())}:${dos(d.getSeconds())}`;
 const fmtKm=d=>d.toFixed(2).replace(".",",");
+const fmtDist=d=>{const m=Math.max(0,Math.round(d*1000));return m<1000?`${m} m`:`${Math.floor(m/1000)} km ${String(m%1000).padStart(3,"0")} m`};
 const fmtDur=s=>{const neg=s<0;s=Math.abs(Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (neg?"-":"")+(h?`${h}:${dos(m)}`:`${m}`)+":"+dos(s%60)};
 
 function tiempoEnKm(sec,d){let t=0;for(let i=0;i<sec.length;i++){const ini=sec[i].desde_km,fin=i+1<sec.length?sec[i+1].desde_km:Infinity;if(d<=ini)break;t+=(Math.min(d,fin)-ini)/sec[i].vel*3600}return t}
@@ -326,7 +328,7 @@ function tic(){
   $("#ctlNombre").textContent=prox.n;
   $("#ctlHora").textContent=fmtHora(new Date(salida.getTime()+tProx*1000));
   $("#ctlFalta").textContent=fmtDur(tProx-r);
-  $("#ctlKm").textContent=`a ${fmtKm(Math.max(0,prox.km-km))} km`;
+  $("#ctlKm").textContent=`faltan ${fmtDist(prox.km-km)}`; $("#ctlKm").dataset.d=fmtDist(prox.km-km);
 
   if(r<0){
     $("#ver").className="veredicto"; $("#verSeg").textContent=fmtDur(r).replace("-","");
@@ -429,7 +431,8 @@ function pintarRb(){
   $("#rbSeg").textContent=$("#verSeg").textContent; $("#rbTxt").textContent=$("#verTxt").textContent; $("#rbAcc").textContent=$("#verAcc").textContent;
   const km=Math.max(0,kmActual()); $("#rbKm").textContent=fmtKm(km); $("#rbParcial").textContent="parcial "+fmtKm(Math.max(0,km-rbParcialKm));
   $("#rbVe").textContent=$("#velSug").textContent;
-  $("#rbCtl").innerHTML=`${$("#ctlNombre").textContent} <b>${$("#ctlHora").textContent}</b> · faltan <b>${$("#ctlFalta").textContent}</b>`;
+  $("#rbCtl").innerHTML=`${$("#ctlNombre").textContent} a las <b>${$("#ctlHora").textContent}</b>`;
+  $("#rbDist").innerHTML=`Faltan <b>${$("#ctlKm").dataset.d||"--"}</b> · <b>${$("#ctlFalta").textContent}</b>`;
 }
 
 // ---- Retomar: si la app se cierra o se daña a mitad de tramo, se guarda salida, km y casilla cada 2 s ----
