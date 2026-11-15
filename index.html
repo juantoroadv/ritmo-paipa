@@ -122,6 +122,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
   </section>
 
   <section class="panel" id="enCurso" hidden>
+    <p class="msg" id="msgCurso" hidden></p>
     <details>
     <summary>Ajuste opcional del km (no hace falta tocarlo)</summary>
     <div class="acciones">
@@ -138,9 +139,16 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
   </section>
 
   <section class="panel" id="config">
+    <div id="retomarBox" hidden>
+      <p class="msg" id="retomarTxt"></p>
+      <div class="acciones"><button class="prim ya" id="btnRetomar">RETOMAR TRAMO</button></div>
+    </div>
     <div class="acciones">
       <label for="tramo">Tramo<select id="tramo"></select></label>
       <label for="salida">Hora de salida<input id="salida" type="time" step="1"></label>
+    </div>
+    <div class="acciones">
+      <label for="kmIni">Km donde vas (opcional, para retomar a mitad de tramo)<input id="kmIni" type="number" inputmode="decimal" step="0.01" placeholder="0,00"></label>
     </div>
     <p class="msg" id="msg" hidden></p>
     <div class="acciones">
@@ -174,6 +182,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <li>Los km los mide el GPS del celular solo: no tienes que mirar el odómetro. Si en algún punto el Road Book marca un km distinto, puedes cuadrarlo en «Ajuste opcional del km».</li>
       <li>La hora se sincroniza sola con la hora exacta cuando hay señal (la que usa el organizador para el QR). Hazlo en el hotel antes de salir; en modo avión usa esa medida.</li>
       <li><b>Roadbook:</b> al arrancar el tramo aparece el roadbook con el ritmo arriba. <b>▼</b> pasa a la siguiente casilla y pone el parcial en cero; <b>▲</b> vuelve; <b>0</b> pone el parcial en cero sin pasar casilla. <b>Más</b> abre la pantalla completa (SALGO YA, ajuste de km) y desde ahí «Ver roadbook» regresa. Una botonera Bluetooth que mande flechas o espacio también pasa casillas.</li>
+      <li><b>Si se daña algo a mitad de tramo</b> (se cierra la app, se reinicia el celular): al abrirla aparece <b>RETOMAR TRAMO</b> con la hora de salida y el km donde ibas. Después corrige el km con la casilla del roadbook. Si no aparece, escribe la hora de salida de ese tramo y el km de la casilla donde estás, y toca «Iniciar a la hora escrita».</li>
       <li>La pantalla debe quedar encendida: si se bloquea, el GPS se pausa. Pon el bloqueo automático en «Nunca» el día del rally.</li>
     </ol>
   </details>
@@ -218,7 +227,7 @@ function cargarPlan(p){
   PLAN=p; const sel=$("#tramo"); sel.innerHTML="";
   p.tramos.forEach(t=>{const o=document.createElement("option");o.value=t.id;o.textContent=t.nombre;sel.appendChild(o)});
   const g=leer("tramo"); if(g&&p.tramos.some(t=>t.id===g)) sel.value=g;
-  cambioTramo(); precargarRoadbooks(p);
+  cambioTramo(); precargarRoadbooks(p); revisarRetomar();
   $("#estado").innerHTML=`<b>${p.tramos.length}</b> tramo(s) cargado(s). Guardado en el celular.`;
 }
 function cambioTramo(){guardar("tramo",$("#tramo").value);$("#salida").value=leer("salida-"+$("#tramo").value)||"";tabla()}
@@ -238,10 +247,13 @@ function tabla(){
 
 function aviso(t){$("#msg").textContent=t;$("#msg").hidden=!t}
 
-async function iniciar(sim,ya){
+async function iniciar(sim,ya,ret){
   aviso(""); T=tramoSel(); salida=ya?new Date(typeof ya==="number"?ya:ahoraMs()):sim?new Date(ahoraMs()+10000):salidaSel();
   if(!salida){aviso("Escribe primero tu hora de salida.");return}
-  run={gpsM:0,ultimo:null,offsetKm:0,sim,velGps:null,prec:null,watch:null,hist:[],simKm:0};
+  const kmIni=ret?ret.km:(!sim&&!ya?parseFloat(String($("#kmIni").value).replace(",","."))||0:0);
+  run={gpsM:0,ultimo:null,offsetKm:kmIni,sim,velGps:null,prec:null,watch:null,hist:[],simKm:0};
+  $("#kmIni").value="";
+  if(!sim){ guardar("salida-"+T.id,fmtHora(salida)); $("#salida").value=fmtHora(salida) }   // queda escrita para retomar
   if(sim){ $("#gpsPrec").textContent="Simulación (sin GPS)"; }
   else{
     if(!("geolocation" in navigator)){aviso("Este navegador no tiene GPS.");return}
@@ -249,7 +261,9 @@ async function iniciar(sim,ya){
     $("#gpsPrec").textContent="Buscando GPS…";
   }
   try{wake=await navigator.wakeLock?.request("screen")}catch(e){}
-  $("#config").hidden=true; $("#enCurso").hidden=false; pintarSig(); rbParcialKm=0; guardar("rb-"+T.id,"0"); $("#rbLista").dataset.tramo=""; abrirRb();
+  $("#config").hidden=true; $("#enCurso").hidden=false; pintarSig(); rbParcialKm=ret?ret.km-(ret.parcial||0):kmIni; guardar("rb-"+T.id,String(ret?ret.rbI||0:0)); $("#rbLista").dataset.tramo="";
+  $("#retomarBox").hidden=true; avisoCurso(kmIni>0?`Arrancó en el km ${fmtKm(kmIni)}. Si no cuadra con la casilla del roadbook, corrígelo en «Ajuste opcional del km».`:"");
+  abrirRb();
 }
 function errGps(e){ $("#gpsPrec").textContent = e.code===1 ? "Sin permiso de ubicación: actívalo en Ajustes > Safari" : "GPS sin señal"; }
 function posGps(p){
@@ -278,7 +292,7 @@ $("#btnSigYa").addEventListener("click",()=>{ const i=idxSig(); if(i<0) return; 
   $("#tramo").value=PLAN.tramos[i].id; cambioTramo(); iniciar(!!sim,t) });
 $("#btnIniciar").addEventListener("click",()=>iniciar(false));
 $("#btnSimular").addEventListener("click",()=>iniciar(true));
-$("#btnParar").addEventListener("click",()=>{ if(run?.watch!=null) navigator.geolocation.clearWatch(run.watch); run=null; T=null; try{wake?.release()}catch(e){}
+$("#btnParar").addEventListener("click",()=>{ guardar("enCurso",""); avisoCurso(""); if(run?.watch!=null) navigator.geolocation.clearWatch(run.watch); run=null; T=null; try{wake?.release()}catch(e){}
   cerrarRb(); $("#config").hidden=false; $("#enCurso").hidden=true; pintarVacio(); const i=idxSig(); if(i>=0){$("#tramo").value=PLAN.tramos[i].id; cambioTramo()} });
 $("#btnCorr").addEventListener("click",()=>{ const v=parseFloat(String($("#corr").value).replace(",",".")); if(!run||isNaN(v))return; run.offsetKm+=v-kmActual(); $("#corr").value=""; $("#corr").blur() });
 $("#btnMas").addEventListener("click",()=>{ if(run) run.offsetKm+=0.05 });
@@ -413,6 +427,24 @@ function pintarRb(){
   $("#rbVe").textContent=$("#velSug").textContent;
   $("#rbCtl").innerHTML=`${$("#ctlNombre").textContent} <b>${$("#ctlHora").textContent}</b> · faltan <b>${$("#ctlFalta").textContent}</b>`;
 }
+
+// ---- Retomar: si la app se cierra o se daña a mitad de tramo, se guarda salida, km y casilla cada 2 s ----
+function avisoCurso(t){ $("#msgCurso").textContent=t; $("#msgCurso").hidden=!t }
+setInterval(()=>{ if(run&&!run.sim&&T&&salida) guardar("enCurso",JSON.stringify({tramo:T.id,salida:salida.getTime(),km:Math.max(0,kmActual()),rbI,parcial:Math.max(0,kmActual()-rbParcialKm),t:ahoraMs()})) },2000);
+function revisarRetomar(){
+  let e=null; try{ e=JSON.parse(leer("enCurso")||"null") }catch(x){}
+  const t=e&&PLAN.tramos.find(x=>x.id===e.tramo);
+  if(!t||run||ahoraMs()-e.t>6*3600*1000){ $("#retomarBox").hidden=true; return }
+  $("#retomarTxt").textContent=`${t.nombre} quedó en curso: salió a las ${fmtHora(new Date(e.salida))}, iba en el km ${fmtKm(e.km)} (casilla ${e.rbI+1}).`;
+  $("#retomarBox").hidden=false;
+}
+$("#btnRetomar").addEventListener("click",()=>{
+  let e=null; try{ e=JSON.parse(leer("enCurso")||"null") }catch(x){} if(!e) return;
+  $("#tramo").value=e.tramo; cambioTramo();
+  iniciar(false,e.salida,{km:e.km,rbI:e.rbI,parcial:e.parcial});
+  setTimeout(()=>{ cerrarRb(); const d=$("#enCurso details"); if(d) d.open=true; },120);
+  setTimeout(()=>avisoCurso(`Retomado en el km ${fmtKm(e.km)}. Lo que rodaste con la app cerrada no se midió: corrige el km con la casilla del roadbook aquí abajo y luego toca «Ver roadbook».`),100);
+});
 setInterval(()=>{tic();pintarRb()},250);
 document.addEventListener("visibilitychange",async()=>{ if(!document.hidden&&run){ try{wake=await navigator.wakeLock?.request("screen")}catch(e){} } });
 
