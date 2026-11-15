@@ -7,11 +7,136 @@
    "nota": "Para probar en la moto esta semana. Los tramos reales se cargan el viernes con el Road Book.",
    "fin_km": 5.0,
    "secciones": [
-    {"desde_km": 0, "vel": 30},
-    {"desde_km": 2.0, "vel": 40}
+    {
+     "desde_km": 0,
+     "vel": 30
+    },
+    {
+     "desde_km": 2.0,
+     "vel": 40
+    }
    ],
    "controles": [
-    {"km": 3.5, "nombre": "Control de prueba"}
+    {
+     "km": 3.5,
+     "nombre": "Control de prueba"
+    }
+   ]
+  },
+  {
+   "id": "t1",
+   "nombre": "Tramo 1 (ejemplo) · 42 km",
+   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
+   "fin_km": 42.0,
+   "secciones": [
+    {
+     "desde_km": 0,
+     "vel": 40
+    },
+    {
+     "desde_km": 12.5,
+     "vel": 30
+    },
+    {
+     "desde_km": 20.0,
+     "vel": 45
+    }
+   ],
+   "controles": [
+    {
+     "km": 18.3,
+     "nombre": "Control 1A"
+    },
+    {
+     "km": 33.7,
+     "nombre": "Control 1B"
+    }
+   ]
+  },
+  {
+   "id": "t2",
+   "nombre": "Tramo 2 (ejemplo) · 48 km",
+   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
+   "fin_km": 48.0,
+   "secciones": [
+    {
+     "desde_km": 0,
+     "vel": 35
+    },
+    {
+     "desde_km": 15.0,
+     "vel": 50
+    },
+    {
+     "desde_km": 38.2,
+     "vel": 32
+    }
+   ],
+   "controles": [
+    {
+     "km": 21.4,
+     "nombre": "Control 2A"
+    },
+    {
+     "km": 40.0,
+     "nombre": "Control 2B"
+    }
+   ]
+  },
+  {
+   "id": "t3",
+   "nombre": "Tramo 3 (ejemplo) · 44 km",
+   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
+   "fin_km": 44.0,
+   "secciones": [
+    {
+     "desde_km": 0,
+     "vel": 30
+    },
+    {
+     "desde_km": 9.6,
+     "vel": 42
+    }
+   ],
+   "controles": [
+    {
+     "km": 16.0,
+     "nombre": "Control 3A"
+    },
+    {
+     "km": 29.5,
+     "nombre": "Control 3B"
+    }
+   ]
+  },
+  {
+   "id": "t4",
+   "nombre": "Tramo 4 (ejemplo) · 46 km",
+   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
+   "fin_km": 46.0,
+   "secciones": [
+    {
+     "desde_km": 0,
+     "vel": 45
+    },
+    {
+     "desde_km": 22.0,
+     "vel": 35
+    },
+    {
+     "desde_km": 31.5,
+     "vel": 40
+    }
+   ],
+   "controles": [
+    {
+     "km": 14.8,
+     "nombre": "Control 4A"
+    },
+    {
+     "km": 35.2,
+     "nombre": "Control 4B"
+    }
    ]
   }
  ]
