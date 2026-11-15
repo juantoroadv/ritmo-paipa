@@ -73,7 +73,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     <div class="grid">
       <div class="dato"><p class="lbl">Ve a</p><b id="velSug">--</b><small id="velSugNota">&nbsp;</small></div>
       <div class="dato"><p class="lbl">Vas a</p><b id="velAct">--</b><small id="gpsPrec">GPS apagado</small></div>
-      <div class="dato"><p class="lbl">Km (corregido)</p><b id="kmAct">0,00</b><small id="kmIdeal">&nbsp;</small></div>
+      <div class="dato"><p class="lbl">Km recorridos (GPS)</p><b id="kmAct">0,00</b><small id="kmIdeal">&nbsp;</small></div>
       <div class="dato"><p class="lbl">Velocidad del tramo</p><b id="velIdeal">--</b><small>media impuesta</small></div>
     </div>
   </section>
@@ -87,13 +87,16 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
   </section>
 
   <section class="panel" id="enCurso" hidden>
+    <details>
+    <summary>Ajuste opcional del km (no hace falta tocarlo)</summary>
     <div class="acciones">
-      <label for="corr">Lo que marca el Reader (km)<input id="corr" type="number" inputmode="decimal" step="0.01" placeholder="12.42"></label>
+      <label for="corr">Si el Road Book marca otro km, escríbelo aquí<input id="corr" type="number" inputmode="decimal" step="0.01" placeholder="12.42"></label>
       <button id="btnCorr">Corregir km</button>
     </div>
     <div class="acciones">
       <button id="btnMenos">−0,05 km</button><button id="btnMas">+0,05 km</button>
     </div>
+    </details>
     <div class="acciones"><button id="btnParar">Terminar tramo</button></div>
   </section>
 
@@ -124,7 +127,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <li>La cuenta de km arranca sola en tu hora de salida. Antes de eso no cuenta.</li>
       <li><b>+8 s ADELANTADO</b> = llegaste antes de lo ideal: baja ritmo. <b>−5 s ATRASADO</b> = sube ritmo. Verde: ±3 s. Amarillo: hasta 15 s. Rojo: más.</li>
       <li>«Ve a» es la velocidad que te deja en el próximo control justo a tiempo.</li>
-      <li>El GPS mide un poco distinto que el Road Book. En una casilla segura, escribe lo que marca el Reader y toca <b>Corregir km</b>, o usa ±0,05.</li>
+      <li>Los km los mide el GPS del celular solo: no tienes que mirar el odómetro. Si en algún punto el Road Book marca un km distinto, puedes cuadrarlo en «Ajuste opcional del km».</li>
       <li>La pantalla debe quedar encendida: si se bloquea, el GPS se pausa. Pon el bloqueo automático en «Nunca» el día del rally.</li>
     </ol>
   </details>
