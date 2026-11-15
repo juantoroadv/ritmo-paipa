@@ -1,0 +1,18 @@
+{
+ "evento": "BMW Motorrad Rally Paipa 2026",
+ "tramos": [
+  {
+   "id": "prueba",
+   "nombre": "Tramo de prueba (5 km)",
+   "nota": "Para probar en la moto esta semana. Los tramos reales se cargan el viernes con el Road Book.",
+   "fin_km": 5.0,
+   "secciones": [
+    {"desde_km": 0, "vel": 30},
+    {"desde_km": 2.0, "vel": 40}
+   ],
+   "controles": [
+    {"km": 3.5, "nombre": "Control de prueba"}
+   ]
+  }
+ ]
+}

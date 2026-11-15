@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ritmo Paipa">
+<meta name="theme-color" content="#0e110f">
+<title>Ritmo Paipa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Instrumento de una columna: arriba el veredicto grande (adelantado/atrasado), debajo ritmo y control. */
+:root{
+  --bg:#0e110f; --panel:#171b18; --ink:#f2f4f0; --muted:#9aa39c; --line:#2a302b;
+  --ok:#2fd16b; --warn:#ffc21a; --bad:#ff4d3d; --accent:#ffc21a; --accent-ink:#111;
+  --f-num:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --f-body:"Barlow",system-ui,sans-serif;
+  color-scheme:dark;
+}
+:root[data-theme="light"]{--bg:#ffffff;--panel:#f1f3ef;--ink:#0b0d0c;--muted:#4c534e;--line:#cfd4ce;--ok:#0a8a3a;--warn:#a86a00;--bad:#c4200f;--accent:#0b5cad;--accent-ink:#fff;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:16px;line-height:1.4;padding:max(12px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.top h1{font-family:var(--f-num);font-size:22px;text-transform:uppercase;letter-spacing:.04em;margin:0}
+.reloj{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:30px;font-weight:600}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0}
+.veredicto{border-radius:12px;padding:14px;text-align:center;border:3px solid var(--line);transition:border-color .3s}
+.veredicto .seg{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(84px,30vw,150px);line-height:.9;margin:0}
+.veredicto .txt{font-family:var(--f-num);font-weight:700;font-size:clamp(28px,9vw,44px);text-transform:uppercase;margin:4px 0 0;letter-spacing:.02em}
+.veredicto .acc{font-family:var(--f-num);font-weight:600;font-size:clamp(22px,7vw,32px);margin:2px 0 0}
+.v-ok{border-color:var(--ok)} .v-ok .seg,.v-ok .txt{color:var(--ok)}
+.v-warn{border-color:var(--warn)} .v-warn .seg,.v-warn .txt{color:var(--warn)}
+.v-bad{border-color:var(--bad)} .v-bad .seg,.v-bad .txt{color:var(--bad)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dato b{display:block;font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:34px;font-weight:600;line-height:1.05}
+.dato small{color:var(--muted);font-size:14px}
+.control b{font-size:44px}
+button{font:inherit;font-weight:600;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:12px 14px;min-height:52px;cursor:pointer}
+button.prim{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.acciones{display:flex;gap:8px;flex-wrap:wrap}
+.acciones button{flex:1 1 140px}
+label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted);flex:1 1 140px}
+input,select{font-family:var(--f-num);font-size:24px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.estado{font-size:14px;color:var(--muted);margin:0}
+.estado b{color:var(--ink)}
+.msg{color:var(--warn);font-weight:600;margin:0}
+details summary{cursor:pointer;font-weight:600}
+.tabla{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:15px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+tr.ctl td{color:var(--accent);font-weight:600}
+ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>Ritmo Paipa</h1><div class="reloj" id="reloj">--:--:--</div></div>
+
+  <section class="veredicto" id="ver">
+    <p class="lbl" id="verTitulo">Sin tramo en curso</p>
+    <p class="seg" id="verSeg">--</p>
+    <p class="txt" id="verTxt">Elige tramo</p>
+    <p class="acc" id="verAcc">&nbsp;</p>
+  </section>
+
+  <section class="panel">
+    <div class="grid">
+      <div class="dato"><p class="lbl">Ve a</p><b id="velSug">--</b><small id="velSugNota">&nbsp;</small></div>
+      <div class="dato"><p class="lbl">Vas a</p><b id="velAct">--</b><small id="gpsPrec">GPS apagado</small></div>
+      <div class="dato"><p class="lbl">Km (corregido)</p><b id="kmAct">0,00</b><small id="kmIdeal">&nbsp;</small></div>
+      <div class="dato"><p class="lbl">Velocidad del tramo</p><b id="velIdeal">--</b><small>media impuesta</small></div>
+    </div>
+  </section>
+
+  <section class="panel control">
+    <p class="lbl" id="ctlNombre">Próximo control</p>
+    <div class="grid">
+      <div class="dato"><p class="lbl">Llegar a las</p><b id="ctlHora">--:--:--</b></div>
+      <div class="dato"><p class="lbl">Faltan</p><b id="ctlFalta">--</b><small id="ctlKm">&nbsp;</small></div>
+    </div>
+  </section>
+
+  <section class="panel" id="enCurso" hidden>
+    <div class="acciones">
+      <label for="corr">Lo que marca el Reader (km)<input id="corr" type="number" inputmode="decimal" step="0.01" placeholder="12.42"></label>
+      <button id="btnCorr">Corregir km</button>
+    </div>
+    <div class="acciones">
+      <button id="btnMenos">−0,05 km</button><button id="btnMas">+0,05 km</button>
+    </div>
+    <div class="acciones"><button id="btnParar">Terminar tramo</button></div>
+  </section>
+
+  <section class="panel" id="config">
+    <div class="acciones">
+      <label for="tramo">Tramo<select id="tramo"></select></label>
+      <label for="salida">Hora de salida<input id="salida" type="time" step="1"></label>
+    </div>
+    <p class="msg" id="msg" hidden></p>
+    <div class="acciones">
+      <button class="prim" id="btnIniciar">Iniciar tramo</button>
+      <button id="btnSimular">Simular (prueba en casa)</button>
+    </div>
+    <div class="acciones"><button id="btnTema">Pantalla clara (sol)</button></div>
+    <p class="estado" id="estado">Cargando tramos…</p>
+  </section>
+
+  <details class="panel">
+    <summary>Tabla de horas de paso</summary>
+    <div class="tabla" id="tabla"></div>
+  </details>
+
+  <details class="panel">
+    <summary>Cómo usarla</summary>
+    <ol>
+      <li>Ábrela en Safari con señal, en el hotel. Queda guardada en el celular y después funciona sin señal.</li>
+      <li>Elige el tramo, escribe tu hora de salida y toca <b>Iniciar tramo</b> antes de salir. Acepta el permiso de ubicación.</li>
+      <li>La cuenta de km arranca sola en tu hora de salida. Antes de eso no cuenta.</li>
+      <li><b>+8 s ADELANTADO</b> = llegaste antes de lo ideal: baja ritmo. <b>−5 s ATRASADO</b> = sube ritmo. Verde: ±3 s. Amarillo: hasta 15 s. Rojo: más.</li>
+      <li>«Ve a» es la velocidad que te deja en el próximo control justo a tiempo.</li>
+      <li>El GPS mide un poco distinto que el Road Book. En una casilla segura, escribe lo que marca el Reader y toca <b>Corregir km</b>, o usa ±0,05.</li>
+      <li>La pantalla debe quedar encendida: si se bloquea, el GPS se pausa. Pon el bloqueo automático en «Nunca» el día del rally.</li>
+    </ol>
+  </details>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const leer=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const guardar=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const dos=n=>String(n).padStart(2,"0");
+const fmtHora=d=>`${dos(d.getHours())}:${dos(d.getMinutes())}:${dos(d.getSeconds())}`;
+const fmtKm=d=>d.toFixed(2).replace(".",",");
+const fmtDur=s=>{const neg=s<0;s=Math.abs(Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (neg?"-":"")+(h?`${h}:${dos(m)}`:`${m}`)+":"+dos(s%60)};
+
+function tiempoEnKm(sec,d){let t=0;for(let i=0;i<sec.length;i++){const ini=sec[i].desde_km,fin=i+1<sec.length?sec[i+1].desde_km:Infinity;if(d<=ini)break;t+=(Math.min(d,fin)-ini)/sec[i].vel*3600}return t}
+function velEnKm(sec,d){let v=sec[0].vel;for(const s of sec){if(d>=s.desde_km)v=s.vel}return v}
+function haversine(a,b){const R=6371000,r=Math.PI/180,dLa=(b.lat-a.lat)*r,dLo=(b.lon-a.lon)*r;const x=Math.sin(dLa/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
+
+let PLAN=null, T=null, salida=null, run=null, wake=null;
+// run = {gpsM, ultimo, offsetKm, sim, velGps, prec, watch, hist:[]}
+
+function tramoSel(){return PLAN.tramos.find(t=>t.id===$("#tramo").value)}
+function salidaSel(){const v=$("#salida").value;if(!v)return null;const[h,m,s]=v.split(":").map(Number);const d=new Date();d.setHours(h,m,s||0,0);return d}
+
+function cargarPlan(p){
+  PLAN=p; const sel=$("#tramo"); sel.innerHTML="";
+  p.tramos.forEach(t=>{const o=document.createElement("option");o.value=t.id;o.textContent=t.nombre;sel.appendChild(o)});
+  const g=leer("tramo"); if(g&&p.tramos.some(t=>t.id===g)) sel.value=g;
+  cambioTramo();
+  $("#estado").innerHTML=`<b>${p.tramos.length}</b> tramo(s) cargado(s). Guardado en el celular.`;
+}
+function cambioTramo(){guardar("tramo",$("#tramo").value);$("#salida").value=leer("salida-"+$("#tramo").value)||"";tabla()}
+$("#tramo").addEventListener("change",cambioTramo);
+$("#salida").addEventListener("change",()=>{guardar("salida-"+$("#tramo").value,$("#salida").value);tabla()});
+
+function tabla(){
+  const t=tramoSel(); if(!t) return; const sal=salidaSel(); const pts=new Map();
+  for(let k=0;k<=t.fin_km+1e-9;k+=1) pts.set(+k.toFixed(2),"");
+  t.secciones.slice(1).forEach(s=>pts.set(s.desde_km,`Cambio a ${s.vel} km/h`));
+  (t.controles||[]).forEach(c=>pts.set(c.km,c.nombre||"Control"));
+  pts.set(t.fin_km,"Fin del tramo");
+  const filas=[...pts.keys()].sort((a,b)=>a-b).map(k=>{const s=tiempoEnKm(t.secciones,k),n=pts.get(k);
+    return `<tr class="${/control/i.test(n)?"ctl":""}"><td>${fmtKm(k)}</td><td>+${fmtDur(s)}</td><td>${sal?fmtHora(new Date(sal.getTime()+s*1000)):"—"}</td><td>${n}</td></tr>`});
+  $("#tabla").innerHTML=`<table><thead><tr><th>Km</th><th>Desde salida</th><th>Hora</th><th>Nota</th></tr></thead><tbody>${filas.join("")}</tbody></table>`;
+}
+
+function aviso(t){$("#msg").textContent=t;$("#msg").hidden=!t}
+
+async function iniciar(sim){
+  aviso(""); T=tramoSel(); salida=sim?new Date(Date.now()+10000):salidaSel();
+  if(!salida){aviso("Escribe primero tu hora de salida.");return}
+  run={gpsM:0,ultimo:null,offsetKm:0,sim,velGps:null,prec:null,watch:null,hist:[],simKm:0};
+  if(sim){ $("#gpsPrec").textContent="Simulación (sin GPS)"; }
+  else{
+    if(!("geolocation" in navigator)){aviso("Este navegador no tiene GPS.");return}
+    run.watch=navigator.geolocation.watchPosition(posGps,errGps,{enableHighAccuracy:true,maximumAge:0,timeout:15000});
+    $("#gpsPrec").textContent="Buscando GPS…";
+  }
+  try{wake=await navigator.wakeLock?.request("screen")}catch(e){}
+  $("#config").hidden=true; $("#enCurso").hidden=false;
+}
+function errGps(e){ $("#gpsPrec").textContent = e.code===1 ? "Sin permiso de ubicación: actívalo en Ajustes > Safari" : "GPS sin señal"; }
+function posGps(p){
+  const c={lat:p.coords.latitude,lon:p.coords.longitude}; run.prec=p.coords.accuracy;
+  run.velGps = p.coords.speed!=null && p.coords.speed>=0 ? p.coords.speed*3.6 : run.velGps;
+  $("#gpsPrec").textContent=`GPS ±${Math.round(run.prec)} m`;
+  if(Date.now()<salida.getTime()){run.ultimo=c;return}           // antes de la salida no cuenta
+  if(run.prec>30) return;                                         // punto malo
+  if(!run.ultimo){run.ultimo=c;return}
+  const d=haversine(run.ultimo,c);
+  if(d>=Math.max(4,run.prec*0.4)){ run.gpsM+=d; run.ultimo=c }
+}
+function kmActual(){ return (run.sim?run.simKm:run.gpsM/1000)+run.offsetKm }
+
+$("#btnIniciar").addEventListener("click",()=>iniciar(false));
+$("#btnSimular").addEventListener("click",()=>iniciar(true));
+$("#btnParar").addEventListener("click",()=>{ if(run?.watch!=null) navigator.geolocation.clearWatch(run.watch); run=null; T=null; try{wake?.release()}catch(e){}
+  $("#config").hidden=false; $("#enCurso").hidden=true; pintarVacio() });
+$("#btnCorr").addEventListener("click",()=>{ const v=parseFloat(String($("#corr").value).replace(",",".")); if(!run||isNaN(v))return; run.offsetKm+=v-kmActual(); $("#corr").value=""; $("#corr").blur() });
+$("#btnMas").addEventListener("click",()=>{ if(run) run.offsetKm+=0.05 });
+$("#btnMenos").addEventListener("click",()=>{ if(run) run.offsetKm-=0.05 });
+function aplicarTema(){ const c=leer("tema")==="light"; document.documentElement.dataset.theme=c?"light":"dark"; $("#btnTema").textContent=c?"Pantalla oscura":"Pantalla clara (sol)" }
+$("#btnTema").addEventListener("click",()=>{ guardar("tema",leer("tema")==="light"?"dark":"light"); aplicarTema() });
+aplicarTema();
+
+function pintarVacio(){ $("#ver").className="veredicto"; $("#verTitulo").textContent="Sin tramo en curso"; $("#verSeg").textContent="--"; $("#verTxt").textContent="Elige tramo"; $("#verAcc").innerHTML="&nbsp;" }
+
+function tic(){
+  const ahora=new Date(); $("#reloj").textContent=fmtHora(ahora);
+  if(!run||!T) return;
+  const r=(ahora-salida)/1000;
+  // simulación: avanza a la velocidad ideal con un 8 % de más para ver el adelanto
+  if(run.sim && r>0){ const v=velEnKm(T.secciones,run.simKm)*1.08; run.simKm=Math.min(T.fin_km, run.simKm+v/3600*0.25); run.velGps=v }
+  const km=Math.max(0,kmActual()); const sec=T.secciones;
+  $("#verTitulo").textContent=`${T.nombre} · salida ${fmtHora(salida)}`;
+  $("#kmAct").textContent=fmtKm(km);
+  $("#velAct").textContent=run.velGps!=null?Math.round(run.velGps)+" km/h":"--";
+  $("#velIdeal").textContent=velEnKm(sec,Math.min(km,T.fin_km))+" km/h";
+
+  // próximo control (o fin)
+  const pts=[...(T.controles||[]).map(c=>({km:c.km,n:c.nombre||"Control"})),{km:T.fin_km,n:"Fin del tramo"}].sort((a,b)=>a.km-b.km);
+  const prox=pts.find(p=>p.km>km+0.02)||pts[pts.length-1];
+  const tProx=tiempoEnKm(sec,prox.km);
+  $("#ctlNombre").textContent=prox.n;
+  $("#ctlHora").textContent=fmtHora(new Date(salida.getTime()+tProx*1000));
+  $("#ctlFalta").textContent=fmtDur(tProx-r);
+  $("#ctlKm").textContent=`a ${fmtKm(Math.max(0,prox.km-km))} km`;
+
+  if(r<0){
+    $("#ver").className="veredicto"; $("#verSeg").textContent=fmtDur(r).replace("-","");
+    $("#verTxt").textContent="Para la salida"; $("#verAcc").textContent="Quieto en la línea";
+    $("#velSug").textContent=velEnKm(sec,0)+" km/h"; $("#velSugNota").textContent="al salir"; $("#kmIdeal").textContent="ideal 0,00"; return;
+  }
+  const tIdeal=tiempoEnKm(sec,Math.min(km,T.fin_km));
+  let dif=tIdeal-r;                         // + adelantado, − atrasado
+  run.hist.push(dif); if(run.hist.length>12) run.hist.shift();
+  dif=run.hist.reduce((a,b)=>a+b,0)/run.hist.length;   // promedio de 3 s para quitar ruido del GPS
+  // km ideal ahora
+  let lo=0,hi=T.fin_km; for(let i=0;i<30;i++){const m=(lo+hi)/2; if(tiempoEnKm(sec,m)<r) lo=m; else hi=m}
+  $("#kmIdeal").textContent="ideal "+fmtKm(lo);
+
+  const a=Math.abs(dif), s=Math.round(dif);
+  $("#ver").className="veredicto "+(a<=3?"v-ok":a<=15?"v-warn":"v-bad");
+  $("#verSeg").textContent=(s>0?"+":s<0?"−":"")+Math.abs(s)+" s";
+  $("#verTxt").textContent=a<=3?"En tiempo":dif>0?"Adelantado":"Atrasado";
+  $("#verAcc").textContent=a<=3?"Mantén el ritmo":dif>0?"Baja ritmo":"Sube ritmo";
+
+  const falta=tProx-r, dist=prox.km-km;
+  if(falta>5&&dist>0){ const v=dist/falta*3600; $("#velSug").textContent=Math.round(v)+" km/h"; $("#velSugNota").textContent="para llegar justo"; }
+  else { $("#velSug").textContent=velEnKm(sec,km)+" km/h"; $("#velSugNota").textContent="velocidad del tramo"; }
+}
+setInterval(tic,250);
+document.addEventListener("visibilitychange",async()=>{ if(!document.hidden&&run){ try{wake=await navigator.wakeLock?.request("screen")}catch(e){} } });
+
+fetch("plan.json",{cache:"no-cache"}).then(r=>r.json()).then(p=>{guardar("plan",JSON.stringify(p));cargarPlan(p)})
+ .catch(()=>{const g=leer("plan"); if(g){cargarPlan(JSON.parse(g)); $("#estado").innerHTML="Sin señal: uso los tramos guardados."} else $("#estado").textContent="No pude cargar los tramos. Ábrela con señal la primera vez."});
+if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
