@@ -112,6 +112,8 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     </div>
     <div class="acciones"><button id="btnTema">Pantalla clara (sol)</button></div>
     <p class="estado" id="estado">Cargando tramos…</p>
+    <p class="estado" id="syncEst">Hora exacta: sin sincronizar</p>
+    <div class="acciones"><button id="btnSync">Sincronizar hora exacta</button></div>
   </section>
 
   <details class="panel">
@@ -128,6 +130,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <li><b>+8 s ADELANTADO</b> = llegaste antes de lo ideal: baja ritmo. <b>−5 s ATRASADO</b> = sube ritmo. Verde: ±3 s. Amarillo: hasta 15 s. Rojo: más.</li>
       <li>«Ve a» es la velocidad que te deja en el próximo control justo a tiempo.</li>
       <li>Los km los mide el GPS del celular solo: no tienes que mirar el odómetro. Si en algún punto el Road Book marca un km distinto, puedes cuadrarlo en «Ajuste opcional del km».</li>
+      <li>La hora se sincroniza sola con la hora exacta cuando hay señal (la que usa el organizador para el QR). Hazlo en el hotel antes de salir; en modo avión usa esa medida.</li>
       <li>La pantalla debe quedar encendida: si se bloquea, el GPS se pausa. Pon el bloqueo automático en «Nunca» el día del rally.</li>
     </ol>
   </details>
@@ -150,7 +153,7 @@ let PLAN=null, T=null, salida=null, run=null, wake=null;
 // run = {gpsM, ultimo, offsetKm, sim, velGps, prec, watch, hist:[]}
 
 function tramoSel(){return PLAN.tramos.find(t=>t.id===$("#tramo").value)}
-function salidaSel(){const v=$("#salida").value;if(!v)return null;const[h,m,s]=v.split(":").map(Number);const d=new Date();d.setHours(h,m,s||0,0);return d}
+function salidaSel(){const v=$("#salida").value;if(!v)return null;const[h,m,s]=v.split(":").map(Number);const d=new Date(ahoraMs());d.setHours(h,m,s||0,0);return d}
 
 function cargarPlan(p){
   PLAN=p; const sel=$("#tramo"); sel.innerHTML="";
@@ -177,7 +180,7 @@ function tabla(){
 function aviso(t){$("#msg").textContent=t;$("#msg").hidden=!t}
 
 async function iniciar(sim){
-  aviso(""); T=tramoSel(); salida=sim?new Date(Date.now()+10000):salidaSel();
+  aviso(""); T=tramoSel(); salida=sim?new Date(ahoraMs()+10000):salidaSel();
   if(!salida){aviso("Escribe primero tu hora de salida.");return}
   run={gpsM:0,ultimo:null,offsetKm:0,sim,velGps:null,prec:null,watch:null,hist:[],simKm:0};
   if(sim){ $("#gpsPrec").textContent="Simulación (sin GPS)"; }
@@ -194,7 +197,7 @@ function posGps(p){
   const c={lat:p.coords.latitude,lon:p.coords.longitude}; run.prec=p.coords.accuracy;
   run.velGps = p.coords.speed!=null && p.coords.speed>=0 ? p.coords.speed*3.6 : run.velGps;
   $("#gpsPrec").textContent=`GPS ±${Math.round(run.prec)} m`;
-  if(Date.now()<salida.getTime()){run.ultimo=c;return}           // antes de la salida no cuenta
+  if(ahoraMs()<salida.getTime()){run.ultimo=c;return}           // antes de la salida no cuenta
   if(run.prec>30) return;                                         // punto malo
   if(!run.ultimo){run.ultimo=c;return}
   const d=haversine(run.ultimo,c);
@@ -216,7 +219,7 @@ aplicarTema();
 function pintarVacio(){ $("#ver").className="veredicto"; $("#verTitulo").textContent="Sin tramo en curso"; $("#verSeg").textContent="--"; $("#verTxt").textContent="Elige tramo"; $("#verAcc").innerHTML="&nbsp;" }
 
 function tic(){
-  const ahora=new Date(); $("#reloj").textContent=fmtHora(ahora);
+  const ahora=new Date(ahoraMs()); $("#reloj").textContent=fmtHora(ahora);
   if(!run||!T) return;
   const r=(ahora-salida)/1000;
   // simulación: avanza a la velocidad ideal con un 8 % de más para ver el adelanto
@@ -259,6 +262,42 @@ function tic(){
   if(falta>5&&dist>0){ const v=dist/falta*3600; $("#velSug").textContent=Math.round(v)+" km/h"; $("#velSugNota").textContent="para llegar justo"; }
   else { $("#velSug").textContent=velEnKm(sec,km)+" km/h"; $("#velSugNota").textContent="velocidad del tramo"; }
 }
+
+// ---- Hora exacta: el QR lo escanea el organizador, así que la referencia es la hora global.
+// Con señal se mide cuánto se desvía el reloj del celular y se corrige; sin señal se usa la última medida.
+let OFF=parseFloat(leer("off"))||0;
+function ahoraMs(){ return Date.now()+OFF }
+async function muestraTimeapi(){
+  const t0=Date.now(); const r=await fetch("https://timeapi.io/api/time/current/zone?timeZone=UTC",{cache:"no-store"}); const j=await r.json(); const t1=Date.now();
+  const srv=Date.parse(j.dateTime.slice(0,23)+"Z"); if(isNaN(srv)) throw 0;
+  return {off:srv-(t0+t1)/2, rtt:t1-t0, fino:true};
+}
+async function muestraCloudflare(){
+  const t0=Date.now(); const r=await fetch("https://www.cloudflare.com/cdn-cgi/trace",{cache:"no-store"}); const x=await r.text(); const t1=Date.now();
+  const ts=parseFloat((x.match(/ts=([\d.]+)/)||[])[1]); if(!ts) throw 0;
+  return {off:ts*1000+500-(t0+t1)/2, rtt:t1-t0+1000, fino:false};
+}
+function pintarSync(){
+  const cuando=leer("offCuando"); const el=$("#syncEst");
+  if(!cuando){ el.textContent="Hora exacta: sin sincronizar (ábrela con señal)"; return }
+  const seg=Math.abs(OFF/1000).toFixed(1).replace(".",",");
+  const lado=Math.abs(OFF)<100?"tu celular está en hora":(OFF>0?`tu celular va ${seg} s atrasado`:`tu celular va ${seg} s adelantado`);
+  const prec=leer("offPrec")||"";
+  el.innerHTML=`Hora exacta sincronizada ${fmtHora(new Date(+cuando))} ${prec} · ${lado} (ya corregido)`+
+    (Math.abs(OFF)>1500?"<br><b>Prende la hora automática en Ajustes › General › Fecha y hora.</b>":"");
+}
+async function sincronizar(manual){
+  const el=$("#syncEst"); if(manual) el.textContent="Sincronizando hora exacta…";
+  let mejor=null;
+  for(let i=0;i<5;i++){ try{ const m=await muestraTimeapi(); if(!mejor||m.rtt<mejor.rtt) mejor=m }catch(e){} }
+  if(!mejor){ try{ mejor=await muestraCloudflare() }catch(e){} }
+  if(!mejor){ if(manual) el.textContent="Sin señal: uso la última sincronización."; setTimeout(pintarSync,2500); return }
+  OFF=mejor.off; guardar("off",String(OFF)); guardar("offCuando",String(ahoraMs()));
+  guardar("offPrec",`(±${(Math.max(mejor.fino?mejor.rtt/2:500,20)/1000).toFixed(2).replace(".",",")} s)`);
+  pintarSync();
+}
+$("#btnSync").addEventListener("click",()=>sincronizar(true));
+pintarSync(); sincronizar(false); setInterval(()=>{ if(!run) sincronizar(false) },10*60*1000);
 setInterval(tic,250);
 document.addEventListener("visibilitychange",async()=>{ if(!document.hidden&&run){ try{wake=await navigator.wakeLock?.request("screen")}catch(e){} } });
 
