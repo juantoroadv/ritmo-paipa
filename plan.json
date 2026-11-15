@@ -21,7 +21,18 @@
      "km": 3.5,
      "nombre": "Control de prueba"
     }
-   ]
+   ],
+   "roadbook": {
+    "tipo": "casillas",
+    "imagenes": [
+     "rb/prueba/001.png",
+     "rb/prueba/002.png",
+     "rb/prueba/003.png",
+     "rb/prueba/004.png",
+     "rb/prueba/005.png",
+     "rb/prueba/006.png"
+    ]
+   }
   },
   {
    "id": "t1",
@@ -51,7 +62,32 @@
      "km": 33.7,
      "nombre": "Control 1B"
     }
-   ]
+   ],
+   "roadbook": {
+    "tipo": "casillas",
+    "imagenes": [
+     "rb/t1/001.png",
+     "rb/t1/002.png",
+     "rb/t1/003.png",
+     "rb/t1/004.png",
+     "rb/t1/005.png",
+     "rb/t1/006.png",
+     "rb/t1/007.png",
+     "rb/t1/008.png",
+     "rb/t1/009.png",
+     "rb/t1/010.png",
+     "rb/t1/011.png",
+     "rb/t1/012.png",
+     "rb/t1/013.png",
+     "rb/t1/014.png",
+     "rb/t1/015.png",
+     "rb/t1/016.png",
+     "rb/t1/017.png",
+     "rb/t1/018.png",
+     "rb/t1/019.png",
+     "rb/t1/020.png"
+    ]
+   }
   },
   {
    "id": "t2",
@@ -81,7 +117,34 @@
      "km": 40.0,
      "nombre": "Control 2B"
     }
-   ]
+   ],
+   "roadbook": {
+    "tipo": "casillas",
+    "imagenes": [
+     "rb/t2/001.png",
+     "rb/t2/002.png",
+     "rb/t2/003.png",
+     "rb/t2/004.png",
+     "rb/t2/005.png",
+     "rb/t2/006.png",
+     "rb/t2/007.png",
+     "rb/t2/008.png",
+     "rb/t2/009.png",
+     "rb/t2/010.png",
+     "rb/t2/011.png",
+     "rb/t2/012.png",
+     "rb/t2/013.png",
+     "rb/t2/014.png",
+     "rb/t2/015.png",
+     "rb/t2/016.png",
+     "rb/t2/017.png",
+     "rb/t2/018.png",
+     "rb/t2/019.png",
+     "rb/t2/020.png",
+     "rb/t2/021.png",
+     "rb/t2/022.png"
+    ]
+   }
   },
   {
    "id": "t3",
@@ -107,7 +170,32 @@
      "km": 29.5,
      "nombre": "Control 3B"
     }
-   ]
+   ],
+   "roadbook": {
+    "tipo": "casillas",
+    "imagenes": [
+     "rb/t3/001.png",
+     "rb/t3/002.png",
+     "rb/t3/003.png",
+     "rb/t3/004.png",
+     "rb/t3/005.png",
+     "rb/t3/006.png",
+     "rb/t3/007.png",
+     "rb/t3/008.png",
+     "rb/t3/009.png",
+     "rb/t3/010.png",
+     "rb/t3/011.png",
+     "rb/t3/012.png",
+     "rb/t3/013.png",
+     "rb/t3/014.png",
+     "rb/t3/015.png",
+     "rb/t3/016.png",
+     "rb/t3/017.png",
+     "rb/t3/018.png",
+     "rb/t3/019.png",
+     "rb/t3/020.png"
+    ]
+   }
   },
   {
    "id": "t4",
@@ -137,7 +225,33 @@
      "km": 35.2,
      "nombre": "Control 4B"
     }
-   ]
+   ],
+   "roadbook": {
+    "tipo": "casillas",
+    "imagenes": [
+     "rb/t4/001.png",
+     "rb/t4/002.png",
+     "rb/t4/003.png",
+     "rb/t4/004.png",
+     "rb/t4/005.png",
+     "rb/t4/006.png",
+     "rb/t4/007.png",
+     "rb/t4/008.png",
+     "rb/t4/009.png",
+     "rb/t4/010.png",
+     "rb/t4/011.png",
+     "rb/t4/012.png",
+     "rb/t4/013.png",
+     "rb/t4/014.png",
+     "rb/t4/015.png",
+     "rb/t4/016.png",
+     "rb/t4/017.png",
+     "rb/t4/018.png",
+     "rb/t4/019.png",
+     "rb/t4/020.png",
+     "rb/t4/021.png"
+    ]
+   }
   }
  ]
 }

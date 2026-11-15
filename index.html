@@ -55,6 +55,40 @@ table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
 th{font-size:12px;text-transform:uppercase;color:var(--muted)}
 tr.ctl td{color:var(--accent);font-weight:600}
+
+/* ---- Modo roadbook: franja de ritmo arriba (o a la izquierda en horizontal) y casillas debajo ---- */
+#rbVista{display:none}
+body.modo-rb{padding:0}
+body.modo-rb .wrap{display:none}
+body.modo-rb #rbVista{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh;
+  padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));gap:6px}
+.rbBanda{border:3px solid var(--line);border-radius:10px;padding:6px 10px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 10px;background:var(--panel)}
+.rbSeg{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(46px,15vw,72px);line-height:.9}
+.rbTxt{font-family:var(--f-num);font-weight:700;text-transform:uppercase;line-height:1.05}
+.rbTxt b{display:block;font-size:clamp(20px,6vw,28px)} .rbTxt span{font-size:clamp(17px,5vw,22px);font-weight:600}
+.rbKm{text-align:right;font-family:var(--f-num);line-height:1}
+.rbKm b{display:block;font-variant-numeric:tabular-nums;font-size:clamp(34px,11vw,52px);font-weight:700}
+.rbKm small{font-size:13px;color:var(--muted);font-family:var(--f-body)}
+.rbFila{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;font-family:var(--f-num);font-size:clamp(17px,5vw,22px);font-weight:600;border-top:1px solid var(--line);padding-top:4px;flex-wrap:wrap}
+.rbFila b{font-variant-numeric:tabular-nums}
+.rbBanda.v-ok{border-color:var(--ok)} .rbBanda.v-ok .rbSeg,.rbBanda.v-ok .rbTxt b{color:var(--ok)}
+.rbBanda.v-warn{border-color:var(--warn)} .rbBanda.v-warn .rbSeg,.rbBanda.v-warn .rbTxt b{color:var(--warn)}
+.rbBanda.v-bad{border-color:var(--bad)} .rbBanda.v-bad .rbSeg,.rbBanda.v-bad .rbTxt b{color:var(--bad)}
+.rbLista{overflow-y:auto;background:#fff;border-radius:10px;-webkit-overflow-scrolling:touch;position:relative}
+.rbLista img{display:block;width:100%;height:auto;border-bottom:2px solid #bbb}
+.rbLista img.act{outline:5px solid var(--accent);outline-offset:-5px}
+.rbLista .rbFin{color:#555;text-align:center;padding:40px 10px 60vh;font:600 18px var(--f-body);margin:0}
+.rbBotones{display:grid;grid-template-columns:1fr 1fr 2fr 1fr;gap:6px}
+.rbBotones button{min-height:60px;font-size:26px;padding:6px}
+.rbBotones #rbAbajo{font-size:30px}
+.rbBotones #rbMas{font-size:16px}
+.rbParcial{font-family:var(--f-num);font-size:16px;color:var(--muted)}
+@media (orientation:landscape){
+  body.modo-rb #rbVista{grid-template-columns:minmax(260px,38%) 1fr;grid-template-rows:1fr auto}
+  .rbBanda{grid-row:1/3;grid-template-columns:1fr;align-content:start;text-align:center}
+  .rbKm{text-align:center} .rbFila{flex-direction:column;align-items:center}
+  .rbLista{grid-column:2} .rbBotones{grid-column:2}
+}
 ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 [hidden]{display:none!important}
 </style>
@@ -99,6 +133,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     </div>
     </details>
     <div class="acciones"><button class="prim ya" id="btnSigYa">SALGO YA · siguiente tramo</button></div>
+    <div class="acciones"><button id="btnVerRb">Ver roadbook</button></div>
     <div class="acciones"><button id="btnParar">Terminar tramo</button></div>
   </section>
 
@@ -138,11 +173,28 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <li>«Ve a» es la velocidad que te deja en el próximo control justo a tiempo.</li>
       <li>Los km los mide el GPS del celular solo: no tienes que mirar el odómetro. Si en algún punto el Road Book marca un km distinto, puedes cuadrarlo en «Ajuste opcional del km».</li>
       <li>La hora se sincroniza sola con la hora exacta cuando hay señal (la que usa el organizador para el QR). Hazlo en el hotel antes de salir; en modo avión usa esa medida.</li>
+      <li><b>Roadbook:</b> al arrancar el tramo aparece el roadbook con el ritmo arriba. <b>▼</b> pasa a la siguiente casilla y pone el parcial en cero; <b>▲</b> vuelve; <b>0</b> pone el parcial en cero sin pasar casilla. <b>Más</b> abre la pantalla completa (SALGO YA, ajuste de km) y desde ahí «Ver roadbook» regresa. Una botonera Bluetooth que mande flechas o espacio también pasa casillas.</li>
       <li>La pantalla debe quedar encendida: si se bloquea, el GPS se pausa. Pon el bloqueo automático en «Nunca» el día del rally.</li>
     </ol>
   </details>
 </div>
 
+
+<section id="rbVista" aria-label="Roadbook con ritmo">
+  <div class="rbBanda" id="rbBanda">
+    <div class="rbSeg" id="rbSeg">--</div>
+    <div class="rbTxt"><b id="rbTxt">&nbsp;</b><span id="rbAcc">&nbsp;</span></div>
+    <div class="rbKm"><b id="rbKm">0,00</b><small>km GPS</small><div class="rbParcial" id="rbParcial">parcial 0,00</div></div>
+    <div class="rbFila"><span>Ve a <b id="rbVe">--</b></span><span id="rbCtl">--</span></div>
+  </div>
+  <div class="rbLista" id="rbLista"></div>
+  <div class="rbBotones">
+    <button id="rbArriba" aria-label="Casilla anterior">▲</button>
+    <button id="rbCero" aria-label="Parcial a cero">0</button>
+    <button class="prim" id="rbAbajo" aria-label="Casilla siguiente">▼</button>
+    <button id="rbMas">Más</button>
+  </div>
+</section>
 <script>
 const $=s=>document.querySelector(s);
 const leer=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
@@ -166,7 +218,7 @@ function cargarPlan(p){
   PLAN=p; const sel=$("#tramo"); sel.innerHTML="";
   p.tramos.forEach(t=>{const o=document.createElement("option");o.value=t.id;o.textContent=t.nombre;sel.appendChild(o)});
   const g=leer("tramo"); if(g&&p.tramos.some(t=>t.id===g)) sel.value=g;
-  cambioTramo();
+  cambioTramo(); precargarRoadbooks(p);
   $("#estado").innerHTML=`<b>${p.tramos.length}</b> tramo(s) cargado(s). Guardado en el celular.`;
 }
 function cambioTramo(){guardar("tramo",$("#tramo").value);$("#salida").value=leer("salida-"+$("#tramo").value)||"";tabla()}
@@ -197,7 +249,7 @@ async function iniciar(sim,ya){
     $("#gpsPrec").textContent="Buscando GPS…";
   }
   try{wake=await navigator.wakeLock?.request("screen")}catch(e){}
-  $("#config").hidden=true; $("#enCurso").hidden=false; pintarSig();
+  $("#config").hidden=true; $("#enCurso").hidden=false; pintarSig(); rbParcialKm=0; guardar("rb-"+T.id,"0"); $("#rbLista").dataset.tramo=""; abrirRb();
 }
 function errGps(e){ $("#gpsPrec").textContent = e.code===1 ? "Sin permiso de ubicación: actívalo en Ajustes > Safari" : "GPS sin señal"; }
 function posGps(p){
@@ -227,7 +279,7 @@ $("#btnSigYa").addEventListener("click",()=>{ const i=idxSig(); if(i<0) return; 
 $("#btnIniciar").addEventListener("click",()=>iniciar(false));
 $("#btnSimular").addEventListener("click",()=>iniciar(true));
 $("#btnParar").addEventListener("click",()=>{ if(run?.watch!=null) navigator.geolocation.clearWatch(run.watch); run=null; T=null; try{wake?.release()}catch(e){}
-  $("#config").hidden=false; $("#enCurso").hidden=true; pintarVacio(); const i=idxSig(); if(i>=0){$("#tramo").value=PLAN.tramos[i].id; cambioTramo()} });
+  cerrarRb(); $("#config").hidden=false; $("#enCurso").hidden=true; pintarVacio(); const i=idxSig(); if(i>=0){$("#tramo").value=PLAN.tramos[i].id; cambioTramo()} });
 $("#btnCorr").addEventListener("click",()=>{ const v=parseFloat(String($("#corr").value).replace(",",".")); if(!run||isNaN(v))return; run.offsetKm+=v-kmActual(); $("#corr").value=""; $("#corr").blur() });
 $("#btnMas").addEventListener("click",()=>{ if(run) run.offsetKm+=0.05 });
 $("#btnMenos").addEventListener("click",()=>{ if(run) run.offsetKm-=0.05 });
@@ -317,7 +369,51 @@ async function sincronizar(manual){
 }
 $("#btnSync").addEventListener("click",()=>sincronizar(true));
 pintarSync(); sincronizar(false); setInterval(()=>{ if(!run) sincronizar(false) },10*60*1000);
-setInterval(tic,250);
+
+// ---- Roadbook ----
+let rbI=0, rbParcialKm=0;
+function rbDe(t){ return t&&t.roadbook&&t.roadbook.imagenes&&t.roadbook.imagenes.length?t.roadbook:null }
+function precargarRoadbooks(p){ p.tramos.forEach(t=>(rbDe(t)?.imagenes||[]).forEach(u=>fetch(u).catch(()=>{}))) }   // quedan guardadas para modo avión
+function abrirRb(){
+  const rb=rbDe(T); $("#btnVerRb").hidden=!rb; if(!rb){ document.body.classList.remove("modo-rb"); return }
+  const L=$("#rbLista");
+  if(L.dataset.tramo!==T.id){
+    L.innerHTML=rb.imagenes.map((u,i)=>`<img src="${u}" alt="Casilla ${i+1}" data-i="${i}">`).join("")+'<p class="rbFin">Fin del roadbook de este tramo</p>';
+    L.dataset.tramo=T.id; rbI=Math.min(+(leer("rb-"+T.id)||0),rb.imagenes.length-1);
+  }
+  document.body.classList.add("modo-rb"); setTimeout(()=>irCasilla(rbI,false),60);
+}
+function cerrarRb(){ document.body.classList.remove("modo-rb") }
+function irCasilla(i,anim=true){
+  const rb=rbDe(T); if(!rb) return; const L=$("#rbLista");
+  if(rb.tipo==="paginas"){ L.scrollBy({top:(i>rbI?1:-1)*L.clientHeight*0.45,behavior:anim?"smooth":"auto"}); return }
+  rbI=Math.max(0,Math.min(i,rb.imagenes.length-1)); guardar("rb-"+T.id,rbI);
+  L.querySelectorAll("img").forEach(im=>im.classList.toggle("act",+im.dataset.i===rbI));
+  const im=L.querySelector(`img[data-i="${rbI}"]`); if(im) L.scrollTo({top:im.offsetTop-Math.round(im.height*0.45),behavior:anim?"smooth":"auto"});
+}
+function sigCasilla(){ if(!run) return; rbParcialKm=kmActual(); irCasilla(rbI+1) }
+function antCasilla(){ if(!run) return; irCasilla(rbI-1) }
+$("#rbAbajo").addEventListener("click",sigCasilla);
+$("#rbArriba").addEventListener("click",antCasilla);
+$("#rbCero").addEventListener("click",()=>{ if(run) rbParcialKm=kmActual() });
+$("#rbMas").addEventListener("click",cerrarRb);
+$("#btnVerRb").addEventListener("click",abrirRb);
+$("#rbLista").addEventListener("click",e=>{ const i=e.target.dataset?.i; if(i!=null&&rbDe(T)?.tipo!=="paginas") irCasilla(+i) });
+// botonera Bluetooth que funcione como teclado: flechas, Av Pág/Re Pág, espacio o Enter
+document.addEventListener("keydown",e=>{
+  if(!document.body.classList.contains("modo-rb")||/INPUT|SELECT/.test(document.activeElement?.tagName)) return;
+  if(["ArrowDown","ArrowRight","PageDown"," ","Enter"].includes(e.key)){ e.preventDefault(); sigCasilla() }
+  else if(["ArrowUp","ArrowLeft","PageUp"].includes(e.key)){ e.preventDefault(); antCasilla() }
+});
+function pintarRb(){
+  if(!run||!T||!document.body.classList.contains("modo-rb")) return;
+  $("#rbBanda").className="rbBanda "+$("#ver").className.replace("veredicto","").trim();
+  $("#rbSeg").textContent=$("#verSeg").textContent; $("#rbTxt").textContent=$("#verTxt").textContent; $("#rbAcc").textContent=$("#verAcc").textContent;
+  const km=Math.max(0,kmActual()); $("#rbKm").textContent=fmtKm(km); $("#rbParcial").textContent="parcial "+fmtKm(Math.max(0,km-rbParcialKm));
+  $("#rbVe").textContent=$("#velSug").textContent;
+  $("#rbCtl").innerHTML=`${$("#ctlNombre").textContent} <b>${$("#ctlHora").textContent}</b> · faltan <b>${$("#ctlFalta").textContent}</b>`;
+}
+setInterval(()=>{tic();pintarRb()},250);
 document.addEventListener("visibilitychange",async()=>{ if(!document.hidden&&run){ try{wake=await navigator.wakeLock?.request("screen")}catch(e){} } });
 
 fetch("plan.json",{cache:"no-cache"}).then(r=>r.json()).then(p=>{guardar("plan",JSON.stringify(p));cargarPlan(p)})
