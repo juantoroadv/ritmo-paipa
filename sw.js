@@ -1,6 +1,6 @@
 // Guarda la app en el celular para que funcione sin señal. Con señal SIEMPRE pide la versión nueva
 // (saltándose la copia del navegador); sin señal usa lo guardado.
-const CACHE = "ritmo-paipa-v28";
+const CACHE = "ritmo-paipa-v29";
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(["./", "index.html", "plan.json"].map(u => new Request(u, { cache: "reload" })))));
   self.skipWaiting();
