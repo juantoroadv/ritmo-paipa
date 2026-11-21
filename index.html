@@ -200,9 +200,9 @@ function tic(){
   if(!ll){ const r=ritmo(t,sal), a=Math.abs(r.d), R=$("#ritmo");
     // parcial ideal en vivo: lo que debería marcar el trip (puesto en 0 en la casilla anterior a «voy para»)
     const cs=t.roadbook.casillas, base=rbI>0?cs[rbI-1].tot:ini, kmId=Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600), pid=kmId-base;
-    R.className="rt "+(a<=5?"ok":a<=20?"warn":"bad");
+    R.className="rt "+(a<=10?"ok":a<=30?"warn":"bad");
     $("#rtSeg").textContent=(pid<0?"−":"")+fmtKm(Math.abs(pid));
-    $("#rtTxt").textContent="ideal · "+(a<=5?"en ritmo":(r.d>0?"+":"−")+(a<60?a+" s":fmtDur(a)));
+    $("#rtTxt").textContent="ideal · "+(a<=10?"en ritmo":(r.d>0?"+":"−")+(a<60?a+" s":fmtDur(a)));
   } else { $("#ritmo").className="rt"; $("#rtSeg").textContent="--"; $("#rtTxt").textContent="llegaste" }
   if(ll){
     const d=Math.round((ll-ideal)/1000), a=Math.abs(d), cl=a<=3?"ok":a<=15?"warn":"bad";
