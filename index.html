@@ -205,15 +205,17 @@ function tic(){
     const base=r.base, kmId=Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600), pid=kmId-base;
     // Desfase coherente con la casilla ideal: vas entre la casilla anterior (lo) y la marcada (hi).
     // Si el ideal ya pasó la marcada, vas atrasado al menos ese tiempo; si no ha llegado a la anterior, vas adelantado.
-    const cs=t.roadbook.casillas, lo=rbI>0?cs[rbI-1].tot:ini, hi=cs[rbI].tot; let d=r.d;
-    if(kmId>hi+1e-6) d=Math.max(d,Math.round((kmId-hi)/vel*3600));
-    else if(kmId<lo-1e-6) d=Math.min(d,-Math.round((lo-kmId)/vel*3600));
-    const a=Math.abs(d), enRitmo=a<=10;
-    marcarIdeal(t,kmId,enRitmo);
+    // Manda la casilla: si la ideal es la marcada, vas en ritmo; si está adelante, atrasado; si está atrás, adelantado.
+    const cs=t.roadbook.casillas, lo=rbI>0?cs[rbI-1].tot:ini, hi=cs[rbI].tot;
+    let d=0; if(kmId>hi+1e-6) d=Math.round((kmId-hi)/vel*3600); else if(kmId<lo-1e-6) d=-Math.round((lo-kmId)/vel*3600);
+    // Justo después de tocar la casilla siguiente (15 s) se muestra la medida exacta del paso, como confirmación.
+    const recien=r.ms>sal&&ahora-r.ms<15000, dm=recien?r.d:d;
+    const a=Math.abs(dm), enRitmo=a<=10, dd=(a<60?a+" s":fmtDur(a));
+    marcarIdeal(t,kmId,d===0);
     R.className="rt "+(enRitmo?"ok":a<=30?"warn":"bad");
     $("#rtSeg").textContent=(pid<0?"−":"")+fmtKm(Math.abs(pid));
-    const dd=(a<60?a+" s":fmtDur(a));
-    $("#rtTxt").textContent=enRitmo?"✓ en ritmo":d>0?"▲ más rápido +"+dd:"▼ más lento −"+dd;
+    $("#rtTxt").textContent=recien?(enRitmo?"✓ pasaste a tiempo":"pasaste "+(dm>0?"+":"−")+dd+(dm>0?" tarde":" antes"))
+      :(enRitmo?"✓ en ritmo":dm>0?"▲ más rápido +"+dd:"▼ más lento −"+dd);
   } else { $("#ritmo").className="rt"; $("#rtSeg").textContent="--"; $("#rtTxt").textContent="llegaste"; quitarIdeal() }
   if(ll){
     const d=Math.round((ll-ideal)/1000), a=Math.abs(d), cl=a<=3?"ok":a<=15?"warn":"bad";
@@ -271,7 +273,7 @@ function ritmo(t,sal){
   const d=Math.round((p.ms-sal)/1000-(p.km-ini)/vel*3600);   // + atrasado, − adelantado
   const dest=cs[Math.min(p.i,cs.length-1)], tObj=sal+(dest.tot-ini)/vel*3600000, quedan=(tObj-p.ms)/3600000, dist=dest.tot-p.km;
   const v=quedan>0&&dist>0?dist/quedan:null;
-  return {d,v,base:p.km};
+  return {d,v,base:p.km,ms:p.ms};
 }
 // botonera Bluetooth que funcione como teclado
 document.addEventListener("keydown",e=>{
