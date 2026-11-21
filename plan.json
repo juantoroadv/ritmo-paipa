@@ -92,7 +92,8 @@
       "det": "Portería hotel · ¡ojo vía principal!",
       "c": "P",
       "ico": "rb/t1/i002.png",
-      "foto": "rb/t1/002.png"
+      "foto": "rb/t1/002.png",
+      "emo": "🐢"
      },
      {
       "n": 3,
@@ -162,7 +163,8 @@
       "det": "Fin pavimento",
       "c": "R",
       "ico": "rb/t1/i009.png",
-      "foto": "rb/t1/009.png"
+      "foto": "rb/t1/009.png",
+      "emo": "🚀"
      },
      {
       "n": 10,
@@ -172,7 +174,8 @@
       "det": "",
       "c": "R",
       "ico": "rb/t1/i010.png",
-      "foto": "rb/t1/010.png"
+      "foto": "rb/t1/010.png",
+      "emo": "🚀"
      },
      {
       "n": 11,
@@ -182,7 +185,8 @@
       "det": "",
       "c": "G",
       "ico": "rb/t1/i011.png",
-      "foto": "rb/t1/011.png"
+      "foto": "rb/t1/011.png",
+      "emo": "🐢"
      },
      {
       "n": 12,
@@ -332,7 +336,8 @@
       "det": "",
       "c": "G",
       "ico": "rb/t1/i026.png",
-      "foto": "rb/t1/026.png"
+      "foto": "rb/t1/026.png",
+      "emo": "🚀"
      },
      {
       "n": 27,
@@ -342,7 +347,8 @@
       "det": "Tibasosa · vía en adobe · 40",
       "c": "R",
       "ico": "rb/t1/i027.png",
-      "foto": "rb/t1/027.png"
+      "foto": "rb/t1/027.png",
+      "emo": "🐢"
      },
      {
       "n": 28,
@@ -432,7 +438,8 @@
       "det": "Belencito · población · seguir pavimento · vía angosta · 40",
       "c": "R",
       "ico": "rb/t1/i036.png",
-      "foto": "rb/t1/036.png"
+      "foto": "rb/t1/036.png",
+      "emo": "🚀🚀"
      },
      {
       "n": 37,
@@ -472,7 +479,8 @@
       "det": "",
       "c": "G",
       "ico": "rb/t1/i040.png",
-      "foto": "rb/t1/040.png"
+      "foto": "rb/t1/040.png",
+      "emo": "🚀"
      },
      {
       "n": 41,
@@ -502,7 +510,8 @@
       "det": "",
       "c": "G",
       "ico": "rb/t1/i043.png",
-      "foto": "rb/t1/043.png"
+      "foto": "rb/t1/043.png",
+      "emo": "🐢"
      },
      {
       "n": 44,
@@ -616,7 +625,8 @@
       "det": "",
       "c": "G",
       "ico": "rb/t2/i002.png",
-      "foto": "rb/t2/002.png"
+      "foto": "rb/t2/002.png",
+      "emo": "🚀"
      },
      {
       "n": 50,
@@ -626,7 +636,8 @@
       "det": "¡Ojo cruce peligroso! Destapado ascenso",
       "c": "P",
       "ico": "rb/t2/i003.png",
-      "foto": "rb/t2/003.png"
+      "foto": "rb/t2/003.png",
+      "emo": "🚀🐢"
      },
      {
       "n": 51,
@@ -817,7 +828,8 @@
       "det": "Control · inicio tramo 3",
       "c": "G",
       "ico": "rb/t3/i001.png",
-      "foto": "rb/t3/001.png"
+      "foto": "rb/t3/001.png",
+      "emo": "🐢"
      },
      {
       "n": 65,
@@ -1027,7 +1039,8 @@
       "det": "Vía nacional",
       "c": "P",
       "ico": "rb/t3/i022.png",
-      "foto": "rb/t3/022.png"
+      "foto": "rb/t3/022.png",
+      "emo": "🚀"
      },
      {
       "n": 86,
@@ -1178,7 +1191,8 @@
       "det": "Pavimento",
       "c": "R",
       "ico": "rb/t4/i006.png",
-      "foto": "rb/t4/006.png"
+      "foto": "rb/t4/006.png",
+      "emo": "🐢"
      },
      {
       "n": 92,
@@ -1348,7 +1362,8 @@
       "det": "Pesca · 40",
       "c": "R",
       "ico": "rb/t4/i023.png",
-      "foto": "rb/t4/023.png"
+      "foto": "rb/t4/023.png",
+      "emo": "🐢"
      },
      {
       "n": 109,
@@ -1398,7 +1413,8 @@
       "det": "",
       "c": "R",
       "ico": "rb/t4/i028.png",
-      "foto": "rb/t4/028.png"
+      "foto": "rb/t4/028.png",
+      "emo": "🚀🚀"
      },
      {
       "n": 114,
@@ -1428,7 +1444,8 @@
       "det": "Toca · 40",
       "c": "R",
       "ico": "rb/t4/i031.png",
-      "foto": "rb/t4/031.png"
+      "foto": "rb/t4/031.png",
+      "emo": "🚀🚀🚀"
      },
      {
       "n": 117,
@@ -1488,7 +1505,8 @@
       "det": "¡Ojo!",
       "c": "P",
       "ico": "rb/t4/i037.png",
-      "foto": "rb/t4/037.png"
+      "foto": "rb/t4/037.png",
+      "emo": "🚀🚀"
      },
      {
       "n": 123,
@@ -1548,7 +1566,8 @@
       "det": "",
       "c": "R",
       "ico": "rb/t4/i043.png",
-      "foto": "rb/t4/043.png"
+      "foto": "rb/t4/043.png",
+      "emo": "🚀🐢"
      },
      {
       "n": 129,
