@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Ritmo Paipa">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,7 +22,7 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--f-body)}
+html,body{margin:0;height:100%;overflow-x:hidden;overscroll-behavior:none;background:var(--bg);color:var(--ink);font-family:var(--f-body)}
 body{display:grid;grid-template-rows:auto 1fr;grid-template-columns:minmax(0,1fr);height:100vh;height:100dvh;
   padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));gap:6px}
 button,select,input{font:inherit;color:inherit}
@@ -58,8 +58,8 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 #ajustes button{flex:1;font-size:14px}
 
 /* ---- Roadbook ---- */
-#lista{overflow-y:auto;background:#fff;border-radius:10px;-webkit-overflow-scrolling:touch;position:relative}
-.cas{display:grid;grid-template-columns:clamp(104px,31vw,150px) clamp(78px,24vw,120px) 1fr;border-bottom:3px solid #d0d0d0;border-left:14px solid #12a63c;color:#111;background:#fff;min-height:96px;cursor:pointer}
+#lista{overflow-y:auto;overflow-x:hidden;touch-action:pan-y;overscroll-behavior:contain;min-width:0;background:#fff;border-radius:10px;-webkit-overflow-scrolling:touch;position:relative}
+.cas{display:grid;grid-template-columns:clamp(104px,31vw,150px) clamp(78px,24vw,120px) minmax(0,1fr);max-width:100%;border-bottom:3px solid #d0d0d0;border-left:14px solid #12a63c;color:#111;background:#fff;min-height:96px;cursor:pointer}
 .cas.c-R{border-left-color:#e01e12} .cas.c-P{border-left:20px solid #7b2cbf}
 .cPar{display:flex;flex-direction:column;justify-content:space-between;padding:4px 6px;background:#ecf8ef;font-family:var(--f-num)}
 .c-R .cPar{background:#ffecea} .c-P .cPar{background:#f1e6fb}
@@ -68,7 +68,7 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 .cPar b{font-size:clamp(40px,12.5vw,60px);font-weight:700;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
 .cPar span{font-size:clamp(15px,4.4vw,19px);font-weight:600;color:#333;font-variant-numeric:tabular-nums}
 .cIco{width:100%;height:100%;max-height:120px;object-fit:contain;padding:4px;border-right:1px solid #ddd;background:#fff;display:block}
-.cTxt{padding:6px 8px;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.cTxt{min-width:0;overflow-wrap:anywhere;padding:6px 8px;display:flex;flex-direction:column;gap:2px;justify-content:center}
 .cTxt b{font-family:var(--f-num);font-size:clamp(22px,6.6vw,30px);line-height:1.02;text-transform:uppercase}
 .c-R .cTxt b{color:#d0150a} .c-P .cTxt b,.c-P .cTxt span{color:#7b2cbf}
 .cTxt span{font-size:clamp(14px,4vw,17px);line-height:1.2} .c-P .cTxt span{font-weight:700}
