@@ -12,451 +12,246 @@
 <meta name="theme-color" content="#0e110f">
 <title>Ritmo Paipa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@600;700&display=swap">
 <style>
-/* Instrumento de una columna: arriba el veredicto grande (adelantado/atrasado), debajo ritmo y control. */
+/* Dos cosas: arriba el cronómetro de la etapa, abajo el roadbook. */
 :root{
-  --bg:#0e110f; --panel:#171b18; --ink:#f2f4f0; --muted:#9aa39c; --line:#2a302b;
-  --ok:#2fd16b; --warn:#ffc21a; --bad:#ff4d3d; --accent:#ffc21a; --accent-ink:#111;
+  --bg:#0e110f; --panel:#171b18; --ink:#f2f4f0; --muted:#9aa39c; --line:#2f3630;
+  --ok:#2fd16b; --warn:#ffc21a; --bad:#ff4d3d; --accent:#ffc21a;
   --f-num:"Barlow Condensed","Arial Narrow",Arial,sans-serif; --f-body:"Barlow",system-ui,sans-serif;
   color-scheme:dark;
 }
-:root[data-theme="light"]{--bg:#ffffff;--panel:#f1f3ef;--ink:#0b0d0c;--muted:#4c534e;--line:#cfd4ce;--ok:#0a8a3a;--warn:#a86a00;--bad:#c4200f;--accent:#0b5cad;--accent-ink:#fff;color-scheme:light}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink)}
-body{font-family:var(--f-body);font-size:16px;line-height:1.4;padding:max(12px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
-.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.top h1{font-family:var(--f-num);font-size:22px;text-transform:uppercase;letter-spacing:.04em;margin:0}
-.reloj{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:30px;font-weight:600}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
-.lbl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0}
-.veredicto{border-radius:12px;padding:14px;text-align:center;border:3px solid var(--line);transition:border-color .3s}
-.veredicto .seg{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(84px,30vw,150px);line-height:.9;margin:0}
-.veredicto .txt{font-family:var(--f-num);font-weight:700;font-size:clamp(28px,9vw,44px);text-transform:uppercase;margin:4px 0 0;letter-spacing:.02em}
-.veredicto .acc{font-family:var(--f-num);font-weight:600;font-size:clamp(22px,7vw,32px);margin:2px 0 0}
-.v-ok{border-color:var(--ok)} .v-ok .seg,.v-ok .txt{color:var(--ok)}
-.v-warn{border-color:var(--warn)} .v-warn .seg,.v-warn .txt{color:var(--warn)}
-.v-bad{border-color:var(--bad)} .v-bad .seg,.v-bad .txt{color:var(--bad)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.dato b{display:block;font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:34px;font-weight:600;line-height:1.05}
-.dato small{color:var(--muted);font-size:14px}
-.control b{font-size:44px}
-button{font:inherit;font-weight:600;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:12px 14px;min-height:52px;cursor:pointer}
-button.ya{font-size:22px;font-weight:800;min-height:72px;width:100%;letter-spacing:.02em}
-button.prim{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.acciones{display:flex;gap:8px;flex-wrap:wrap}
-.acciones button{flex:1 1 140px}
-label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted);flex:1 1 140px}
-input,select{font-family:var(--f-num);font-size:24px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
-.estado{font-size:14px;color:var(--muted);margin:0}
-.estado b{color:var(--ink)}
-.msg{color:var(--warn);font-weight:600;margin:0}
-details summary{cursor:pointer;font-weight:600}
-.tabla{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:15px}
-th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
-th{font-size:12px;text-transform:uppercase;color:var(--muted)}
-tr.ctl td{color:var(--accent);font-weight:600}
-
-/* ---- Modo roadbook: franja de ritmo arriba (o a la izquierda en horizontal) y casillas debajo ---- */
-#rbVista{display:none}
-body.modo-rb{padding:0}
-body.modo-rb .wrap{display:none}
-body.modo-rb #rbVista{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh;
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--f-body)}
+body{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh;
   padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));gap:6px}
-.rbBanda{border:3px solid var(--line);border-radius:10px;padding:6px 10px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 10px;background:var(--panel)}
-.rbSeg{white-space:nowrap;font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(46px,15vw,72px);line-height:.9}
-.rbTxt{font-family:var(--f-num);font-weight:700;text-transform:uppercase;line-height:1.05}
-.rbTxt b{display:block;font-size:clamp(20px,6vw,28px)} .rbTxt span{font-size:clamp(17px,5vw,22px);font-weight:600}
-.rbKm{text-align:right;font-family:var(--f-num);line-height:1}
-.rbKm b{display:block;font-variant-numeric:tabular-nums;font-size:clamp(34px,11vw,52px);font-weight:700}
-.rbKm small{font-size:13px;color:var(--muted);font-family:var(--f-body)}
-.rbFila{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;font-family:var(--f-num);font-size:clamp(17px,5vw,22px);font-weight:600;border-top:1px solid var(--line);padding-top:4px;flex-wrap:wrap}
-.rbFila b{font-variant-numeric:tabular-nums}
-.rbDist{flex-basis:100%;font-size:clamp(22px,6.5vw,30px);color:var(--accent)}
-.rbBanda.v-ok{border-color:var(--ok)} .rbBanda.v-ok .rbSeg,.rbBanda.v-ok .rbTxt b{color:var(--ok)}
-.rbBanda.v-warn{border-color:var(--warn)} .rbBanda.v-warn .rbSeg,.rbBanda.v-warn .rbTxt b{color:var(--warn)}
-.rbBanda.v-bad{border-color:var(--bad)} .rbBanda.v-bad .rbSeg,.rbBanda.v-bad .rbTxt b{color:var(--bad)}
-.rbLista{overflow-y:auto;background:#fff;border-radius:10px;-webkit-overflow-scrolling:touch;position:relative}
-.rbLista img{display:block;width:100%;height:auto;border-bottom:2px solid #bbb}
-.rbLista img.act{outline:5px solid var(--accent);outline-offset:-5px}
-.rbLista .rbFin{color:#555;text-align:center;padding:40px 10px 60vh;font:600 18px var(--f-body);margin:0}
-.rbBotones{display:grid;grid-template-columns:1fr 1fr 2fr 1fr;gap:6px}
-.rbBotones button{min-height:60px;font-size:26px;padding:6px}
-.rbBotones #rbAbajo{font-size:30px}
-.rbBotones #rbMas{font-size:16px}
-.rbParcial{font-family:var(--f-num);font-size:16px;color:var(--muted)}
+button,select,input{font:inherit;color:inherit}
+button{border-radius:10px;border:1px solid var(--line);background:transparent;padding:8px 12px;min-height:48px;font-weight:700;cursor:pointer}
+
+/* ---- Cronómetro ---- */
+#crono{background:var(--panel);border:3px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+#crono.corre{border-color:var(--accent)} #crono.ok{border-color:var(--ok)} #crono.warn{border-color:var(--warn)} #crono.bad{border-color:var(--bad)}
+.f1{display:flex;gap:8px;align-items:center}
+#etapa{flex:1;min-width:0;font-family:var(--f-num);font-weight:700;font-size:20px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+#hora{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:20px;font-weight:600;text-align:right;line-height:1;white-space:nowrap}
+#hora small{display:block;font:600 10px var(--f-body);color:var(--muted)}
+.f2{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+#tCorre{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(52px,16vw,80px);line-height:.85}
+.meta{text-align:right;font-family:var(--f-num);line-height:1}
+.meta small,.f3 small{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.meta b{display:block;font-size:clamp(30px,9.5vw,44px);color:var(--accent);font-variant-numeric:tabular-nums}
+.f3{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-num);font-variant-numeric:tabular-nums;border-top:1px solid var(--line);padding-top:4px}
+.f3 b{display:block;font-size:clamp(22px,6.6vw,32px);line-height:1}
+.f3>div:nth-child(2){text-align:center}
+.f3 .r{text-align:right}
+#res{font-family:var(--f-num);font-size:clamp(20px,6vw,28px);font-weight:700;text-align:center;margin:0}
+#res:empty{display:none}
+#res.ok{color:var(--ok)} #res.warn{color:var(--warn)} #res.bad{color:var(--bad)}
+.f4{display:flex;gap:6px}
+#btnAccion{flex:1;min-height:52px;font-family:var(--f-num);font-size:26px;letter-spacing:.02em;background:var(--accent);color:#111;border-color:var(--accent)}
+#btnAccion.armado{background:var(--bad);border-color:var(--bad);color:#fff}
+#btnAjustes{width:52px;font-size:22px}
+#ajustes{display:none;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:6px;font-size:14px;color:var(--muted)}
+#ajustes.ver{display:flex}
+#ajustes .fila{display:flex;gap:6px;align-items:center}
+#ajustes input{flex:1;font-family:var(--f-num);font-size:22px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px;color:var(--ink)}
+#ajustes button{flex:1;font-size:14px}
+
+/* ---- Roadbook ---- */
+#lista{overflow-y:auto;background:#fff;border-radius:10px;-webkit-overflow-scrolling:touch;position:relative}
+.cas{display:grid;grid-template-columns:clamp(104px,31vw,150px) clamp(78px,24vw,120px) 1fr;border-bottom:3px solid #d0d0d0;border-left:14px solid #12a63c;color:#111;background:#fff;min-height:96px;cursor:pointer}
+.cas.c-R{border-left-color:#e01e12} .cas.c-P{border-left:20px solid #7b2cbf}
+.cPar{display:flex;flex-direction:column;justify-content:space-between;padding:4px 6px;background:#ecf8ef;font-family:var(--f-num)}
+.c-R .cPar{background:#ffecea} .c-P .cPar{background:#f1e6fb}
+.cPar small{font:700 11px var(--f-body);letter-spacing:.06em;color:#555} .c-P .cPar small{color:#7b2cbf}
+.cPar b{font-size:clamp(40px,12.5vw,60px);font-weight:700;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.cPar span{font-size:clamp(15px,4.4vw,19px);font-weight:600;color:#333;font-variant-numeric:tabular-nums}
+.cIco{width:100%;height:100%;max-height:120px;object-fit:contain;padding:4px;border-right:1px solid #ddd;background:#fff;display:block}
+.cTxt{padding:6px 8px;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.cTxt b{font-family:var(--f-num);font-size:clamp(22px,6.6vw,30px);line-height:1.02;text-transform:uppercase}
+.c-R .cTxt b{color:#d0150a} .c-P .cTxt b,.c-P .cTxt span{color:#7b2cbf}
+.cTxt span{font-size:clamp(14px,4vw,17px);line-height:1.2} .c-P .cTxt span{font-weight:700}
+.cas.act{outline:5px solid #f0a800;outline-offset:-5px}
+.cOrig{grid-column:1/-1;width:100%;display:block;border-top:1px solid #ddd}
+.cFoto{grid-column:1/-1;min-height:0;padding:3px;font-size:12px;font-weight:600;color:#666;border:0;border-top:1px dashed #ccc;border-radius:0;background:#fafafa}
+.fin{color:#333;text-align:center;padding:30px 10px 55vh;font:700 18px var(--f-body)}
+
+/* ---- Botones de casilla ---- */
+#pie{display:grid;grid-template-columns:1fr 2fr;gap:6px}
+#pie button{min-height:62px;font-size:30px}
+#bAbajo{background:var(--accent);color:#111;border-color:var(--accent)}
+
 @media (orientation:landscape){
-  body.modo-rb #rbVista{grid-template-columns:minmax(260px,38%) 1fr;grid-template-rows:1fr auto}
-  .rbBanda{grid-row:1/3;grid-template-columns:1fr;align-content:start;text-align:center}
-  .rbKm{text-align:center} .rbFila{flex-direction:column;align-items:center}
-  .rbLista{grid-column:2} .rbBotones{grid-column:2}
+  body{grid-template-columns:minmax(280px,40%) 1fr;grid-template-rows:1fr auto}
+  #crono{grid-row:1/3;overflow-y:auto} #lista{grid-column:2} #pie{grid-column:2}
 }
-ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
-[hidden]{display:none!important}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top"><h1>Ritmo Paipa</h1><div class="reloj" id="reloj">--:--:--</div></div>
-
-  <section class="veredicto" id="ver">
-    <p class="lbl" id="verTitulo">Sin tramo en curso</p>
-    <p class="seg" id="verSeg">--</p>
-    <p class="txt" id="verTxt">Elige tramo</p>
-    <p class="acc" id="verAcc">&nbsp;</p>
-  </section>
-
-  <section class="panel">
-    <div class="grid">
-      <div class="dato"><p class="lbl">Ve a</p><b id="velSug">--</b><small id="velSugNota">&nbsp;</small></div>
-      <div class="dato"><p class="lbl">Vas a</p><b id="velAct">--</b><small id="gpsPrec">GPS apagado</small></div>
-      <div class="dato"><p class="lbl">Km recorridos (GPS)</p><b id="kmAct">0,00</b><small id="kmIdeal">&nbsp;</small></div>
-      <div class="dato"><p class="lbl">Velocidad del tramo</p><b id="velIdeal">--</b><small>media impuesta</small></div>
-    </div>
-  </section>
-
-  <section class="panel control">
-    <p class="lbl" id="ctlNombre">Próximo control</p>
-    <div class="grid">
-      <div class="dato"><p class="lbl">Llegar a las</p><b id="ctlHora">--:--:--</b></div>
-      <div class="dato"><p class="lbl">Faltan</p><b id="ctlFalta">--</b><small id="ctlKm">&nbsp;</small></div>
-    </div>
-  </section>
-
-  <section class="panel" id="enCurso" hidden>
-    <p class="msg" id="msgCurso" hidden></p>
-    <details>
-    <summary>Ajuste opcional del km (no hace falta tocarlo)</summary>
-    <div class="acciones">
-      <label for="corr">Si el Road Book marca otro km, escríbelo aquí<input id="corr" type="number" inputmode="decimal" step="0.01" placeholder="12.42"></label>
-      <button id="btnCorr">Corregir km</button>
-    </div>
-    <div class="acciones">
-      <button id="btnMenos">−0,05 km</button><button id="btnMas">+0,05 km</button>
-    </div>
-    </details>
-    <div class="acciones"><button class="prim ya" id="btnSigYa">SALGO YA · siguiente tramo</button></div>
-    <div class="acciones"><button id="btnVerRb">Ver roadbook</button></div>
-    <div class="acciones"><button id="btnParar">Terminar tramo</button></div>
-  </section>
-
-  <section class="panel" id="config">
-    <div id="retomarBox" hidden>
-      <p class="msg" id="retomarTxt"></p>
-      <div class="acciones"><button class="prim ya" id="btnRetomar">RETOMAR TRAMO</button></div>
-    </div>
-    <div class="acciones">
-      <label for="tramo">Tramo<select id="tramo"></select></label>
-      <label for="salida">Hora de salida<input id="salida" type="time" step="1"></label>
-    </div>
-    <div class="acciones">
-      <label for="kmIni">Km donde vas (opcional, para retomar a mitad de tramo)<input id="kmIni" type="number" inputmode="decimal" step="0.01" placeholder="0,00"></label>
-    </div>
-    <p class="msg" id="msg" hidden></p>
-    <div class="acciones">
-      <button class="prim ya" id="btnYa">SALGO YA</button>
-    </div>
-    <p class="estado">Tócalo en el momento en que te dan la salida. Si te dan una hora fija, escríbela arriba y usa «Iniciar a la hora escrita».</p>
-    <div class="acciones">
-      <button id="btnIniciar">Iniciar a la hora escrita</button>
-      <button id="btnSimular">Simular (prueba en casa)</button>
-    </div>
-    <div class="acciones"><button id="btnTema">Pantalla clara (sol)</button></div>
-    <p class="estado" id="estado">Cargando tramos…</p>
-    <p class="estado" id="syncEst">Hora exacta: sin sincronizar</p>
-    <div class="acciones"><button id="btnSync">Sincronizar hora exacta</button></div>
-  </section>
-
-  <details class="panel">
-    <summary>Tabla de horas de paso</summary>
-    <div class="tabla" id="tabla"></div>
-  </details>
-
-  <details class="panel">
-    <summary>Cómo usarla</summary>
-    <ol>
-      <li>Ábrela en Safari con señal, en el hotel. Queda guardada en el celular y después funciona sin señal.</li>
-      <li>Elige el tramo y toca <b>SALGO YA</b> en el momento en que te dan la salida. Si te dan una hora fija, escríbela y usa «Iniciar a la hora escrita». Acepta el permiso de ubicación.</li>
-      <li>En el control, cuando te den la salida del siguiente tramo, toca dos veces <b>SALGO YA · Tramo N</b>: termina el actual y arranca el siguiente con la hora del primer toque.</li>
-      <li>La cuenta de km arranca sola en tu hora de salida. Antes de eso no cuenta.</li>
-      <li><b>+8 s ADELANTADO</b> = llegaste antes de lo ideal: baja ritmo. <b>−5 s ATRASADO</b> = sube ritmo. Verde: ±3 s. Amarillo: hasta 15 s. Rojo: más.</li>
-      <li>«Ve a» es la velocidad que te deja en el próximo control justo a tiempo.</li>
-      <li>Los km los mide el GPS del celular solo: no tienes que mirar el odómetro. Si en algún punto el Road Book marca un km distinto, puedes cuadrarlo en «Ajuste opcional del km».</li>
-      <li>La hora se sincroniza sola con la hora exacta cuando hay señal (la que usa el organizador para el QR). Hazlo en el hotel antes de salir; en modo avión usa esa medida.</li>
-      <li><b>Roadbook:</b> al arrancar el tramo aparece el roadbook con el ritmo arriba. <b>▼</b> pasa a la siguiente casilla y pone el parcial en cero; <b>▲</b> vuelve; <b>0</b> pone el parcial en cero sin pasar casilla. <b>Más</b> abre la pantalla completa (SALGO YA, ajuste de km) y desde ahí «Ver roadbook» regresa. Una botonera Bluetooth que mande flechas o espacio también pasa casillas.</li>
-      <li><b>Si se daña algo a mitad de tramo</b> (se cierra la app, se reinicia el celular): al abrirla aparece <b>RETOMAR TRAMO</b> con la hora de salida y el km donde ibas. Después corrige el km con la casilla del roadbook. Si no aparece, escribe la hora de salida de ese tramo y el km de la casilla donde estás, y toca «Iniciar a la hora escrita».</li>
-      <li>La pantalla debe quedar encendida: si se bloquea, el GPS se pausa. Pon el bloqueo automático en «Nunca» el día del rally.</li>
-    </ol>
-  </details>
-</div>
-
-
-<section id="rbVista" aria-label="Roadbook con ritmo">
-  <div class="rbBanda" id="rbBanda">
-    <div class="rbSeg" id="rbSeg">--</div>
-    <div class="rbTxt"><b id="rbTxt">&nbsp;</b><span id="rbAcc">&nbsp;</span></div>
-    <div class="rbKm"><b id="rbKm">0,00</b><small>km GPS</small><div class="rbParcial" id="rbParcial">parcial 0,00</div></div>
-    <div class="rbFila"><span>Ve a <b id="rbVe">--</b></span><span id="rbCtl">--</span><span class="rbDist" id="rbDist">--</span></div>
+<section id="crono" aria-label="Cronómetro de la etapa">
+  <div class="f1">
+    <select id="etapa" aria-label="Etapa"></select>
+    <div id="hora" role="button" title="Sincronizar hora">--:--:--<small id="sync">hora sin sincronizar</small></div>
   </div>
-  <div class="rbLista" id="rbLista"></div>
-  <div class="rbBotones">
-    <button id="rbArriba" aria-label="Casilla anterior">▲</button>
-    <button id="rbCero" aria-label="Parcial a cero">0</button>
-    <button class="prim" id="rbAbajo" aria-label="Casilla siguiente">▼</button>
-    <button id="rbMas">Más</button>
+  <div class="f2">
+    <div id="tCorre">0:00</div>
+    <div class="meta"><small>Debe marcar</small><b id="tMeta">--:--</b></div>
+  </div>
+  <div class="f3">
+    <div><small>Llegar a las</small><b id="hLlegar">--:--:--</b></div>
+    <div><small>Km ideal ya</small><b id="kmIdeal">--</b></div>
+    <div class="r"><small id="lFalta">Faltan</small><b id="tFalta">--:--</b></div>
+  </div>
+  <p id="res"></p>
+  <div class="f4">
+    <button id="btnAccion">SALGO YA</button>
+    <button id="btnAjustes" aria-label="Ajustes">⋯</button>
+  </div>
+  <div id="ajustes">
+    <div class="fila"><label for="inSalida" style="flex:0 0 auto">Salida</label><input id="inSalida" type="time" step="1"><button id="bSalida">Usar esta hora</button></div>
+    <div class="fila"><label for="inLleg" style="flex:0 0 auto">Llegada</label><input id="inLleg" type="time" step="1"><button id="bLleg">Usar esta hora</button></div>
+    <div class="fila"><button id="bBorrar">Borrar etapa</button><button id="bSync">Sincronizar hora</button></div>
   </div>
 </section>
+
+<main id="lista" aria-label="Roadbook"></main>
+
+<nav id="pie">
+  <button id="bArriba" aria-label="Casilla anterior">▲</button>
+  <button id="bAbajo" aria-label="Casilla siguiente">▼</button>
+</nav>
+
 <script>
 const $=s=>document.querySelector(s);
 const leer=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const guardar=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const dos=n=>String(n).padStart(2,"0");
 const fmtHora=d=>`${dos(d.getHours())}:${dos(d.getMinutes())}:${dos(d.getSeconds())}`;
-const fmtKm=d=>d.toFixed(2).replace(".",",");
-const fmtDist=d=>{const m=Math.max(0,Math.round(d*1000));return m<1000?`${m} m`:`${Math.floor(m/1000)} km ${String(m%1000).padStart(3,"0")} m`};
-const fmtDur=s=>{const neg=s<0;s=Math.abs(Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (neg?"-":"")+(h?`${h}:${dos(m)}`:`${m}`)+":"+dos(s%60)};
+const fmtKm=x=>x.toFixed(2).replace(".",",");
+const fmtDur=s=>{s=Math.abs(Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?`${h}:${dos(m)}`:`${m}`)+":"+dos(s%60)};
+const fmtDif=d=>{const a=Math.abs(d);return d===0?"justo a tiempo":(d>0?"+":"−")+(a<60?a+" s":fmtDur(a))+(d>0?" tarde":" antes")};
 
-function tiempoEnKm(sec,d){let t=0;for(let i=0;i<sec.length;i++){const ini=sec[i].desde_km,fin=i+1<sec.length?sec[i+1].desde_km:Infinity;if(d<=ini)break;t+=(Math.min(d,fin)-ini)/sec[i].vel*3600}return t}
-function velEnKm(sec,d){let v=sec[0].vel;for(const s of sec){if(d>=s.desde_km)v=s.vel}return v}
-function haversine(a,b){const R=6371000,r=Math.PI/180,dLa=(b.lat-a.lat)*r,dLo=(b.lon-a.lon)*r;const x=Math.sin(dLa/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dLo/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
-
-let PLAN=null, T=null, salida=null, run=null, wake=null;
-// run = {gpsM, ultimo, offsetKm, sim, velGps, prec, watch, hist:[]}
-
-function tramoSel(){return PLAN.tramos.find(t=>t.id===$("#tramo").value)}
-function salidaSel(){const v=$("#salida").value;if(!v)return null;const[h,m,s]=v.split(":").map(Number);const d=new Date(ahoraMs());d.setHours(h,m,s||0,0);return d}
-
-function cargarPlan(p){
-  PLAN=p; const sel=$("#tramo"); sel.innerHTML="";
-  p.tramos.forEach(t=>{const o=document.createElement("option");o.value=t.id;o.textContent=t.nombre;sel.appendChild(o)});
-  const g=leer("tramo"); if(g&&p.tramos.some(t=>t.id===g)) sel.value=g;
-  cambioTramo(); precargarRoadbooks(p); revisarRetomar();
-  $("#estado").innerHTML=`<b>${p.tramos.length}</b> tramo(s) cargado(s). Guardado en el celular.`;
-}
-function cambioTramo(){guardar("tramo",$("#tramo").value);$("#salida").value=leer("salida-"+$("#tramo").value)||"";tabla()}
-$("#tramo").addEventListener("change",cambioTramo);
-$("#salida").addEventListener("change",()=>{guardar("salida-"+$("#tramo").value,$("#salida").value);tabla()});
-
-function tabla(){
-  const t=tramoSel(); if(!t) return; const sal=salidaSel(); const pts=new Map();
-  for(let k=0;k<=t.fin_km+1e-9;k+=1) pts.set(+k.toFixed(2),"");
-  t.secciones.slice(1).forEach(s=>pts.set(s.desde_km,`Cambio a ${s.vel} km/h`));
-  (t.controles||[]).forEach(c=>pts.set(c.km,c.nombre||"Control"));
-  pts.set(t.fin_km,"Fin del tramo");
-  const filas=[...pts.keys()].sort((a,b)=>a-b).map(k=>{const s=tiempoEnKm(t.secciones,k),n=pts.get(k);
-    return `<tr class="${/control/i.test(n)?"ctl":""}"><td>${fmtKm(k)}</td><td>+${fmtDur(s)}</td><td>${sal?fmtHora(new Date(sal.getTime()+s*1000)):"—"}</td><td>${n}</td></tr>`});
-  $("#tabla").innerHTML=`<table><thead><tr><th>Km</th><th>Desde salida</th><th>Hora</th><th>Nota</th></tr></thead><tbody>${filas.join("")}</tbody></table>`;
-}
-
-function aviso(t){$("#msg").textContent=t;$("#msg").hidden=!t}
-
-async function iniciar(sim,ya,ret){
-  aviso(""); T=tramoSel(); salida=ya?new Date(typeof ya==="number"?ya:ahoraMs()):sim?new Date(ahoraMs()+10000):salidaSel();
-  if(!salida){aviso("Escribe primero tu hora de salida.");return}
-  const kmIni=ret?ret.km:(!sim&&!ya?parseFloat(String($("#kmIni").value).replace(",","."))||0:0);
-  run={gpsM:0,ultimo:null,offsetKm:kmIni,sim,velGps:null,prec:null,watch:null,hist:[],simKm:0};
-  $("#kmIni").value="";
-  if(!sim){ guardar("salida-"+T.id,fmtHora(salida)); $("#salida").value=fmtHora(salida) }   // queda escrita para retomar
-  if(sim){ $("#gpsPrec").textContent="Simulación (sin GPS)"; }
-  else{
-    if(!("geolocation" in navigator)){aviso("Este navegador no tiene GPS.");return}
-    run.watch=navigator.geolocation.watchPosition(posGps,errGps,{enableHighAccuracy:true,maximumAge:0,timeout:15000});
-    $("#gpsPrec").textContent="Buscando GPS…";
-  }
-  try{wake=await navigator.wakeLock?.request("screen")}catch(e){}
-  $("#config").hidden=true; $("#enCurso").hidden=false; pintarSig(); rbParcialKm=ret?ret.km-(ret.parcial||0):kmIni; guardar("rb-"+T.id,String(ret?ret.rbI||0:0)); $("#rbLista").dataset.tramo="";
-  $("#retomarBox").hidden=true; avisoCurso(kmIni>0?`Arrancó en el km ${fmtKm(kmIni)}. Si no cuadra con la casilla del roadbook, corrígelo en «Ajuste opcional del km».`:"");
-  abrirRb();
-}
-function errGps(e){ $("#gpsPrec").textContent = e.code===1 ? "Sin permiso de ubicación: actívalo en Ajustes > Safari" : "GPS sin señal"; }
-function posGps(p){
-  const c={lat:p.coords.latitude,lon:p.coords.longitude}; run.prec=p.coords.accuracy;
-  run.velGps = p.coords.speed!=null && p.coords.speed>=0 ? p.coords.speed*3.6 : run.velGps;
-  $("#gpsPrec").textContent=`GPS ±${Math.round(run.prec)} m`;
-  if(ahoraMs()<salida.getTime()){run.ultimo=c;return}           // antes de la salida no cuenta
-  if(run.prec>30) return;                                         // punto malo
-  if(!run.ultimo){run.ultimo=c;return}
-  const d=haversine(run.ultimo,c);
-  if(d>=Math.max(4,run.prec*0.4)){ run.gpsM+=d; run.ultimo=c }
-}
-function kmActual(){ return (run.sim?run.simKm:run.gpsM/1000)+run.offsetKm }
-
-
-function idxSig(){ const i=PLAN.tramos.findIndex(t=>t.id===$("#tramo").value); return i>=0&&i+1<PLAN.tramos.length?i+1:-1 }
-function pintarSig(){ const i=idxSig(); const b=$("#btnSigYa"); b.hidden=i<0; if(i>=0) b.textContent="SALGO YA · "+PLAN.tramos[i].nombre }
-function detener(){ if(run?.watch!=null) navigator.geolocation.clearWatch(run.watch); try{wake?.release()}catch(e){} }
-$("#btnYa").addEventListener("click",()=>iniciar(false,true));
-// doble toque para no cerrar el tramo por accidente; la salida queda con la hora del PRIMER toque
-let primerToque=0, tArmado=null;
-$("#btnSigYa").addEventListener("click",()=>{ const i=idxSig(); if(i<0) return; const b=$("#btnSigYa");
-  if(!primerToque || ahoraMs()-primerToque>3000){ primerToque=ahoraMs(); b.textContent="TOCA OTRA VEZ PARA SALIR";
-    clearTimeout(tArmado); tArmado=setTimeout(()=>{primerToque=0; pintarSig()},3000); return }
-  clearTimeout(tArmado); const t=primerToque; primerToque=0; const sim=run?.sim; detener(); run=null;
-  $("#tramo").value=PLAN.tramos[i].id; cambioTramo(); iniciar(!!sim,t) });
-$("#btnIniciar").addEventListener("click",()=>iniciar(false));
-$("#btnSimular").addEventListener("click",()=>iniciar(true));
-$("#btnParar").addEventListener("click",()=>{ guardar("enCurso",""); avisoCurso(""); if(run?.watch!=null) navigator.geolocation.clearWatch(run.watch); run=null; T=null; try{wake?.release()}catch(e){}
-  cerrarRb(); $("#config").hidden=false; $("#enCurso").hidden=true; pintarVacio(); const i=idxSig(); if(i>=0){$("#tramo").value=PLAN.tramos[i].id; cambioTramo()} });
-$("#btnCorr").addEventListener("click",()=>{ const v=parseFloat(String($("#corr").value).replace(",",".")); if(!run||isNaN(v))return; run.offsetKm+=v-kmActual(); $("#corr").value=""; $("#corr").blur() });
-$("#btnMas").addEventListener("click",()=>{ if(run) run.offsetKm+=0.05 });
-$("#btnMenos").addEventListener("click",()=>{ if(run) run.offsetKm-=0.05 });
-function aplicarTema(){ const c=leer("tema")==="light"; document.documentElement.dataset.theme=c?"light":"dark"; $("#btnTema").textContent=c?"Pantalla oscura":"Pantalla clara (sol)" }
-$("#btnTema").addEventListener("click",()=>{ guardar("tema",leer("tema")==="light"?"dark":"light"); aplicarTema() });
-aplicarTema();
-
-function pintarVacio(){ $("#ver").className="veredicto"; $("#verTitulo").textContent="Sin tramo en curso"; $("#verSeg").textContent="--"; $("#verTxt").textContent="Elige tramo"; $("#verAcc").innerHTML="&nbsp;" }
-
-function tic(){
-  const ahora=new Date(ahoraMs()); $("#reloj").textContent=fmtHora(ahora);
-  if(!run||!T) return;
-  const r=(ahora-salida)/1000;
-  // simulación: avanza a la velocidad ideal con un 8 % de más para ver el adelanto
-  if(run.sim && r>0){ const v=velEnKm(T.secciones,run.simKm)*1.08; run.simKm=Math.min(T.fin_km, run.simKm+v/3600*0.25); run.velGps=v }
-  const km=Math.max(0,kmActual()); const sec=T.secciones;
-  $("#verTitulo").textContent=`${T.nombre} · salida ${fmtHora(salida)}`;
-  $("#kmAct").textContent=fmtKm(km);
-  $("#velAct").textContent=run.velGps!=null?Math.round(run.velGps)+" km/h":"--";
-  $("#velIdeal").textContent=velEnKm(sec,Math.min(km,T.fin_km))+" km/h";
-
-  // próximo control (o fin)
-  const pts=[...(T.controles||[]).map(c=>({km:c.km,n:c.nombre||"Control"})),{km:T.fin_km,n:"Fin del tramo"}].sort((a,b)=>a.km-b.km);
-  const prox=pts.find(p=>p.km>km+0.02)||pts[pts.length-1];
-  const tProx=tiempoEnKm(sec,prox.km);
-  $("#ctlNombre").textContent=prox.n;
-  $("#ctlHora").textContent=fmtHora(new Date(salida.getTime()+tProx*1000));
-  $("#ctlFalta").textContent=fmtDur(tProx-r);
-  $("#ctlKm").textContent=`faltan ${fmtDist(prox.km-km)}`; $("#ctlKm").dataset.d=fmtDist(prox.km-km);
-
-  if(r<0){
-    $("#ver").className="veredicto"; $("#verSeg").textContent=fmtDur(r).replace("-","");
-    $("#verTxt").textContent="Para la salida"; $("#verAcc").textContent="Quieto en la línea";
-    $("#velSug").textContent=velEnKm(sec,0)+" km/h"; $("#velSugNota").textContent="al salir"; $("#kmIdeal").textContent="ideal 0,00"; return;
-  }
-  const tIdeal=tiempoEnKm(sec,Math.min(km,T.fin_km));
-  let dif=tIdeal-r;                         // + adelantado, − atrasado
-  run.hist.push(dif); if(run.hist.length>12) run.hist.shift();
-  dif=run.hist.reduce((a,b)=>a+b,0)/run.hist.length;   // promedio de 3 s para quitar ruido del GPS
-  // km ideal ahora
-  let lo=0,hi=T.fin_km; for(let i=0;i<30;i++){const m=(lo+hi)/2; if(tiempoEnKm(sec,m)<r) lo=m; else hi=m}
-  $("#kmIdeal").textContent="ideal "+fmtKm(lo);
-
-  const a=Math.abs(dif), s=Math.round(dif);
-  $("#ver").className="veredicto "+(a<=3?"v-ok":a<=15?"v-warn":"v-bad");
-  $("#verSeg").textContent=(s>0?"+":s<0?"−":"")+Math.abs(s)+" s";
-  $("#verTxt").textContent=a<=3?"En tiempo":dif>0?"Adelantado":"Atrasado";
-  $("#verAcc").textContent=a<=3?"Mantén el ritmo":dif>0?"Baja ritmo":"Sube ritmo";
-
-  const falta=tProx-r, dist=prox.km-km;
-  if(falta>5&&dist>0){ const v=dist/falta*3600; $("#velSug").textContent=Math.round(v)+" km/h"; $("#velSugNota").textContent="para llegar justo"; }
-  else { $("#velSug").textContent=velEnKm(sec,km)+" km/h"; $("#velSugNota").textContent="velocidad del tramo"; }
-}
-
-// ---- Hora exacta: el QR lo escanea el organizador, así que la referencia es la hora global.
-// Con señal se mide cuánto se desvía el reloj del celular y se corrige; sin señal se usa la última medida.
+// ---- Hora exacta (la misma referencia global que usa el organizador) ----
 let OFF=parseFloat(leer("off"))||0;
-function ahoraMs(){ return Date.now()+OFF }
-async function muestraTimeapi(){
+const ahoraMs=()=>Date.now()+OFF;
+async function muestra(){
   const t0=Date.now(); const r=await fetch("https://timeapi.io/api/time/current/zone?timeZone=UTC",{cache:"no-store"}); const j=await r.json(); const t1=Date.now();
-  const srv=Date.parse(j.dateTime.slice(0,23)+"Z"); if(isNaN(srv)) throw 0;
-  return {off:srv-(t0+t1)/2, rtt:t1-t0, fino:true};
+  const srv=Date.parse(j.dateTime.slice(0,23)+"Z"); if(isNaN(srv)) throw 0; return {off:srv-(t0+t1)/2,rtt:t1-t0};
 }
-async function muestraCloudflare(){
-  const t0=Date.now(); const r=await fetch("https://www.cloudflare.com/cdn-cgi/trace",{cache:"no-store"}); const x=await r.text(); const t1=Date.now();
-  const ts=parseFloat((x.match(/ts=([\d.]+)/)||[])[1]); if(!ts) throw 0;
-  return {off:ts*1000+500-(t0+t1)/2, rtt:t1-t0+1000, fino:false};
+async function muestraCf(){
+  const t0=Date.now(); const x=await (await fetch("https://www.cloudflare.com/cdn-cgi/trace",{cache:"no-store"})).text(); const t1=Date.now();
+  const ts=parseFloat((x.match(/ts=([\d.]+)/)||[])[1]); if(!ts) throw 0; return {off:ts*1000+500-(t0+t1)/2,rtt:t1-t0+1000};
 }
-function pintarSync(){
-  const cuando=leer("offCuando"); const el=$("#syncEst");
-  if(!cuando){ el.textContent="Hora exacta: sin sincronizar (ábrela con señal)"; return }
-  const seg=Math.abs(OFF/1000).toFixed(1).replace(".",",");
-  const lado=Math.abs(OFF)<100?"tu celular está en hora":(OFF>0?`tu celular va ${seg} s atrasado`:`tu celular va ${seg} s adelantado`);
-  const prec=leer("offPrec")||"";
-  el.innerHTML=`Hora exacta sincronizada ${fmtHora(new Date(+cuando))} ${prec} · ${lado} (ya corregido)`+
-    (Math.abs(OFF)>1500?"<br><b>Prende la hora automática en Ajustes › General › Fecha y hora.</b>":"");
-}
-async function sincronizar(manual){
-  const el=$("#syncEst"); if(manual) el.textContent="Sincronizando hora exacta…";
-  let mejor=null;
-  for(let i=0;i<5;i++){ try{ const m=await muestraTimeapi(); if(!mejor||m.rtt<mejor.rtt) mejor=m }catch(e){} }
-  if(!mejor){ try{ mejor=await muestraCloudflare() }catch(e){} }
-  if(!mejor){ if(manual) el.textContent="Sin señal: uso la última sincronización."; setTimeout(pintarSync,2500); return }
-  OFF=mejor.off; guardar("off",String(OFF)); guardar("offCuando",String(ahoraMs()));
-  guardar("offPrec",`(±${(Math.max(mejor.fino?mejor.rtt/2:500,20)/1000).toFixed(2).replace(".",",")} s)`);
+async function sincronizar(){
+  let m=null; for(let i=0;i<5;i++){ try{ const x=await muestra(); if(!m||x.rtt<m.rtt) m=x }catch(e){} }
+  if(!m){ try{ m=await muestraCf() }catch(e){} }
+  if(m){ OFF=m.off; guardar("off",String(OFF)); guardar("offCuando",String(ahoraMs())); guardar("offPrec",(Math.max(m.rtt/2,20)/1000).toFixed(2)) }
   pintarSync();
 }
-$("#btnSync").addEventListener("click",()=>sincronizar(true));
-pintarSync(); sincronizar(false); setInterval(()=>{ if(!run) sincronizar(false) },10*60*1000);
+function pintarSync(){ const c=leer("offCuando"); $("#sync").textContent=c?`hora exacta ✓ ±${(leer("offPrec")||"?").replace(".",",")} s`:"hora sin sincronizar" }
+
+// ---- Plan ----
+let PLAN=null, E=0, rbI=0;
+const T=()=>PLAN.tramos[E];
+const nomCorto=t=>t.nombre.split(" · ").slice(0,2).join(" · ");
+const destino=t=>(t.controles||[]).find(c=>Math.abs(c.km-t.fin_km)<1e-6)?.nombre||"Fin de etapa";
+function horaHoy(v){ if(!v) return null; const[h,m,s]=v.split(":").map(Number); const d=new Date(ahoraMs()); d.setHours(h,m,s||0,0); return d.getTime() }
+const salidaDe=t=>+(leer("sal-"+t.id)||0)||null;
+const llegDe=t=>+(leer("lleg-"+t.id)||0)||null;
+
+function cargar(p){
+  PLAN=p; const sel=$("#etapa");
+  sel.innerHTML=p.tramos.map((t,i)=>`<option value="${i}">Etapa ${i+1} · ${t.nombre.split(" · ")[1]}</option>`).join("");
+  E=Math.min(+(leer("etapa")||0),p.tramos.length-1); sel.value=E;
+  p.tramos.forEach(t=>(t.roadbook?.casillas||[]).forEach(c=>fetch(c.ico).catch(()=>{})));   // quedan guardadas para modo avión
+  pintarLista(); tic();
+}
+$("#etapa").addEventListener("change",e=>{ E=+e.target.value; guardar("etapa",E); desarmar(); pintarLista(); tic() });
+
+// ---- Cronómetro ----
+let armado=0, tArm=null;
+function desarmar(){ armado=0; clearTimeout(tArm); $("#btnAccion").classList.remove("armado") }
+$("#btnAccion").addEventListener("click",()=>{
+  const t=T(), sal=salidaDe(t), ll=llegDe(t);
+  // doble toque para no marcar por accidente: la hora que queda es la del PRIMER toque
+  if(!armado||ahoraMs()-armado>3000){ armado=ahoraMs(); const b=$("#btnAccion"); b.classList.add("armado"); b.textContent="TOCA OTRA VEZ";
+    clearTimeout(tArm); tArm=setTimeout(()=>{desarmar(); tic()},3000); return }
+  const h=armado; desarmar();
+  if(!sal){ guardar("sal-"+t.id,h); guardar("lleg-"+t.id,"") }
+  else if(!ll){ guardar("lleg-"+t.id,h) }
+  else if(E+1<PLAN.tramos.length){ E++; guardar("etapa",E); $("#etapa").value=E; guardar("sal-"+T().id,h); guardar("lleg-"+T().id,""); pintarLista() }
+  pedirPantalla(); tic();
+});
+$("#btnAjustes").addEventListener("click",()=>{ const a=$("#ajustes"); a.classList.toggle("ver");
+  const t=T(); $("#inSalida").value=salidaDe(t)?fmtHora(new Date(salidaDe(t))):""; $("#inLleg").value=llegDe(t)?fmtHora(new Date(llegDe(t))):"" });
+$("#bSalida").addEventListener("click",()=>{ const v=horaHoy($("#inSalida").value); if(v){ guardar("sal-"+T().id,v); tic() } });
+$("#bLleg").addEventListener("click",()=>{ const v=horaHoy($("#inLleg").value); if(v&&salidaDe(T())){ guardar("lleg-"+T().id,v); tic() } });
+$("#bBorrar").addEventListener("click",()=>{ if(confirm(`¿Borrar salida y llegada de la etapa ${E+1}?`)){ guardar("sal-"+T().id,""); guardar("lleg-"+T().id,""); tic() } });
+$("#bSync").addEventListener("click",()=>{ $("#sync").textContent="sincronizando…"; sincronizar() });
+$("#hora").addEventListener("click",()=>{ $("#sync").textContent="sincronizando…"; sincronizar() });
+
+function tic(){
+  const ahora=ahoraMs(); $("#hora").firstChild.nodeValue=fmtHora(new Date(ahora));
+  if(!PLAN) return;
+  const t=T(), meta=t.tiempo_ideal_min*60, sal=salidaDe(t), ll=llegDe(t), C=$("#crono"), b=$("#btnAccion");
+  const ini=t.km_inicio||0, vel=t.secciones[0].vel;
+  $("#tMeta").textContent=fmtDur(meta);
+  if(!sal){
+    C.className=""; $("#tCorre").textContent="0:00"; $("#hLlegar").textContent="--:--:--"; $("#lFalta").textContent="Destino"; $("#tFalta").textContent=destino(t).replace(/^Control /,"");
+    $("#kmIdeal").textContent=fmtKm(ini); $("#res").textContent=""; if(!armado) b.textContent="SALGO YA"; return;
+  }
+  const ideal=sal+meta*1000, fin=ll||ahora, corre=(fin-sal)/1000;
+  $("#tCorre").textContent=corre<0?"−"+fmtDur(corre):fmtDur(corre);
+  $("#hLlegar").textContent=fmtHora(new Date(ideal));
+  $("#kmIdeal").textContent=fmtKm(Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600));
+  if(ll){
+    const d=Math.round((ll-ideal)/1000), a=Math.abs(d), cl=a<=3?"ok":a<=15?"warn":"bad";
+    C.className=cl; $("#res").className=cl; $("#res").textContent=`Llegaste ${fmtHora(new Date(ll))} · ${fmtDif(d)}`;
+    $("#lFalta").textContent="Diferencia"; $("#tFalta").textContent=(d>0?"+":d<0?"−":"")+fmtDur(a);
+    if(!armado) b.textContent=E+1<PLAN.tramos.length?`SALGO YA · ETAPA ${E+2}`:"RALLY TERMINADO";
+    b.disabled=E+1>=PLAN.tramos.length;
+  }else{
+    C.className="corre"; $("#res").textContent=""; b.disabled=false;
+    const f=(ideal-ahora)/1000; $("#lFalta").textContent=f>=0?"Faltan":"Pasado por"; $("#tFalta").textContent=fmtDur(f);
+    if(!armado) b.textContent=`LLEGUÉ · ${destino(t).replace(/^Control /,"").toUpperCase()}`;
+  }
+}
 
 // ---- Roadbook ----
-let rbI=0, rbParcialKm=0;
-function rbDe(t){ return t&&t.roadbook&&t.roadbook.imagenes&&t.roadbook.imagenes.length?t.roadbook:null }
-function precargarRoadbooks(p){ p.tramos.forEach(t=>(rbDe(t)?.imagenes||[]).forEach(u=>fetch(u).catch(()=>{}))) }   // quedan guardadas para modo avión
-function abrirRb(){
-  const rb=rbDe(T); $("#btnVerRb").hidden=!rb; if(!rb){ document.body.classList.remove("modo-rb"); return }
-  const L=$("#rbLista");
-  if(L.dataset.tramo!==T.id){
-    L.innerHTML=rb.imagenes.map((u,i)=>`<img src="${u}" alt="Casilla ${i+1}" data-i="${i}">`).join("")+'<p class="rbFin">Fin del roadbook de este tramo</p>';
-    L.dataset.tramo=T.id; rbI=Math.min(+(leer("rb-"+T.id)||0),rb.imagenes.length-1);
-  }
-  document.body.classList.add("modo-rb"); setTimeout(()=>irCasilla(rbI,false),60);
+function pintarLista(){
+  const t=T(), cs=t.roadbook?.casillas||[], L=$("#lista");
+  L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div><button class="cFoto" data-f="${c.foto}">ver casilla original</button></div>`).join("")
+    +`<div class="fin">Fin de la etapa ${E+1} · ${destino(t)}</div>`;
+  rbI=Math.min(+(leer("rb-"+t.id)||0),cs.length-1); setTimeout(()=>irCasilla(rbI,false),30);
 }
-function cerrarRb(){ document.body.classList.remove("modo-rb") }
 function irCasilla(i,anim=true){
-  const rb=rbDe(T); if(!rb) return; const L=$("#rbLista");
-  if(rb.tipo==="paginas"){ L.scrollBy({top:(i>rbI?1:-1)*L.clientHeight*0.45,behavior:anim?"smooth":"auto"}); return }
-  rbI=Math.max(0,Math.min(i,rb.imagenes.length-1)); guardar("rb-"+T.id,rbI);
-  L.querySelectorAll("img").forEach(im=>im.classList.toggle("act",+im.dataset.i===rbI));
-  const im=L.querySelector(`img[data-i="${rbI}"]`); if(im) L.scrollTo({top:im.offsetTop-Math.round(im.height*0.45),behavior:anim?"smooth":"auto"});
+  const n=T().roadbook.casillas.length; rbI=Math.max(0,Math.min(i,n-1)); guardar("rb-"+T().id,rbI);
+  const L=$("#lista"); L.querySelectorAll(".cas").forEach(c=>c.classList.toggle("act",+c.dataset.i===rbI));
+  const c=L.querySelector(`.cas[data-i="${rbI}"]`); if(c) L.scrollTo({top:c.offsetTop-Math.round(c.offsetHeight*0.3),behavior:anim?"smooth":"auto"});
 }
-function sigCasilla(){ if(!run) return; rbParcialKm=kmActual(); irCasilla(rbI+1) }
-function antCasilla(){ if(!run) return; irCasilla(rbI-1) }
-$("#rbAbajo").addEventListener("click",sigCasilla);
-$("#rbArriba").addEventListener("click",antCasilla);
-$("#rbCero").addEventListener("click",()=>{ if(run) rbParcialKm=kmActual() });
-$("#rbMas").addEventListener("click",cerrarRb);
-$("#btnVerRb").addEventListener("click",abrirRb);
-$("#rbLista").addEventListener("click",e=>{ const i=e.target.dataset?.i; if(i!=null&&rbDe(T)?.tipo!=="paginas") irCasilla(+i) });
-// botonera Bluetooth que funcione como teclado: flechas, Av Pág/Re Pág, espacio o Enter
+$("#bAbajo").addEventListener("click",()=>irCasilla(rbI+1));
+$("#bArriba").addEventListener("click",()=>irCasilla(rbI-1));
+$("#lista").addEventListener("click",e=>{
+  const fb=e.target.closest(".cFoto"); if(fb){ const c=fb.parentElement; let im=c.querySelector(".cOrig");
+    if(im){ im.remove(); fb.textContent="ver casilla original" } else { im=document.createElement("img"); im.className="cOrig"; im.src=fb.dataset.f; c.appendChild(im); fb.textContent="ocultar original" } return }
+  const c=e.target.closest(".cas"); if(c) irCasilla(+c.dataset.i);
+});
+// botonera Bluetooth que funcione como teclado
 document.addEventListener("keydown",e=>{
-  if(!document.body.classList.contains("modo-rb")||/INPUT|SELECT/.test(document.activeElement?.tagName)) return;
-  if(["ArrowDown","ArrowRight","PageDown"," ","Enter"].includes(e.key)){ e.preventDefault(); sigCasilla() }
-  else if(["ArrowUp","ArrowLeft","PageUp"].includes(e.key)){ e.preventDefault(); antCasilla() }
+  if(/INPUT|SELECT/.test(document.activeElement?.tagName)) return;
+  if(["ArrowDown","ArrowRight","PageDown"," ","Enter"].includes(e.key)){ e.preventDefault(); irCasilla(rbI+1) }
+  else if(["ArrowUp","ArrowLeft","PageUp"].includes(e.key)){ e.preventDefault(); irCasilla(rbI-1) }
 });
-function pintarRb(){
-  if(!run||!T||!document.body.classList.contains("modo-rb")) return;
-  $("#rbBanda").className="rbBanda "+$("#ver").className.replace("veredicto","").trim();
-  $("#rbSeg").textContent=$("#verSeg").textContent; $("#rbTxt").textContent=$("#verTxt").textContent; $("#rbAcc").textContent=$("#verAcc").textContent;
-  const km=Math.max(0,kmActual()); $("#rbKm").textContent=fmtKm(km); $("#rbParcial").textContent="parcial "+fmtKm(Math.max(0,km-rbParcialKm));
-  $("#rbVe").textContent=$("#velSug").textContent;
-  $("#rbCtl").innerHTML=`${$("#ctlNombre").textContent} a las <b>${$("#ctlHora").textContent}</b>`;
-  $("#rbDist").innerHTML=`Faltan <b>${$("#ctlKm").dataset.d||"--"}</b> · <b>${$("#ctlFalta").textContent}</b>`;
-}
 
-// ---- Retomar: si la app se cierra o se daña a mitad de tramo, se guarda salida, km y casilla cada 2 s ----
-function avisoCurso(t){ $("#msgCurso").textContent=t; $("#msgCurso").hidden=!t }
-setInterval(()=>{ if(run&&!run.sim&&T&&salida) guardar("enCurso",JSON.stringify({tramo:T.id,salida:salida.getTime(),km:Math.max(0,kmActual()),rbI,parcial:Math.max(0,kmActual()-rbParcialKm),t:ahoraMs()})) },2000);
-function revisarRetomar(){
-  let e=null; try{ e=JSON.parse(leer("enCurso")||"null") }catch(x){}
-  const t=e&&PLAN.tramos.find(x=>x.id===e.tramo);
-  if(!t||run||ahoraMs()-e.t>6*3600*1000){ $("#retomarBox").hidden=true; return }
-  $("#retomarTxt").textContent=`${t.nombre} quedó en curso: salió a las ${fmtHora(new Date(e.salida))}, iba en el km ${fmtKm(e.km)} (casilla ${e.rbI+1}).`;
-  $("#retomarBox").hidden=false;
-}
-$("#btnRetomar").addEventListener("click",()=>{
-  let e=null; try{ e=JSON.parse(leer("enCurso")||"null") }catch(x){} if(!e) return;
-  $("#tramo").value=e.tramo; cambioTramo();
-  iniciar(false,e.salida,{km:e.km,rbI:e.rbI,parcial:e.parcial});
-  setTimeout(()=>{ cerrarRb(); const d=$("#enCurso details"); if(d) d.open=true; },120);
-  setTimeout(()=>avisoCurso(`Retomado en el km ${fmtKm(e.km)}. Lo que rodaste con la app cerrada no se midió: corrige el km con la casilla del roadbook aquí abajo y luego toca «Ver roadbook».`),100);
-});
-setInterval(()=>{tic();pintarRb()},250);
-document.addEventListener("visibilitychange",async()=>{ if(!document.hidden&&run){ try{wake=await navigator.wakeLock?.request("screen")}catch(e){} } });
+// ---- Pantalla siempre encendida ----
+let wake=null;
+async function pedirPantalla(){ try{ wake=await navigator.wakeLock?.request("screen") }catch(e){} }
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) pedirPantalla() });
+document.addEventListener("click",pedirPantalla,{once:true});
 
-fetch("plan.json",{cache:"no-cache"}).then(r=>r.json()).then(p=>{guardar("plan",JSON.stringify(p));cargarPlan(p)})
- .catch(()=>{const g=leer("plan"); if(g){cargarPlan(JSON.parse(g)); $("#estado").innerHTML="Sin señal: uso los tramos guardados."} else $("#estado").textContent="No pude cargar los tramos. Ábrela con señal la primera vez."});
+setInterval(tic,250); pintarSync(); sincronizar(); setInterval(()=>{ if(!PLAN||!salidaDe(T())||llegDe(T())) sincronizar() },10*60*1000);
+fetch("plan.json",{cache:"no-cache"}).then(r=>r.json()).then(p=>{guardar("plan",JSON.stringify(p));cargar(p)})
+ .catch(()=>{const g=leer("plan"); if(g) cargar(JSON.parse(g)); else $("#lista").innerHTML='<div class="fin">Ábrela una vez con señal para guardar el roadbook.</div>'});
 if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>

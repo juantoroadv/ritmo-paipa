@@ -1,66 +1,23 @@
 {
- "evento": "BMW Motorrad Rally Paipa 2026",
+ "evento": "Rally BMW Motorrad Off Road · Paipa - Monguí - Paipa · salida 7:00",
  "tramos": [
   {
-   "id": "prueba",
-   "nombre": "Tramo de prueba (5 km)",
-   "nota": "Para probar en la moto esta semana. Los tramos reales se cargan el viernes con el Road Book.",
-   "fin_km": 5.0,
-   "secciones": [
-    {
-     "desde_km": 0,
-     "vel": 30
-    },
-    {
-     "desde_km": 2.0,
-     "vel": 40
-    }
-   ],
-   "controles": [
-    {
-     "km": 3.5,
-     "nombre": "Control de prueba"
-    }
-   ],
-   "roadbook": {
-    "tipo": "casillas",
-    "imagenes": [
-     "rb/prueba/001.png",
-     "rb/prueba/002.png",
-     "rb/prueba/003.png",
-     "rb/prueba/004.png",
-     "rb/prueba/005.png",
-     "rb/prueba/006.png"
-    ]
-   }
-  },
-  {
    "id": "t1",
-   "nombre": "Tramo 1 (ejemplo) · 42 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 42.0,
+   "nombre": "Tramo 1 · Paipa → Corrales · 59,1 km · 95 min",
+   "nota": "Road Book real. Casillas 1 a 48. Tiempo ideal 95 min.",
+   "km_inicio": 0.0,
+   "fin_km": 59.1,
+   "tiempo_ideal_min": 95,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 40
-    },
-    {
-     "desde_km": 12.5,
-     "vel": 30
-    },
-    {
-     "desde_km": 20.0,
-     "vel": 45
+     "desde_km": 0.0,
+     "vel": 37.3263
     }
    ],
    "controles": [
     {
-     "km": 18.3,
-     "nombre": "Control 1A"
-    },
-    {
-     "km": 33.7,
-     "nombre": "Control 1B"
+     "km": 59.1,
+     "nombre": "Control Corrales"
     }
    ],
    "roadbook": {
@@ -85,37 +42,538 @@
      "rb/t1/017.png",
      "rb/t1/018.png",
      "rb/t1/019.png",
-     "rb/t1/020.png"
+     "rb/t1/020.png",
+     "rb/t1/021.png",
+     "rb/t1/022.png",
+     "rb/t1/023.png",
+     "rb/t1/024.png",
+     "rb/t1/025.png",
+     "rb/t1/026.png",
+     "rb/t1/027.png",
+     "rb/t1/028.png",
+     "rb/t1/029.png",
+     "rb/t1/030.png",
+     "rb/t1/031.png",
+     "rb/t1/032.png",
+     "rb/t1/033.png",
+     "rb/t1/034.png",
+     "rb/t1/035.png",
+     "rb/t1/036.png",
+     "rb/t1/037.png",
+     "rb/t1/038.png",
+     "rb/t1/039.png",
+     "rb/t1/040.png",
+     "rb/t1/041.png",
+     "rb/t1/042.png",
+     "rb/t1/043.png",
+     "rb/t1/044.png",
+     "rb/t1/045.png",
+     "rb/t1/046.png",
+     "rb/t1/047.png",
+     "rb/t1/048.png"
+    ],
+    "giros": "GPRPPRRGRRGGRRGRRRPPRGRGGGRPPPGGGGPRPPGGRRGGRGGR",
+    "casillas": [
+     {
+      "n": 1,
+      "par": 0.0,
+      "tot": 0.0,
+      "dir": "SALIDA HOTEL ESTELAR",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i001.png",
+      "foto": "rb/t1/001.png"
+     },
+     {
+      "n": 2,
+      "par": 1.0,
+      "tot": 1.0,
+      "dir": "IZQUIERDA",
+      "det": "Portería hotel · ¡ojo vía principal!",
+      "c": "P",
+      "ico": "rb/t1/i002.png",
+      "foto": "rb/t1/002.png"
+     },
+     {
+      "n": 3,
+      "par": 1.3,
+      "tot": 2.3,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i003.png",
+      "foto": "rb/t1/003.png"
+     },
+     {
+      "n": 4,
+      "par": 0.3,
+      "tot": 2.6,
+      "dir": "IZQUIERDA",
+      "det": "¡Ojo vía principal!",
+      "c": "P",
+      "ico": "rb/t1/i004.png",
+      "foto": "rb/t1/004.png"
+     },
+     {
+      "n": 5,
+      "par": 0.8,
+      "tot": 3.4,
+      "dir": "DERECHA",
+      "det": "¡Ojo vía principal!",
+      "c": "P",
+      "ico": "rb/t1/i005.png",
+      "foto": "rb/t1/005.png"
+     },
+     {
+      "n": 6,
+      "par": 0.6,
+      "tot": 4.0,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i006.png",
+      "foto": "rb/t1/006.png"
+     },
+     {
+      "n": 7,
+      "par": 0.4,
+      "tot": 4.4,
+      "dir": "DERECHA",
+      "det": "Vía angosta",
+      "c": "R",
+      "ico": "rb/t1/i007.png",
+      "foto": "rb/t1/007.png"
+     },
+     {
+      "n": 8,
+      "par": 1.5,
+      "tot": 5.9,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i008.png",
+      "foto": "rb/t1/008.png"
+     },
+     {
+      "n": 9,
+      "par": 3.3,
+      "tot": 9.2,
+      "dir": "IZQUIERDA",
+      "det": "Fin pavimento",
+      "c": "R",
+      "ico": "rb/t1/i009.png",
+      "foto": "rb/t1/009.png"
+     },
+     {
+      "n": 10,
+      "par": 3.2,
+      "tot": 12.4,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i010.png",
+      "foto": "rb/t1/010.png"
+     },
+     {
+      "n": 11,
+      "par": 1.4,
+      "tot": 13.8,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i011.png",
+      "foto": "rb/t1/011.png"
+     },
+     {
+      "n": 12,
+      "par": 1.5,
+      "tot": 15.3,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i012.png",
+      "foto": "rb/t1/012.png"
+     },
+     {
+      "n": 13,
+      "par": 2.0,
+      "tot": 17.3,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i013.png",
+      "foto": "rb/t1/013.png"
+     },
+     {
+      "n": 14,
+      "par": 0.3,
+      "tot": 17.6,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i014.png",
+      "foto": "rb/t1/014.png"
+     },
+     {
+      "n": 15,
+      "par": 1.9,
+      "tot": 19.5,
+      "dir": "RECTO",
+      "det": "Capilla a la derecha",
+      "c": "G",
+      "ico": "rb/t1/i015.png",
+      "foto": "rb/t1/015.png"
+     },
+     {
+      "n": 16,
+      "par": 0.1,
+      "tot": 19.6,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i016.png",
+      "foto": "rb/t1/016.png"
+     },
+     {
+      "n": 17,
+      "par": 1.2,
+      "tot": 20.8,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i017.png",
+      "foto": "rb/t1/017.png"
+     },
+     {
+      "n": 18,
+      "par": 1.6,
+      "tot": 22.4,
+      "dir": "IZQUIERDA",
+      "det": "Ascenso",
+      "c": "R",
+      "ico": "rb/t1/i018.png",
+      "foto": "rb/t1/018.png"
+     },
+     {
+      "n": 19,
+      "par": 1.6,
+      "tot": 24.0,
+      "dir": "PARE · DERECHA",
+      "det": "¡Ojo! Pavimento",
+      "c": "P",
+      "ico": "rb/t1/i019.png",
+      "foto": "rb/t1/019.png"
+     },
+     {
+      "n": 20,
+      "par": 0.06,
+      "tot": 24.06,
+      "dir": "IZQUIERDA",
+      "det": "¡Ojo cruce peligroso! Ascenso destapado",
+      "c": "P",
+      "ico": "rb/t1/i020.png",
+      "foto": "rb/t1/020.png"
+     },
+     {
+      "n": 21,
+      "par": 2.8,
+      "tot": 26.86,
+      "dir": "IZQUIERDA",
+      "det": "Ascenso",
+      "c": "R",
+      "ico": "rb/t1/i021.png",
+      "foto": "rb/t1/021.png"
+     },
+     {
+      "n": 22,
+      "par": 0.3,
+      "tot": 27.16,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i022.png",
+      "foto": "rb/t1/022.png"
+     },
+     {
+      "n": 23,
+      "par": 2.2,
+      "tot": 29.36,
+      "dir": "IZQUIERDA",
+      "det": "Cerro antenas",
+      "c": "R",
+      "ico": "rb/t1/i023.png",
+      "foto": "rb/t1/023.png"
+     },
+     {
+      "n": 24,
+      "par": 0.8,
+      "tot": 30.16,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i024.png",
+      "foto": "rb/t1/024.png"
+     },
+     {
+      "n": 25,
+      "par": 0.24,
+      "tot": 30.4,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i025.png",
+      "foto": "rb/t1/025.png"
+     },
+     {
+      "n": 26,
+      "par": 4.0,
+      "tot": 34.4,
+      "dir": "INICIO PAVIMENTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i026.png",
+      "foto": "rb/t1/026.png"
+     },
+     {
+      "n": 27,
+      "par": 0.6,
+      "tot": 35.0,
+      "dir": "DERECHA",
+      "det": "Tibasosa · vía en adobe · 40",
+      "c": "R",
+      "ico": "rb/t1/i027.png",
+      "foto": "rb/t1/027.png"
+     },
+     {
+      "n": 28,
+      "par": 0.1,
+      "tot": 35.1,
+      "dir": "IZQUIERDA",
+      "det": "¡Ojo! Descenso fuerte en cascajo · Calle 2 · 40",
+      "c": "P",
+      "ico": "rb/t1/i028.png",
+      "foto": "rb/t1/028.png"
+     },
+     {
+      "n": 29,
+      "par": 1.0,
+      "tot": 36.1,
+      "dir": "DERECHA",
+      "det": "¡Ojo vía principal!",
+      "c": "P",
+      "ico": "rb/t1/i029.png",
+      "foto": "rb/t1/029.png"
+     },
+     {
+      "n": 30,
+      "par": 0.5,
+      "tot": 36.6,
+      "dir": "IZQUIERDA",
+      "det": "¡Ojo cruce peligroso! Destapado",
+      "c": "P",
+      "ico": "rb/t1/i030.png",
+      "foto": "rb/t1/030.png"
+     },
+     {
+      "n": 31,
+      "par": 1.7,
+      "tot": 38.3,
+      "dir": "PUENTE ANGOSTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i031.png",
+      "foto": "rb/t1/031.png"
+     },
+     {
+      "n": 32,
+      "par": 0.8,
+      "tot": 39.1,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i032.png",
+      "foto": "rb/t1/032.png"
+     },
+     {
+      "n": 33,
+      "par": 0.35,
+      "tot": 39.45,
+      "dir": "FERROCARRIL",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i033.png",
+      "foto": "rb/t1/033.png"
+     },
+     {
+      "n": 34,
+      "par": 0.45,
+      "tot": 39.9,
+      "dir": "PUENTE ANGOSTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i034.png",
+      "foto": "rb/t1/034.png"
+     },
+     {
+      "n": 35,
+      "par": 0.1,
+      "tot": 40.0,
+      "dir": "PARE · DERECHA",
+      "det": "¡Ojo vía principal! Tráfico de camiones",
+      "c": "P",
+      "ico": "rb/t1/i035.png",
+      "foto": "rb/t1/035.png"
+     },
+     {
+      "n": 36,
+      "par": 7.6,
+      "tot": 47.6,
+      "dir": "IZQUIERDA",
+      "det": "Belencito · población · seguir pavimento · vía angosta · 40",
+      "c": "R",
+      "ico": "rb/t1/i036.png",
+      "foto": "rb/t1/036.png"
+     },
+     {
+      "n": 37,
+      "par": 0.9,
+      "tot": 48.5,
+      "dir": "IZQUIERDA",
+      "det": "¡Ojo vía principal!",
+      "c": "P",
+      "ico": "rb/t1/i037.png",
+      "foto": "rb/t1/037.png"
+     },
+     {
+      "n": 38,
+      "par": 0.9,
+      "tot": 49.4,
+      "dir": "CARRIL DERECHO",
+      "det": "Despacio · ¡ojo! Acerías Paz del Río",
+      "c": "P",
+      "ico": "rb/t1/i038.png",
+      "foto": "rb/t1/038.png"
+     },
+     {
+      "n": 39,
+      "par": 0.2,
+      "tot": 49.6,
+      "dir": "FERROCARRIL",
+      "det": "Inicio destapado",
+      "c": "G",
+      "ico": "rb/t1/i039.png",
+      "foto": "rb/t1/039.png"
+     },
+     {
+      "n": 40,
+      "par": 3.5,
+      "tot": 53.1,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i040.png",
+      "foto": "rb/t1/040.png"
+     },
+     {
+      "n": 41,
+      "par": 0.6,
+      "tot": 53.7,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i041.png",
+      "foto": "rb/t1/041.png"
+     },
+     {
+      "n": 42,
+      "par": 1.9,
+      "tot": 55.6,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t1/i042.png",
+      "foto": "rb/t1/042.png"
+     },
+     {
+      "n": 43,
+      "par": 2.6,
+      "tot": 58.2,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t1/i043.png",
+      "foto": "rb/t1/043.png"
+     },
+     {
+      "n": 44,
+      "par": 0.2,
+      "tot": 58.4,
+      "dir": "RECTO",
+      "det": "Inicio población Corrales · 40",
+      "c": "G",
+      "ico": "rb/t1/i044.png",
+      "foto": "rb/t1/044.png"
+     },
+     {
+      "n": 45,
+      "par": 0.3,
+      "tot": 58.7,
+      "dir": "DERECHA + IZQUIERDA",
+      "det": "40",
+      "c": "R",
+      "ico": "rb/t1/i045.png",
+      "foto": "rb/t1/045.png"
+     },
+     {
+      "n": 46,
+      "par": 0.1,
+      "tot": 58.8,
+      "dir": "DERECHA",
+      "det": "40",
+      "c": "G",
+      "ico": "rb/t1/i046.png",
+      "foto": "rb/t1/046.png"
+     },
+     {
+      "n": 47,
+      "par": 0.05,
+      "tot": 58.85,
+      "dir": "FERROCARRIL",
+      "det": "Fin población",
+      "c": "G",
+      "ico": "rb/t1/i047.png",
+      "foto": "rb/t1/047.png"
+     },
+     {
+      "n": 48,
+      "par": 0.25,
+      "tot": 59.1,
+      "dir": "DERECHA",
+      "det": "Vía ppal · FIN TRAMO 1 · CONTROL CORRALES",
+      "c": "R",
+      "ico": "rb/t1/i048.png",
+      "foto": "rb/t1/048.png"
+     }
     ]
    }
   },
   {
    "id": "t2",
-   "nombre": "Tramo 2 (ejemplo) · 48 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 48.0,
+   "nombre": "Tramo 2 · Corrales → Monguí · 16,6 km · 30 min",
+   "nota": "Road Book real. Casillas 48 a 63. Tiempo ideal 30 min.",
+   "km_inicio": 59.1,
+   "fin_km": 75.7,
+   "tiempo_ideal_min": 30,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 35
-    },
-    {
-     "desde_km": 15.0,
-     "vel": 50
-    },
-    {
-     "desde_km": 38.2,
-     "vel": 32
+     "desde_km": 59.1,
+     "vel": 33.2
     }
    ],
    "controles": [
     {
-     "km": 21.4,
-     "nombre": "Control 2A"
-    },
-    {
-     "km": 40.0,
-     "nombre": "Control 2B"
+     "km": 75.7,
+     "nombre": "Control Monguí"
     }
    ],
    "roadbook": {
@@ -136,39 +594,190 @@
      "rb/t2/013.png",
      "rb/t2/014.png",
      "rb/t2/015.png",
-     "rb/t2/016.png",
-     "rb/t2/017.png",
-     "rb/t2/018.png",
-     "rb/t2/019.png",
-     "rb/t2/020.png",
-     "rb/t2/021.png",
-     "rb/t2/022.png"
+     "rb/t2/016.png"
+    ],
+    "giros": "RGPRRRGRRPRRGPGG",
+    "casillas": [
+     {
+      "n": 48,
+      "par": 0.25,
+      "tot": 59.1,
+      "dir": "DERECHA",
+      "det": "Vía ppal · FIN TRAMO 1 · CONTROL CORRALES",
+      "c": "R",
+      "ico": "rb/t2/i001.png",
+      "foto": "rb/t2/001.png"
+     },
+     {
+      "n": 49,
+      "par": 3.6,
+      "tot": 62.7,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t2/i002.png",
+      "foto": "rb/t2/002.png"
+     },
+     {
+      "n": 50,
+      "par": 3.2,
+      "tot": 65.9,
+      "dir": "IZQUIERDA",
+      "det": "¡Ojo cruce peligroso! Destapado ascenso",
+      "c": "P",
+      "ico": "rb/t2/i003.png",
+      "foto": "rb/t2/003.png"
+     },
+     {
+      "n": 51,
+      "par": 0.15,
+      "tot": 66.05,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t2/i004.png",
+      "foto": "rb/t2/004.png"
+     },
+     {
+      "n": 52,
+      "par": 0.45,
+      "tot": 66.5,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t2/i005.png",
+      "foto": "rb/t2/005.png"
+     },
+     {
+      "n": 53,
+      "par": 1.9,
+      "tot": 68.4,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t2/i006.png",
+      "foto": "rb/t2/006.png"
+     },
+     {
+      "n": 54,
+      "par": 0.4,
+      "tot": 68.8,
+      "dir": "DERECHA",
+      "det": "Parque Tópaga · 40",
+      "c": "G",
+      "ico": "rb/t2/i007.png",
+      "foto": "rb/t2/007.png"
+     },
+     {
+      "n": 55,
+      "par": 0.3,
+      "tot": 69.1,
+      "dir": "IZQUIERDA",
+      "det": "Destapado",
+      "c": "R",
+      "ico": "rb/t2/i008.png",
+      "foto": "rb/t2/008.png"
+     },
+     {
+      "n": 56,
+      "par": 1.2,
+      "tot": 70.3,
+      "dir": "DERECHA",
+      "det": "Descenso",
+      "c": "R",
+      "ico": "rb/t2/i009.png",
+      "foto": "rb/t2/009.png"
+     },
+     {
+      "n": 57,
+      "par": 0.75,
+      "tot": 71.05,
+      "dir": "DERECHA",
+      "det": "¡Ojo descenso fuerte!",
+      "c": "P",
+      "ico": "rb/t2/i010.png",
+      "foto": "rb/t2/010.png"
+     },
+     {
+      "n": 58,
+      "par": 0.4,
+      "tot": 71.45,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t2/i011.png",
+      "foto": "rb/t2/011.png"
+     },
+     {
+      "n": 59,
+      "par": 0.3,
+      "tot": 71.75,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t2/i012.png",
+      "foto": "rb/t2/012.png"
+     },
+     {
+      "n": 60,
+      "par": 0.55,
+      "tot": 72.3,
+      "dir": "PUENTE ANGOSTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t2/i013.png",
+      "foto": "rb/t2/013.png"
+     },
+     {
+      "n": 61,
+      "par": 0.03,
+      "tot": 72.33,
+      "dir": "IZQUIERDA",
+      "det": "¡Ojo vía ppal en curva!",
+      "c": "P",
+      "ico": "rb/t2/i014.png",
+      "foto": "rb/t2/014.png"
+     },
+     {
+      "n": 62,
+      "par": 2.67,
+      "tot": 75.0,
+      "dir": "INICIO POBLACIÓN",
+      "det": "Monguí · 40",
+      "c": "G",
+      "ico": "rb/t2/i015.png",
+      "foto": "rb/t2/015.png"
+     },
+     {
+      "n": 63,
+      "par": 0.7,
+      "tot": 75.7,
+      "dir": "FIN TRAMO 2",
+      "det": "Control Monguí · parque principal · 30 min descanso",
+      "c": "G",
+      "ico": "rb/t2/i016.png",
+      "foto": "rb/t2/016.png"
+     }
     ]
    }
   },
   {
    "id": "t3",
-   "nombre": "Tramo 3 (ejemplo) · 44 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 44.0,
+   "nombre": "Tramo 3 · Monguí → El Crucero · 20,05 km · 40 min",
+   "nota": "Road Book real. Casillas 64 a 86. Tiempo ideal 40 min.",
+   "km_inicio": 75.85,
+   "fin_km": 95.9,
+   "tiempo_ideal_min": 40,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 30
-    },
-    {
-     "desde_km": 9.6,
-     "vel": 42
+     "desde_km": 75.85,
+     "vel": 30.075
     }
    ],
    "controles": [
     {
-     "km": 16.0,
-     "nombre": "Control 3A"
-    },
-    {
-     "km": 29.5,
-     "nombre": "Control 3B"
+     "km": 95.9,
+     "nombre": "Control El Crucero"
     }
    ],
    "roadbook": {
@@ -193,37 +802,263 @@
      "rb/t3/017.png",
      "rb/t3/018.png",
      "rb/t3/019.png",
-     "rb/t3/020.png"
+     "rb/t3/020.png",
+     "rb/t3/021.png",
+     "rb/t3/022.png",
+     "rb/t3/023.png"
+    ],
+    "giros": "GGRRGRRRGRRRGGRRRRGRGPG",
+    "casillas": [
+     {
+      "n": 64,
+      "par": 0.15,
+      "tot": 75.85,
+      "dir": "SALIDA TRAMO 3",
+      "det": "Control · inicio tramo 3",
+      "c": "G",
+      "ico": "rb/t3/i001.png",
+      "foto": "rb/t3/001.png"
+     },
+     {
+      "n": 65,
+      "par": 0.3,
+      "tot": 76.15,
+      "dir": "IZQUIERDA",
+      "det": "Puente Calicanto · 40",
+      "c": "G",
+      "ico": "rb/t3/i002.png",
+      "foto": "rb/t3/002.png"
+     },
+     {
+      "n": 66,
+      "par": 0.1,
+      "tot": 76.25,
+      "dir": "DERECHA",
+      "det": "40",
+      "c": "R",
+      "ico": "rb/t3/i003.png",
+      "foto": "rb/t3/003.png"
+     },
+     {
+      "n": 67,
+      "par": 0.45,
+      "tot": 76.7,
+      "dir": "IZQUIERDA EN U",
+      "det": "Ascenso · 40",
+      "c": "R",
+      "ico": "rb/t3/i004.png",
+      "foto": "rb/t3/004.png"
+     },
+     {
+      "n": 68,
+      "par": 0.95,
+      "tot": 77.65,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t3/i005.png",
+      "foto": "rb/t3/005.png"
+     },
+     {
+      "n": 69,
+      "par": 0.1,
+      "tot": 77.75,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i006.png",
+      "foto": "rb/t3/006.png"
+     },
+     {
+      "n": 70,
+      "par": 0.47,
+      "tot": 78.22,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i007.png",
+      "foto": "rb/t3/007.png"
+     },
+     {
+      "n": 71,
+      "par": 0.23,
+      "tot": 78.45,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i008.png",
+      "foto": "rb/t3/008.png"
+     },
+     {
+      "n": 72,
+      "par": 1.3,
+      "tot": 79.75,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t3/i009.png",
+      "foto": "rb/t3/009.png"
+     },
+     {
+      "n": 73,
+      "par": 1.0,
+      "tot": 80.75,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i010.png",
+      "foto": "rb/t3/010.png"
+     },
+     {
+      "n": 74,
+      "par": 0.35,
+      "tot": 81.1,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i011.png",
+      "foto": "rb/t3/011.png"
+     },
+     {
+      "n": 75,
+      "par": 0.05,
+      "tot": 81.15,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i012.png",
+      "foto": "rb/t3/012.png"
+     },
+     {
+      "n": 76,
+      "par": 1.5,
+      "tot": 82.65,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t3/i013.png",
+      "foto": "rb/t3/013.png"
+     },
+     {
+      "n": 77,
+      "par": 1.2,
+      "tot": 83.85,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t3/i014.png",
+      "foto": "rb/t3/014.png"
+     },
+     {
+      "n": 78,
+      "par": 2.1,
+      "tot": 85.95,
+      "dir": "IZQUIERDA",
+      "det": "Descenso",
+      "c": "R",
+      "ico": "rb/t3/i015.png",
+      "foto": "rb/t3/015.png"
+     },
+     {
+      "n": 79,
+      "par": 2.6,
+      "tot": 88.55,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i016.png",
+      "foto": "rb/t3/016.png"
+     },
+     {
+      "n": 80,
+      "par": 0.45,
+      "tot": 89.0,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i017.png",
+      "foto": "rb/t3/017.png"
+     },
+     {
+      "n": 81,
+      "par": 1.6,
+      "tot": 90.6,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i018.png",
+      "foto": "rb/t3/018.png"
+     },
+     {
+      "n": 82,
+      "par": 0.3,
+      "tot": 90.9,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t3/i019.png",
+      "foto": "rb/t3/019.png"
+     },
+     {
+      "n": 83,
+      "par": 0.9,
+      "tot": 91.8,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t3/i020.png",
+      "foto": "rb/t3/020.png"
+     },
+     {
+      "n": 84,
+      "par": 0.4,
+      "tot": 92.2,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t3/i021.png",
+      "foto": "rb/t3/021.png"
+     },
+     {
+      "n": 85,
+      "par": 3.2,
+      "tot": 95.4,
+      "dir": "PARE · DERECHA",
+      "det": "Vía nacional",
+      "c": "P",
+      "ico": "rb/t3/i022.png",
+      "foto": "rb/t3/022.png"
+     },
+     {
+      "n": 86,
+      "par": 0.5,
+      "tot": 95.9,
+      "dir": "FIN TRAMO 3",
+      "det": "El Crucero · control · inicio tramo 4",
+      "c": "G",
+      "ico": "rb/t3/i023.png",
+      "foto": "rb/t3/023.png"
+     }
     ]
    }
   },
   {
    "id": "t4",
-   "nombre": "Tramo 4 (ejemplo) · 46 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 46.0,
+   "nombre": "Tramo 4 · El Crucero → Paipa · 81,63 km · 130 min",
+   "nota": "Road Book real. Casillas 86 a 138. Tiempo ideal 130 min.",
+   "km_inicio": 95.9,
+   "fin_km": 177.53,
+   "tiempo_ideal_min": 130,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 45
-    },
-    {
-     "desde_km": 22.0,
-     "vel": 35
-    },
-    {
-     "desde_km": 31.5,
-     "vel": 40
+     "desde_km": 95.9,
+     "vel": 37.6754
     }
    ],
    "controles": [
     {
-     "km": 14.8,
-     "nombre": "Control 4A"
-    },
-    {
-     "km": 35.2,
-     "nombre": "Control 4B"
+     "km": 177.53,
+     "nombre": "Meta Hotel Estelar Paipa"
     }
    ],
    "roadbook": {
@@ -249,7 +1084,572 @@
      "rb/t4/018.png",
      "rb/t4/019.png",
      "rb/t4/020.png",
-     "rb/t4/021.png"
+     "rb/t4/021.png",
+     "rb/t4/022.png",
+     "rb/t4/023.png",
+     "rb/t4/024.png",
+     "rb/t4/025.png",
+     "rb/t4/026.png",
+     "rb/t4/027.png",
+     "rb/t4/028.png",
+     "rb/t4/029.png",
+     "rb/t4/030.png",
+     "rb/t4/031.png",
+     "rb/t4/032.png",
+     "rb/t4/033.png",
+     "rb/t4/034.png",
+     "rb/t4/035.png",
+     "rb/t4/036.png",
+     "rb/t4/037.png",
+     "rb/t4/038.png",
+     "rb/t4/039.png",
+     "rb/t4/040.png",
+     "rb/t4/041.png",
+     "rb/t4/042.png",
+     "rb/t4/043.png",
+     "rb/t4/044.png",
+     "rb/t4/045.png",
+     "rb/t4/046.png",
+     "rb/t4/047.png",
+     "rb/t4/048.png",
+     "rb/t4/049.png",
+     "rb/t4/050.png",
+     "rb/t4/051.png",
+     "rb/t4/052.png",
+     "rb/t4/053.png"
+    ],
+    "giros": "GRRGGRRPGGRRGGGPRGRRGGRRRRGRGRRRGRGRPRGGGRRRGGGRRGRGR",
+    "casillas": [
+     {
+      "n": 86,
+      "par": 0.5,
+      "tot": 95.9,
+      "dir": "FIN TRAMO 3",
+      "det": "El Crucero · control · inicio tramo 4",
+      "c": "G",
+      "ico": "rb/t4/i001.png",
+      "foto": "rb/t4/001.png"
+     },
+     {
+      "n": 87,
+      "par": 1.2,
+      "tot": 97.1,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i002.png",
+      "foto": "rb/t4/002.png"
+     },
+     {
+      "n": 88,
+      "par": 1.3,
+      "tot": 98.4,
+      "dir": "2da IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i003.png",
+      "foto": "rb/t4/003.png"
+     },
+     {
+      "n": 89,
+      "par": 0.8,
+      "tot": 99.2,
+      "dir": "MIRADOR · FOTO",
+      "det": "+60 pts · sin foto −300 · mostrar en la meta",
+      "c": "G",
+      "ico": "rb/t4/i004.png",
+      "foto": "rb/t4/004.png"
+     },
+     {
+      "n": 90,
+      "par": 2.6,
+      "tot": 101.8,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i005.png",
+      "foto": "rb/t4/005.png"
+     },
+     {
+      "n": 91,
+      "par": 2.2,
+      "tot": 104.0,
+      "dir": "DERECHA",
+      "det": "Pavimento",
+      "c": "R",
+      "ico": "rb/t4/i006.png",
+      "foto": "rb/t4/006.png"
+     },
+     {
+      "n": 92,
+      "par": 0.2,
+      "tot": 104.2,
+      "dir": "DERECHA",
+      "det": "Descenso",
+      "c": "R",
+      "ico": "rb/t4/i007.png",
+      "foto": "rb/t4/007.png"
+     },
+     {
+      "n": 93,
+      "par": 0.27,
+      "tot": 104.47,
+      "dir": "DERECHA EN U",
+      "det": "¡Ojo! Destapado descenso",
+      "c": "P",
+      "ico": "rb/t4/i008.png",
+      "foto": "rb/t4/008.png"
+     },
+     {
+      "n": 94,
+      "par": 0.63,
+      "tot": 105.1,
+      "dir": "RECTO",
+      "det": "Trocha angosta",
+      "c": "G",
+      "ico": "rb/t4/i009.png",
+      "foto": "rb/t4/009.png"
+     },
+     {
+      "n": 95,
+      "par": 1.3,
+      "tot": 106.4,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i010.png",
+      "foto": "rb/t4/010.png"
+     },
+     {
+      "n": 96,
+      "par": 0.27,
+      "tot": 106.67,
+      "dir": "DERECHA",
+      "det": "Pavimento",
+      "c": "R",
+      "ico": "rb/t4/i011.png",
+      "foto": "rb/t4/011.png"
+     },
+     {
+      "n": 97,
+      "par": 0.3,
+      "tot": 106.97,
+      "dir": "DERECHA",
+      "det": "Chíquiza · 40",
+      "c": "R",
+      "ico": "rb/t4/i012.png",
+      "foto": "rb/t4/012.png"
+     },
+     {
+      "n": 98,
+      "par": 0.23,
+      "tot": 107.2,
+      "dir": "IZQUIERDA",
+      "det": "Parque Chíquiza · vía ppal · 40",
+      "c": "G",
+      "ico": "rb/t4/i013.png",
+      "foto": "rb/t4/013.png"
+     },
+     {
+      "n": 99,
+      "par": 0.16,
+      "tot": 107.36,
+      "dir": "DERECHA",
+      "det": "Fin población · destapado",
+      "c": "G",
+      "ico": "rb/t4/i014.png",
+      "foto": "rb/t4/014.png"
+     },
+     {
+      "n": 100,
+      "par": 2.1,
+      "tot": 109.46,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i015.png",
+      "foto": "rb/t4/015.png"
+     },
+     {
+      "n": 101,
+      "par": 1.9,
+      "tot": 111.36,
+      "dir": "DERECHA",
+      "det": "¡Ojo!",
+      "c": "P",
+      "ico": "rb/t4/i016.png",
+      "foto": "rb/t4/016.png"
+     },
+     {
+      "n": 102,
+      "par": 0.1,
+      "tot": 111.46,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i017.png",
+      "foto": "rb/t4/017.png"
+     },
+     {
+      "n": 103,
+      "par": 1.9,
+      "tot": 113.36,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i018.png",
+      "foto": "rb/t4/018.png"
+     },
+     {
+      "n": 104,
+      "par": 0.7,
+      "tot": 114.06,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i019.png",
+      "foto": "rb/t4/019.png"
+     },
+     {
+      "n": 105,
+      "par": 2.7,
+      "tot": 116.76,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i020.png",
+      "foto": "rb/t4/020.png"
+     },
+     {
+      "n": 106,
+      "par": 2.0,
+      "tot": 118.76,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i021.png",
+      "foto": "rb/t4/021.png"
+     },
+     {
+      "n": 107,
+      "par": 0.9,
+      "tot": 119.66,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i022.png",
+      "foto": "rb/t4/022.png"
+     },
+     {
+      "n": 108,
+      "par": 1.8,
+      "tot": 121.46,
+      "dir": "IZQUIERDA",
+      "det": "Pesca · 40",
+      "c": "R",
+      "ico": "rb/t4/i023.png",
+      "foto": "rb/t4/023.png"
+     },
+     {
+      "n": 109,
+      "par": 0.16,
+      "tot": 121.62,
+      "dir": "DERECHA",
+      "det": "40",
+      "c": "R",
+      "ico": "rb/t4/i024.png",
+      "foto": "rb/t4/024.png"
+     },
+     {
+      "n": 110,
+      "par": 0.3,
+      "tot": 121.92,
+      "dir": "IZQUIERDA",
+      "det": "40",
+      "c": "R",
+      "ico": "rb/t4/i025.png",
+      "foto": "rb/t4/025.png"
+     },
+     {
+      "n": 111,
+      "par": 0.2,
+      "tot": 122.12,
+      "dir": "DERECHA",
+      "det": "Pavimento irregular · fin población",
+      "c": "R",
+      "ico": "rb/t4/i026.png",
+      "foto": "rb/t4/026.png"
+     },
+     {
+      "n": 112,
+      "par": 2.1,
+      "tot": 124.22,
+      "dir": "INICIO DESTAPADO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i027.png",
+      "foto": "rb/t4/027.png"
+     },
+     {
+      "n": 113,
+      "par": 6.4,
+      "tot": 130.62,
+      "dir": "RECTO",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i028.png",
+      "foto": "rb/t4/028.png"
+     },
+     {
+      "n": 114,
+      "par": 2.7,
+      "tot": 133.32,
+      "dir": "RECTO",
+      "det": "Destapado",
+      "c": "G",
+      "ico": "rb/t4/i029.png",
+      "foto": "rb/t4/029.png"
+     },
+     {
+      "n": 115,
+      "par": 1.9,
+      "tot": 135.22,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i030.png",
+      "foto": "rb/t4/030.png"
+     },
+     {
+      "n": 116,
+      "par": 15.6,
+      "tot": 150.82,
+      "dir": "DERECHA",
+      "det": "Toca · 40",
+      "c": "R",
+      "ico": "rb/t4/i031.png",
+      "foto": "rb/t4/031.png"
+     },
+     {
+      "n": 117,
+      "par": 0.2,
+      "tot": 151.02,
+      "dir": "DERECHA",
+      "det": "Avenida · 40",
+      "c": "R",
+      "ico": "rb/t4/i032.png",
+      "foto": "rb/t4/032.png"
+     },
+     {
+      "n": 118,
+      "par": 0.1,
+      "tot": 151.12,
+      "dir": "IZQUIERDA",
+      "det": "Fin población",
+      "c": "G",
+      "ico": "rb/t4/i033.png",
+      "foto": "rb/t4/033.png"
+     },
+     {
+      "n": 119,
+      "par": 0.95,
+      "tot": 152.07,
+      "dir": "DERECHA",
+      "det": "Destapado",
+      "c": "R",
+      "ico": "rb/t4/i034.png",
+      "foto": "rb/t4/034.png"
+     },
+     {
+      "n": 120,
+      "par": 1.1,
+      "tot": 153.17,
+      "dir": "PUENTE ANGOSTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i035.png",
+      "foto": "rb/t4/035.png"
+     },
+     {
+      "n": 121,
+      "par": 0.7,
+      "tot": 153.87,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i036.png",
+      "foto": "rb/t4/036.png"
+     },
+     {
+      "n": 122,
+      "par": 7.6,
+      "tot": 161.47,
+      "dir": "2da DERECHA",
+      "det": "¡Ojo!",
+      "c": "P",
+      "ico": "rb/t4/i037.png",
+      "foto": "rb/t4/037.png"
+     },
+     {
+      "n": 123,
+      "par": 0.6,
+      "tot": 162.07,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i038.png",
+      "foto": "rb/t4/038.png"
+     },
+     {
+      "n": 124,
+      "par": 1.0,
+      "tot": 163.07,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i039.png",
+      "foto": "rb/t4/039.png"
+     },
+     {
+      "n": 125,
+      "par": 0.4,
+      "tot": 163.47,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i040.png",
+      "foto": "rb/t4/040.png"
+     },
+     {
+      "n": 126,
+      "par": 1.0,
+      "tot": 164.47,
+      "dir": "RECTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i041.png",
+      "foto": "rb/t4/041.png"
+     },
+     {
+      "n": 127,
+      "par": 2.2,
+      "tot": 166.67,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i042.png",
+      "foto": "rb/t4/042.png"
+     },
+     {
+      "n": 128,
+      "par": 3.0,
+      "tot": 169.67,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i043.png",
+      "foto": "rb/t4/043.png"
+     },
+     {
+      "n": 129,
+      "par": 0.33,
+      "tot": 170.0,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i044.png",
+      "foto": "rb/t4/044.png"
+     },
+     {
+      "n": 130,
+      "par": 1.0,
+      "tot": 171.0,
+      "dir": "INICIO PAVIMENTO",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i045.png",
+      "foto": "rb/t4/045.png"
+     },
+     {
+      "n": 131,
+      "par": 2.0,
+      "tot": 173.0,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i046.png",
+      "foto": "rb/t4/046.png"
+     },
+     {
+      "n": 132,
+      "par": 0.45,
+      "tot": 173.45,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i047.png",
+      "foto": "rb/t4/047.png"
+     },
+     {
+      "n": 133,
+      "par": 0.55,
+      "tot": 174.0,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i048.png",
+      "foto": "rb/t4/048.png"
+     },
+     {
+      "n": 134,
+      "par": 0.7,
+      "tot": 174.7,
+      "dir": "DERECHA",
+      "det": "Destapado",
+      "c": "R",
+      "ico": "rb/t4/i049.png",
+      "foto": "rb/t4/049.png"
+     },
+     {
+      "n": 135,
+      "par": 1.3,
+      "tot": 176.0,
+      "dir": "IZQUIERDA",
+      "det": "",
+      "c": "G",
+      "ico": "rb/t4/i050.png",
+      "foto": "rb/t4/050.png"
+     },
+     {
+      "n": 136,
+      "par": 0.2,
+      "tot": 176.2,
+      "dir": "DERECHA",
+      "det": "",
+      "c": "R",
+      "ico": "rb/t4/i051.png",
+      "foto": "rb/t4/051.png"
+     },
+     {
+      "n": 137,
+      "par": 1.2,
+      "tot": 177.4,
+      "dir": "DERECHA",
+      "det": "Pavimento",
+      "c": "G",
+      "ico": "rb/t4/i052.png",
+      "foto": "rb/t4/052.png"
+     },
+     {
+      "n": 138,
+      "par": 0.13,
+      "tot": 177.53,
+      "dir": "IZQUIERDA",
+      "det": "META · Hotel Estelar · FIN DEL RALLY",
+      "c": "R",
+      "ico": "rb/t4/i053.png",
+      "foto": "rb/t4/053.png"
+     }
     ]
    }
   }
