@@ -156,7 +156,7 @@ const llegDe=t=>+(leer("lleg-"+t.id)||0)||null;
 
 function cargar(p){
   PLAN=p; const sel=$("#etapa");
-  sel.innerHTML=p.tramos.map((t,i)=>`<option value="${i}">${i+1} · ${t.nombre.split(" · ")[1].replace(" → ","→")}</option>`).join("");
+  sel.innerHTML=p.tramos.map((t,i)=>`<option value="${i}">${i+1} · ${t.secciones[0].vel.toFixed(1).replace(".",",")} km/h · ${t.nombre.split(" · ")[1].replace(" → ","→")}</option>`).join("");
   E=Math.min(+(leer("etapa")||0),p.tramos.length-1); sel.value=E;
   p.tramos.forEach(t=>(t.roadbook?.casillas||[]).forEach(c=>fetch(c.ico).catch(()=>{})));   // quedan guardadas para modo avión
   pintarLista(); tic();
