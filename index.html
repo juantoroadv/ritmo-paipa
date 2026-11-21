@@ -109,6 +109,9 @@ body.modo-rb #rbVista{display:grid;grid-template-rows:auto 1fr auto;height:100vh
 .crono .ideal{font-size:14px;color:var(--muted)} .crono .res{grid-column:1/-1;font-family:var(--f-num);font-size:22px;font-weight:700}
 .crono .res.ok{color:var(--ok)} .crono .res.warn{color:var(--warn)} .crono .res.bad{color:var(--bad)}
 .crono button{min-height:56px}
+.crono .cfila{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.crono .meta{font-family:var(--f-num);line-height:1;color:var(--accent)} .crono .meta small{display:block;font:600 11px var(--f-body);text-transform:uppercase;color:var(--muted)} .crono .meta b{font-size:30px;font-variant-numeric:tabular-nums}
+.crono .llegar{font-family:var(--f-num);font-size:18px;margin-top:4px} .crono .llegar b{font-size:30px;color:var(--accent);font-variant-numeric:tabular-nums}
 .rbLista .rbFin{color:#555;text-align:center;padding:40px 10px 60vh;font:600 18px var(--f-body);margin:0}
 .rbBotones{display:grid;grid-template-columns:1fr 1fr 2fr 1fr;gap:6px}
 .rbBotones button{min-height:60px;font-size:26px;padding:6px}
@@ -487,7 +490,7 @@ function txtCrono(t){
   const s=salidaDe(t), id=idealDe(t), ll=+(leer("lleg-"+t.id)||0); const ahora=ahoraMs();
   if(!s) return {reloj:"--:--",ideal:"Sin hora de salida de este tramo",res:"",cls:""};
   const fin=ll||ahora, cor=Math.max(0,(fin-s)/1000);
-  const ideal=`Salida ${fmtHora(s)} · ideal ${fmtHora(id)} (${t.tiempo_ideal_min} min)`;
+  const ideal=`Salida ${fmtHora(s)} · tiempo ideal ${t.tiempo_ideal_min} min`;
   if(ll){ const d=Math.round((ll-id.getTime())/1000), a=Math.abs(d);
     return {reloj:fmtDur(cor),ideal,res:`Llegaste ${fmtHora(new Date(ll))} · ${d===0?"justo a tiempo":(d>0?"+":"−")+(a<60?a+" s":fmtDur(a))+(d>0?" tarde":" antes")}`,cls:a<=3?"ok":a<=15?"warn":"bad"} }
   const falta=(id-ahora)/1000;
@@ -497,10 +500,10 @@ function pintarCronos(){
   if(!PLAN) return; const L=$("#cronoLista");
   const ts=PLAN.tramos.filter(t=>ctlDe(t));
   if(L.dataset.n!==String(ts.length)){ L.dataset.n=ts.length;
-    L.innerHTML=ts.map((t,k)=>`<div class="crono" id="cr-${t.id}"><h3>${k+1}. ${ctlDe(t).nombre} · fin ${t.nombre.split(" · ")[0]}</h3><div><div class="reloj2">--:--</div><div class="ideal"></div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="prim" data-ll="${t.id}">LLEGUÉ</button><button data-bo="${t.id}" style="min-height:40px;font-size:13px">Borrar</button></div><div class="res"></div></div>`).join("");
+    L.innerHTML=ts.map((t,k)=>`<div class="crono" id="cr-${t.id}"><h3>${k+1}. ${ctlDe(t).nombre} · fin ${t.nombre.split(" · ")[0]}</h3><div><div class="cfila"><div class="reloj2">--:--</div><div class="meta"><small>debe marcar</small><b>${fmtDur(t.tiempo_ideal_min*60)}</b></div></div><div class="llegar"><small>Llegar a las</small> <b>--:--:--</b></div><div class="ideal"></div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="prim" data-ll="${t.id}">LLEGUÉ</button><button data-bo="${t.id}" style="min-height:40px;font-size:13px">Borrar</button></div><div class="res"></div></div>`).join("");
     L.onclick=e=>{ const a=e.target.dataset; if(a.ll) marcarLlegada(a.ll); if(a.bo&&confirm("¿Borrar la llegada marcada?")){ guardar("lleg-"+a.bo,""); pintarCronos() } };
   }
-  ts.forEach(t=>{ const c=$("#cr-"+t.id), x=txtCrono(t); c.querySelector(".reloj2").textContent=x.reloj; c.querySelector(".ideal").textContent=x.ideal;
+  ts.forEach(t=>{ const c=$("#cr-"+t.id), x=txtCrono(t); c.querySelector(".reloj2").textContent=x.reloj; c.querySelector(".ideal").textContent=x.ideal; const id=idealDe(t); c.querySelector(".llegar b").textContent=id?fmtHora(id):"--:--:--";
     const r=c.querySelector(".res"); r.textContent=x.res; r.className="res "+x.cls; c.querySelector("[data-ll]").hidden=!!leer("lleg-"+t.id) });
 }
 setInterval(pintarCronos,500);
