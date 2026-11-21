@@ -208,14 +208,12 @@ function tic(){
     // Manda la casilla: si la ideal es la marcada, vas en ritmo; si está adelante, atrasado; si está atrás, adelantado.
     const cs=t.roadbook.casillas, lo=rbI>0?cs[rbI-1].tot:ini, hi=cs[rbI].tot;
     let d=0; if(kmId>hi+1e-6) d=Math.round((kmId-hi)/vel*3600); else if(kmId<lo-1e-6) d=-Math.round((lo-kmId)/vel*3600);
-    // Justo después de tocar la casilla siguiente (15 s) se muestra la medida exacta del paso, como confirmación.
-    const recien=r.ms>sal&&ahora-r.ms<15000, dm=recien?r.d:d;
+    const dm=d;
     const a=Math.abs(dm), enRitmo=a<=10, dd=(a<60?a+" s":fmtDur(a));
     marcarIdeal(t,kmId,d===0);
     R.className="rt "+(enRitmo?"ok":a<=30?"warn":"bad");
     $("#rtSeg").textContent=(pid<0?"−":"")+fmtKm(Math.abs(pid));
-    $("#rtTxt").textContent=recien?(enRitmo?"✓ pasaste a tiempo":"pasaste "+(dm>0?"+":"−")+dd+(dm>0?" tarde":" antes"))
-      :(enRitmo?"✓ en ritmo":dm>0?"▲ más rápido +"+dd:"▼ más lento −"+dd);
+    $("#rtTxt").textContent=enRitmo?"✓ en ritmo":dm>0?"▲ más rápido +"+dd:"▼ más lento −"+dd;
   } else { $("#ritmo").className="rt"; $("#rtSeg").textContent="--"; $("#rtTxt").textContent="llegaste"; quitarIdeal() }
   if(ll){
     const d=Math.round((ll-ideal)/1000), a=Math.abs(d), cl=a<=3?"ok":a<=15?"warn":"bad";
