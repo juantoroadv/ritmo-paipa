@@ -75,6 +75,9 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 .c-R .cTxt b{color:#d0150a} .c-P .cTxt b,.c-P .cTxt span{color:#7b2cbf}
 .cTxt span{font-size:clamp(14px,4vw,17px);line-height:1.2} .c-P .cTxt span{font-weight:700}
 .cas.act{outline:5px solid #f0a800;outline-offset:-5px}
+.cas{position:relative}
+.cas.ideal::after{content:"⏱ IDEAL";position:absolute;right:6px;top:4px;font:800 12px var(--f-body);letter-spacing:.04em;color:#fff;background:#0b5cad;border-radius:6px;padding:2px 6px}
+.cas.ideal.act::after{content:"⏱ IDEAL ✓";background:#12a63c}
 .cOrig{grid-column:1/-1;width:100%;display:block;border-top:1px solid #ddd}
 .cFoto{grid-column:1/-1;min-height:0;padding:3px;font-size:12px;font-weight:600;color:#666;border:0;border-top:1px dashed #ccc;border-radius:0;background:#fafafa}
 .fin{color:#333;text-align:center;padding:30px 10px 55vh;font:700 18px var(--f-body)}
@@ -189,7 +192,7 @@ function tic(){
   const ini=t.km_inicio||0, vel=t.secciones[0].vel;
   $("#tMeta").textContent=fmtDur(meta);
   if(!sal){
-    $("#ritmo").className="rt"; $("#rtSeg").textContent="0,00"; $("#rtTxt").textContent="parcial ideal";
+    $("#ritmo").className="rt"; $("#rtSeg").textContent="0,00"; $("#rtTxt").textContent="parcial ideal"; quitarIdeal();
     C.className=""; $("#tCorre").textContent="0:00"; $("#hLlegar").textContent="--:--:--"; $("#lFalta").textContent="Destino"; $("#tFalta").textContent=destino(t).replace(/^Control /,"");
     $("#kmIdeal").textContent=fmtKm(ini); $("#res").textContent=""; if(!armado) b.textContent="SALGO YA"; return;
   }
@@ -200,11 +203,12 @@ function tic(){
   if(!ll){ const r=ritmo(t,sal), a=Math.abs(r.d), R=$("#ritmo");
     // parcial ideal en vivo: lo que debería marcar el trip (puesto en 0 en la casilla anterior a «voy para»)
     const base=r.base, kmId=Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600), pid=kmId-base;
+    marcarIdeal(t,kmId);
     R.className="rt "+(a<=10?"ok":a<=30?"warn":"bad");
     $("#rtSeg").textContent=(pid<0?"−":"")+fmtKm(Math.abs(pid));
     const dd=(a<60?a+" s":fmtDur(a));
     $("#rtTxt").textContent=a<=10?"✓ en ritmo":r.d>0?"▲ más rápido +"+dd:"▼ más lento −"+dd;
-  } else { $("#ritmo").className="rt"; $("#rtSeg").textContent="--"; $("#rtTxt").textContent="llegaste" }
+  } else { $("#ritmo").className="rt"; $("#rtSeg").textContent="--"; $("#rtTxt").textContent="llegaste"; quitarIdeal() }
   if(ll){
     const d=Math.round((ll-ideal)/1000), a=Math.abs(d), cl=a<=3?"ok":a<=15?"warn":"bad";
     C.className=cl; $("#res").className=cl; $("#res").textContent=`Llegaste ${fmtHora(new Date(ll))} · ${fmtDif(d)}`;
@@ -218,8 +222,18 @@ function tic(){
   }
 }
 
+// ---- Casilla ideal: hacia la que deberías ir ahora según el cronómetro ----
+let idealI=-1;
+function marcarIdeal(t,kmId){
+  const cs=t.roadbook.casillas; let i=cs.findIndex(c=>c.tot>kmId+1e-6); if(i<0) i=cs.length-1;
+  if(i===idealI&&$("#lista .cas.ideal")) return; idealI=i;
+  $("#lista").querySelectorAll(".cas.ideal").forEach(c=>c.classList.remove("ideal"));
+  $(`#lista .cas[data-i="${i}"]`)?.classList.add("ideal");
+}
+function quitarIdeal(){ idealI=-1; $("#lista").querySelectorAll(".cas.ideal").forEach(c=>c.classList.remove("ideal")) }
+
 // ---- Roadbook ----
-function pintarLista(){
+function pintarLista(){ idealI=-1;
   const t=T(), cs=t.roadbook?.casillas||[], L=$("#lista");
   L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}" data-f="${c.foto}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}${c.emo?` <i class="emo">${c.emo}</i>`:""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div></div>`).join("")
     +`<div class="fin">Fin de la etapa ${E+1} · ${destino(t)}</div>`;
