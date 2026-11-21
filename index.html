@@ -23,23 +23,23 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--f-body)}
-body{display:grid;grid-template-rows:auto 1fr auto;height:100vh;height:100dvh;
+body{display:grid;grid-template-rows:auto 1fr;grid-template-columns:minmax(0,1fr);height:100vh;height:100dvh;
   padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left));gap:6px}
 button,select,input{font:inherit;color:inherit}
 button{border-radius:10px;border:1px solid var(--line);background:transparent;padding:8px 12px;min-height:48px;font-weight:700;cursor:pointer}
 
 /* ---- Cronómetro ---- */
-#crono{background:var(--panel);border:3px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+#crono{min-width:0;background:var(--panel);border:3px solid var(--line);border-radius:12px;padding:6px 8px;display:flex;flex-direction:column;gap:4px}
 #crono.corre{border-color:var(--accent)} #crono.ok{border-color:var(--ok)} #crono.warn{border-color:var(--warn)} #crono.bad{border-color:var(--bad)}
 .f1{display:flex;gap:8px;align-items:center}
-#etapa{flex:1;min-width:0;font-family:var(--f-num);font-weight:700;font-size:20px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+#etapa{flex:1;min-width:0;font-family:var(--f-num);font-weight:700;font-size:18px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
 #hora{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:20px;font-weight:600;text-align:right;line-height:1;white-space:nowrap}
 #hora small{display:block;font:600 10px var(--f-body);color:var(--muted)}
-.f2{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
-#tCorre{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(52px,16vw,80px);line-height:.85}
-.meta{text-align:right;font-family:var(--f-num);line-height:1}
+.f2{display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:10px}
+#tCorre{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-weight:700;font-size:clamp(44px,13vw,64px);line-height:.85}
+.meta{font-family:var(--f-num);line-height:1}
 .meta small,.f3 small{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-.meta b{display:block;font-size:clamp(30px,9.5vw,44px);color:var(--accent);font-variant-numeric:tabular-nums}
+.meta b{display:block;font-size:clamp(24px,7.5vw,36px);color:var(--accent);font-variant-numeric:tabular-nums}
 .f3{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-num);font-variant-numeric:tabular-nums;border-top:1px solid var(--line);padding-top:4px}
 .f3 b{display:block;font-size:clamp(22px,6.6vw,32px);line-height:1}
 .f3>div:nth-child(2){text-align:center}
@@ -48,9 +48,9 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 #res:empty{display:none}
 #res.ok{color:var(--ok)} #res.warn{color:var(--warn)} #res.bad{color:var(--bad)}
 .f4{display:flex;gap:6px}
-#btnAccion{flex:1;min-height:52px;font-family:var(--f-num);font-size:26px;letter-spacing:.02em;background:var(--accent);color:#111;border-color:var(--accent)}
+#btnAccion{min-height:52px;font-family:var(--f-num);font-size:clamp(17px,5vw,22px);line-height:1.05;padding:4px 6px;letter-spacing:.02em;background:var(--accent);color:#111;border-color:var(--accent)}
 #btnAccion.armado{background:var(--bad);border-color:var(--bad);color:#fff}
-#btnAjustes{width:52px;font-size:22px}
+#btnAjustes{width:44px;min-height:40px;padding:0;font-size:20px}
 #ajustes{display:none;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:6px;font-size:14px;color:var(--muted)}
 #ajustes.ver{display:flex}
 #ajustes .fila{display:flex;gap:6px;align-items:center}
@@ -77,13 +77,10 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 .fin{color:#333;text-align:center;padding:30px 10px 55vh;font:700 18px var(--f-body)}
 
 /* ---- Botones de casilla ---- */
-#pie{display:grid;grid-template-columns:1fr 2fr;gap:6px}
-#pie button{min-height:62px;font-size:30px}
-#bAbajo{background:var(--accent);color:#111;border-color:var(--accent)}
 
 @media (orientation:landscape){
-  body{grid-template-columns:minmax(280px,40%) 1fr;grid-template-rows:1fr auto}
-  #crono{grid-row:1/3;overflow-y:auto} #lista{grid-column:2} #pie{grid-column:2}
+  body{grid-template-columns:minmax(260px,36%) 1fr;grid-template-rows:1fr}
+  #crono{overflow-y:auto} .f2{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -92,22 +89,17 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
   <div class="f1">
     <select id="etapa" aria-label="Etapa"></select>
     <div id="hora" role="button" title="Sincronizar hora">--:--:--<small id="sync">hora sin sincronizar</small></div>
+    <button id="btnAjustes" aria-label="Ajustes">⋯</button>
   </div>
   <div class="f2">
     <div id="tCorre">0:00</div>
     <div class="meta"><small>Debe marcar</small><b id="tMeta">--:--</b></div>
-  </div>
-  <div class="f3">
-    <div><small>Llegar a las</small><b id="hLlegar">--:--:--</b></div>
-    <div><small>Km ideal ya</small><b id="kmIdeal">--</b></div>
-    <div class="r"><small id="lFalta">Faltan</small><b id="tFalta">--:--</b></div>
+    <button id="btnAccion">SALGO YA</button>
   </div>
   <p id="res"></p>
-  <div class="f4">
-    <button id="btnAccion">SALGO YA</button>
-    <button id="btnAjustes" aria-label="Ajustes">⋯</button>
-  </div>
   <div id="ajustes">
+    <div class="fila" style="font-family:var(--f-num);font-size:20px;color:var(--ink)">Llegar a las&nbsp;<b id="hLlegar">--:--:--</b>&nbsp;·&nbsp;<span id="lFalta">Faltan</span>&nbsp;<b id="tFalta">--:--</b></div>
+    <div class="fila" style="font-family:var(--f-num);font-size:20px;color:var(--ink)">Km ideal ahora&nbsp;<b id="kmIdeal">--</b></div>
     <div class="fila"><label for="inSalida" style="flex:0 0 auto">Salida</label><input id="inSalida" type="time" step="1"><button id="bSalida">Usar esta hora</button></div>
     <div class="fila"><label for="inLleg" style="flex:0 0 auto">Llegada</label><input id="inLleg" type="time" step="1"><button id="bLleg">Usar esta hora</button></div>
     <div class="fila"><button id="bBorrar">Borrar etapa</button><button id="bSync">Sincronizar hora</button></div>
@@ -116,10 +108,6 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 
 <main id="lista" aria-label="Roadbook"></main>
 
-<nav id="pie">
-  <button id="bArriba" aria-label="Casilla anterior">▲</button>
-  <button id="bAbajo" aria-label="Casilla siguiente">▼</button>
-</nav>
 
 <script>
 const $=s=>document.querySelector(s);
@@ -174,7 +162,7 @@ function desarmar(){ armado=0; clearTimeout(tArm); $("#btnAccion").classList.rem
 $("#btnAccion").addEventListener("click",()=>{
   const t=T(), sal=salidaDe(t), ll=llegDe(t);
   // doble toque para no marcar por accidente: la hora que queda es la del PRIMER toque
-  if(!armado||ahoraMs()-armado>3000){ armado=ahoraMs(); const b=$("#btnAccion"); b.classList.add("armado"); b.textContent="TOCA OTRA VEZ";
+  if(!armado||ahoraMs()-armado>3000){ armado=ahoraMs(); const b=$("#btnAccion"); b.classList.add("armado"); b.textContent="OTRA VEZ";
     clearTimeout(tArm); tArm=setTimeout(()=>{desarmar(); tic()},3000); return }
   const h=armado; desarmar();
   if(!sal){ guardar("sal-"+t.id,h); guardar("lleg-"+t.id,"") }
@@ -208,19 +196,19 @@ function tic(){
     const d=Math.round((ll-ideal)/1000), a=Math.abs(d), cl=a<=3?"ok":a<=15?"warn":"bad";
     C.className=cl; $("#res").className=cl; $("#res").textContent=`Llegaste ${fmtHora(new Date(ll))} · ${fmtDif(d)}`;
     $("#lFalta").textContent="Diferencia"; $("#tFalta").textContent=(d>0?"+":d<0?"−":"")+fmtDur(a);
-    if(!armado) b.textContent=E+1<PLAN.tramos.length?`SALGO YA · ETAPA ${E+2}`:"RALLY TERMINADO";
+    if(!armado) b.textContent=E+1<PLAN.tramos.length?`SALGO · ETAPA ${E+2}`:"TERMINADO";
     b.disabled=E+1>=PLAN.tramos.length;
   }else{
     C.className="corre"; $("#res").textContent=""; b.disabled=false;
     const f=(ideal-ahora)/1000; $("#lFalta").textContent=f>=0?"Faltan":"Pasado por"; $("#tFalta").textContent=fmtDur(f);
-    if(!armado) b.textContent=`LLEGUÉ · ${destino(t).replace(/^Control /,"").toUpperCase()}`;
+    if(!armado) b.textContent="LLEGUÉ";
   }
 }
 
 // ---- Roadbook ----
 function pintarLista(){
   const t=T(), cs=t.roadbook?.casillas||[], L=$("#lista");
-  L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div><button class="cFoto" data-f="${c.foto}">ver casilla original</button></div>`).join("")
+  L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}" data-f="${c.foto}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div></div>`).join("")
     +`<div class="fin">Fin de la etapa ${E+1} · ${destino(t)}</div>`;
   rbI=Math.min(+(leer("rb-"+t.id)||0),cs.length-1); setTimeout(()=>irCasilla(rbI,false),30);
 }
@@ -229,12 +217,11 @@ function irCasilla(i,anim=true){
   const L=$("#lista"); L.querySelectorAll(".cas").forEach(c=>c.classList.toggle("act",+c.dataset.i===rbI));
   const c=L.querySelector(`.cas[data-i="${rbI}"]`); if(c) L.scrollTo({top:c.offsetTop-Math.round(c.offsetHeight*0.3),behavior:anim?"smooth":"auto"});
 }
-$("#bAbajo").addEventListener("click",()=>irCasilla(rbI+1));
-$("#bArriba").addEventListener("click",()=>irCasilla(rbI-1));
 $("#lista").addEventListener("click",e=>{
-  const fb=e.target.closest(".cFoto"); if(fb){ const c=fb.parentElement; let im=c.querySelector(".cOrig");
-    if(im){ im.remove(); fb.textContent="ver casilla original" } else { im=document.createElement("img"); im.className="cOrig"; im.src=fb.dataset.f; c.appendChild(im); fb.textContent="ocultar original" } return }
-  const c=e.target.closest(".cas"); if(c) irCasilla(+c.dataset.i);
+  const c=e.target.closest(".cas"); if(!c) return;
+  // tocar la casilla marcada otra vez abre o cierra la foto original del libro
+  if(c.classList.contains("act")){ const im=c.querySelector(".cOrig"); if(im) im.remove(); else { const n=document.createElement("img"); n.className="cOrig"; n.src=c.dataset.f; c.appendChild(n) } return }
+  irCasilla(+c.dataset.i);
 });
 // botonera Bluetooth que funcione como teclado
 document.addEventListener("keydown",e=>{
