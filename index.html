@@ -86,6 +86,29 @@ body.modo-rb #rbVista{display:grid;grid-template-rows:auto 1fr auto;height:100vh
 .rbLista img.recto{border-left:16px solid #12a63c}
 .rbLista img{box-sizing:border-box}
 .rbLista img.act{outline:5px solid var(--accent);outline-offset:-5px}
+.cas{display:grid;grid-template-columns:clamp(104px,31vw,150px) clamp(78px,24vw,120px) 1fr;align-items:stretch;border-bottom:3px solid #d0d0d0;border-left:14px solid #12a63c;color:#111;background:#fff;min-height:96px;cursor:pointer}
+.cas.c-R{border-left-color:#e01e12} .cas.c-P{border-left:20px solid #7b2cbf}
+.cPar{display:flex;flex-direction:column;justify-content:space-between;padding:4px 6px;background:#ecf8ef;font-family:var(--f-num)}
+.c-R .cPar{background:#ffecea} .c-P .cPar{background:#f1e6fb}
+.cPar small{font:700 11px var(--f-body);letter-spacing:.06em;color:#555} .c-P .cPar small{color:#7b2cbf}
+.cPar b{font-size:clamp(40px,12.5vw,60px);font-weight:700;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.cPar span{font-size:clamp(15px,4.4vw,19px);font-weight:600;color:#333;font-variant-numeric:tabular-nums}
+.cIco{width:100%;height:100%;max-height:120px;object-fit:contain;padding:4px;box-sizing:border-box;border-right:1px solid #ddd;background:#fff}
+.cTxt{padding:6px 8px;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.cTxt b{font-family:var(--f-num);font-size:clamp(22px,6.6vw,30px);line-height:1.02;text-transform:uppercase}
+.c-R .cTxt b{color:#d0150a} .c-P .cTxt b,.c-P .cTxt span{color:#7b2cbf}
+.cTxt span{font-size:clamp(14px,4vw,17px);line-height:1.2} .c-P .cTxt span{font-weight:700}
+.cas.act{outline:5px solid var(--accent);outline-offset:-5px}
+.rbLista .cIco{border-bottom:0}
+.cOrig{grid-column:1/-1;width:100%;display:block;border-top:1px solid #ddd}
+.cFoto{grid-column:1/-1;min-height:0;padding:4px;font-size:13px;color:#555;border:0;border-top:1px dashed #ccc;border-radius:0;background:#fafafa}
+.rbFin .ya{margin-top:14px}
+.crono{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;border:2px solid var(--line);border-radius:10px;padding:10px}
+.crono h3{margin:0;font-size:16px;grid-column:1/-1}
+.crono .reloj2{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:40px;font-weight:700;line-height:1}
+.crono .ideal{font-size:14px;color:var(--muted)} .crono .res{grid-column:1/-1;font-family:var(--f-num);font-size:22px;font-weight:700}
+.crono .res.ok{color:var(--ok)} .crono .res.warn{color:var(--warn)} .crono .res.bad{color:var(--bad)}
+.crono button{min-height:56px}
 .rbLista .rbFin{color:#555;text-align:center;padding:40px 10px 60vh;font:600 18px var(--f-body);margin:0}
 .rbBotones{display:grid;grid-template-columns:1fr 1fr 2fr 1fr;gap:6px}
 .rbBotones button{min-height:60px;font-size:26px;padding:6px}
@@ -172,6 +195,11 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     <p class="estado" id="estado">Cargando tramos…</p>
     <p class="estado" id="syncEst">Hora exacta: sin sincronizar</p>
     <div class="acciones"><button id="btnSync">Sincronizar hora exacta</button></div>
+  </section>
+
+  <section class="panel" id="cronos">
+    <p class="lbl">Cronómetros de control</p>
+    <div id="cronoLista" style="display:flex;flex-direction:column;gap:8px"></div>
   </section>
 
   <details class="panel">
@@ -265,7 +293,7 @@ async function iniciar(sim,ya,ret){
   const kmIni=ret?ret.km:(!sim&&!ya?parseFloat(String($("#kmIni").value).replace(",","."))||ini(T):ini(T));
   run={gpsM:0,ultimo:null,offsetKm:kmIni,sim,velGps:null,prec:null,watch:null,hist:[],simKm:0};
   $("#kmIni").value="";
-  if(!sim){ guardar("salida-"+T.id,fmtHora(salida)); $("#salida").value=fmtHora(salida) }   // queda escrita para retomar
+  if(!sim){ guardar("salida-"+T.id,fmtHora(salida)); $("#salida").value=fmtHora(salida); if(!ret) guardar("lleg-"+T.id,"") }   // queda escrita para retomar
   if(sim){ $("#gpsPrec").textContent="Simulación (sin GPS)"; }
   else{
     if(!("geolocation" in navigator)){aviso("Este navegador no tiene GPS.");return}
@@ -399,12 +427,17 @@ pintarSync(); sincronizar(false); setInterval(()=>{ if(!run) sincronizar(false) 
 // ---- Roadbook ----
 let rbI=0, rbParcialKm=0;
 function rbDe(t){ return t&&t.roadbook&&t.roadbook.imagenes&&t.roadbook.imagenes.length?t.roadbook:null }
-function precargarRoadbooks(p){ p.tramos.forEach(t=>(rbDe(t)?.imagenes||[]).forEach(u=>fetch(u).catch(()=>{}))) }   // quedan guardadas para modo avión
+function precargarRoadbooks(p){ p.tramos.forEach(t=>{ (rbDe(t)?.imagenes||[]).forEach(u=>fetch(u).catch(()=>{})); (t.roadbook?.casillas||[]).forEach(c=>fetch(c.ico).catch(()=>{})) }) }   // quedan guardadas para modo avión
 function abrirRb(){
   const rb=rbDe(T); $("#btnVerRb").hidden=!rb; if(!rb){ document.body.classList.remove("modo-rb"); return }
   const L=$("#rbLista");
   if(L.dataset.tramo!==T.id){
-    const gi=rb.giros||""; L.innerHTML=rb.imagenes.map((u,i)=>`<img src="${u}" alt="Casilla ${i+1}" data-i="${i}" class="${gi[i]==="R"?"giro":gi[i]==="P"?"ojo":gi[i]==="G"?"recto":""}">`).join("")+'<p class="rbFin">Fin del roadbook de este tramo</p>';
+    const gi=rb.giros||"", cls=i=>gi[i]==="R"?"giro":gi[i]==="P"?"ojo":gi[i]==="G"?"recto":"";
+    const fk=x=>x.toFixed(2).replace(".",",");
+    L.innerHTML=(rb.casillas?rb.casillas.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}</small><b>${fk(c.par)}</b><span>#${c.n} · total ${fk(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div><button class="cFoto" data-f="${c.foto}">ver casilla original</button></div>`).join("")
+      :rb.imagenes.map((u,i)=>`<img class="cas ${cls(i)}" src="${u}" alt="Casilla ${i+1}" data-i="${i}">`).join(""))
+      +`<div class="rbFin">Fin del roadbook de este tramo${ctlDe(T)?`<button class="prim ya" id="rbLlegue">LLEGUÉ · ${ctlDe(T).nombre}</button><p id="rbLlegTxt"></p>`:""}</div>`;
+    $("#rbLlegue")?.addEventListener("click",e=>{e.stopPropagation(); marcarLlegada(T.id); $("#rbLlegTxt").textContent=txtCrono(T).res});
     L.dataset.tramo=T.id; rbI=Math.min(+(leer("rb-"+T.id)||0),rb.imagenes.length-1);
   }
   document.body.classList.add("modo-rb"); setTimeout(()=>irCasilla(rbI,false),60);
@@ -414,8 +447,8 @@ function irCasilla(i,anim=true){
   const rb=rbDe(T); if(!rb) return; const L=$("#rbLista");
   if(rb.tipo==="paginas"){ L.scrollBy({top:(i>rbI?1:-1)*L.clientHeight*0.45,behavior:anim?"smooth":"auto"}); return }
   rbI=Math.max(0,Math.min(i,rb.imagenes.length-1)); guardar("rb-"+T.id,rbI);
-  L.querySelectorAll("img").forEach(im=>im.classList.toggle("act",+im.dataset.i===rbI));
-  const im=L.querySelector(`img[data-i="${rbI}"]`); if(im) L.scrollTo({top:im.offsetTop-Math.round(im.height*0.45),behavior:anim?"smooth":"auto"});
+  L.querySelectorAll(".cas").forEach(im=>im.classList.toggle("act",+im.dataset.i===rbI));
+  const im=L.querySelector(`.cas[data-i="${rbI}"]`); if(im) L.scrollTo({top:im.offsetTop-Math.round(im.offsetHeight*0.45),behavior:anim?"smooth":"auto"});
 }
 function sigCasilla(){ if(!run) return; rbParcialKm=kmActual(); irCasilla(rbI+1) }
 function antCasilla(){ if(!run) return; irCasilla(rbI-1) }
@@ -424,7 +457,10 @@ $("#rbArriba").addEventListener("click",antCasilla);
 $("#rbCero").addEventListener("click",()=>{ if(run) rbParcialKm=kmActual() });
 $("#rbMas").addEventListener("click",cerrarRb);
 $("#btnVerRb").addEventListener("click",abrirRb);
-$("#rbLista").addEventListener("click",e=>{ const i=e.target.dataset?.i; if(i!=null&&rbDe(T)?.tipo!=="paginas") irCasilla(+i) });
+$("#rbLista").addEventListener("click",e=>{
+  const fb=e.target.closest(".cFoto"); if(fb){ const c=fb.parentElement; let im=c.querySelector(".cOrig");
+    if(im){ im.remove(); fb.textContent="ver casilla original" } else { im=document.createElement("img"); im.className="cOrig"; im.src=fb.dataset.f; c.appendChild(im); fb.textContent="ocultar original" } return }
+  const c=e.target.closest(".cas"); if(c&&rbDe(T)?.tipo!=="paginas") irCasilla(+c.dataset.i) });
 // botonera Bluetooth que funcione como teclado: flechas, Av Pág/Re Pág, espacio o Enter
 document.addEventListener("keydown",e=>{
   if(!document.body.classList.contains("modo-rb")||/INPUT|SELECT/.test(document.activeElement?.tagName)) return;
@@ -440,6 +476,34 @@ function pintarRb(){
   $("#rbCtl").innerHTML=`${$("#ctlNombre").textContent} a las <b>${$("#ctlHora").textContent}</b>`;
   $("#rbDist").innerHTML=`Faltan <b>${$("#ctlKm").dataset.d||"--"}</b> · <b>${$("#ctlFalta").textContent}</b>`;
 }
+
+// ---- Cronómetros de control: uno por control (fin de los tramos 1, 2 y 3). Cuentan desde la salida del tramo,
+// muestran la hora ideal de llegada y, al tocar LLEGUÉ, guardan la hora real y la diferencia.
+function ctlDe(t){ const i=PLAN.tramos.indexOf(t); return t&&i>=0&&i<3?(t.controles||[]).find(c=>Math.abs(c.km-t.fin_km)<1e-6):null }
+function salidaDe(t){ const v=leer("salida-"+t.id); if(!v) return null; const[h,m,s]=v.split(":").map(Number); const d=new Date(ahoraMs()); d.setHours(h,m,s||0,0); return d }
+function idealDe(t){ const s=salidaDe(t); return s?new Date(s.getTime()+(t.tiempo_ideal_min||0)*60000):null }
+function marcarLlegada(id){ guardar("lleg-"+id,String(ahoraMs())); pintarCronos() }
+function txtCrono(t){
+  const s=salidaDe(t), id=idealDe(t), ll=+(leer("lleg-"+t.id)||0); const ahora=ahoraMs();
+  if(!s) return {reloj:"--:--",ideal:"Sin hora de salida de este tramo",res:"",cls:""};
+  const fin=ll||ahora, cor=Math.max(0,(fin-s)/1000);
+  const ideal=`Salida ${fmtHora(s)} · ideal ${fmtHora(id)} (${t.tiempo_ideal_min} min)`;
+  if(ll){ const d=Math.round((ll-id.getTime())/1000), a=Math.abs(d);
+    return {reloj:fmtDur(cor),ideal,res:`Llegaste ${fmtHora(new Date(ll))} · ${d===0?"justo a tiempo":(d>0?"+":"−")+(a<60?a+" s":fmtDur(a))+(d>0?" tarde":" antes")}`,cls:a<=3?"ok":a<=15?"warn":"bad"} }
+  const falta=(id-ahora)/1000;
+  return {reloj:fmtDur(cor),ideal,res:falta>=0?`Faltan ${fmtDur(falta)} para la hora ideal`:`Pasaste la hora ideal hace ${fmtDur(-falta)}`,cls:""};
+}
+function pintarCronos(){
+  if(!PLAN) return; const L=$("#cronoLista");
+  const ts=PLAN.tramos.filter(t=>ctlDe(t));
+  if(L.dataset.n!==String(ts.length)){ L.dataset.n=ts.length;
+    L.innerHTML=ts.map((t,k)=>`<div class="crono" id="cr-${t.id}"><h3>${k+1}. ${ctlDe(t).nombre} · fin ${t.nombre.split(" · ")[0]}</h3><div><div class="reloj2">--:--</div><div class="ideal"></div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="prim" data-ll="${t.id}">LLEGUÉ</button><button data-bo="${t.id}" style="min-height:40px;font-size:13px">Borrar</button></div><div class="res"></div></div>`).join("");
+    L.onclick=e=>{ const a=e.target.dataset; if(a.ll) marcarLlegada(a.ll); if(a.bo&&confirm("¿Borrar la llegada marcada?")){ guardar("lleg-"+a.bo,""); pintarCronos() } };
+  }
+  ts.forEach(t=>{ const c=$("#cr-"+t.id), x=txtCrono(t); c.querySelector(".reloj2").textContent=x.reloj; c.querySelector(".ideal").textContent=x.ideal;
+    const r=c.querySelector(".res"); r.textContent=x.res; r.className="res "+x.cls; c.querySelector("[data-ll]").hidden=!!leer("lleg-"+t.id) });
+}
+setInterval(pintarCronos,500);
 
 // ---- Retomar: si la app se cierra o se daña a mitad de tramo, se guarda salida, km y casilla cada 2 s ----
 function avisoCurso(t){ $("#msgCurso").textContent=t; $("#msgCurso").hidden=!t }
