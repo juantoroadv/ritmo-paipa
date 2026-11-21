@@ -113,7 +113,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
     <div class="grid">
       <div class="dato"><p class="lbl">Ve a</p><b id="velSug">--</b><small id="velSugNota">&nbsp;</small></div>
       <div class="dato"><p class="lbl">Vas a</p><b id="velAct">--</b><small id="gpsPrec">GPS apagado</small></div>
-      <div class="dato"><p class="lbl">Km recorridos (GPS)</p><b id="kmAct">0,00</b><small id="kmIdeal">&nbsp;</small></div>
+      <div class="dato"><p class="lbl">Km roadbook (GPS)</p><b id="kmAct">0,00</b><small id="kmIdeal">&nbsp;</small></div>
       <div class="dato"><p class="lbl">Velocidad del tramo</p><b id="velIdeal">--</b><small>media impuesta</small></div>
     </div>
   </section>
@@ -153,7 +153,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
       <label for="salida">Hora de salida<input id="salida" type="time" step="1"></label>
     </div>
     <div class="acciones">
-      <label for="kmIni">Km donde vas (opcional, para retomar a mitad de tramo)<input id="kmIni" type="number" inputmode="decimal" step="0.01" placeholder="0,00"></label>
+      <label for="kmIni">Km del roadbook donde vas (opcional, para retomar a mitad de tramo)<input id="kmIni" type="number" inputmode="decimal" step="0.01" placeholder="0,00"></label>
     </div>
     <p class="msg" id="msg" hidden></p>
     <div class="acciones">
@@ -198,7 +198,7 @@ ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
   <div class="rbBanda" id="rbBanda">
     <div class="rbSeg" id="rbSeg">--</div>
     <div class="rbTxt"><b id="rbTxt">&nbsp;</b><span id="rbAcc">&nbsp;</span></div>
-    <div class="rbKm"><b id="rbKm">0,00</b><small>km GPS</small><div class="rbParcial" id="rbParcial">parcial 0,00</div></div>
+    <div class="rbKm"><b id="rbKm">0,00</b><small>km roadbook</small><div class="rbParcial" id="rbParcial">parcial 0,00</div></div>
     <div class="rbFila"><span>Ve a <b id="rbVe">--</b></span><span id="rbCtl">--</span><span class="rbDist" id="rbDist">--</span></div>
   </div>
   <div class="rbLista" id="rbLista"></div>
@@ -216,6 +216,8 @@ const guardar=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const dos=n=>String(n).padStart(2,"0");
 const fmtHora=d=>`${dos(d.getHours())}:${dos(d.getMinutes())}:${dos(d.getSeconds())}`;
 const fmtKm=d=>d.toFixed(2).replace(".",",");
+const fmtVel=v=>(Math.round(v*10)/10).toString().replace(".",",")+" km/h";
+const ini=t=>t?.km_inicio||0;   // km total del roadbook donde arranca el tramo
 const fmtDist=d=>{const m=Math.max(0,Math.round(d*1000));return m<1000?`${m} m`:`${Math.floor(m/1000)} km ${String(m%1000).padStart(3,"0")} m`};
 const fmtDur=s=>{const neg=s<0;s=Math.abs(Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (neg?"-":"")+(h?`${h}:${dos(m)}`:`${m}`)+":"+dos(s%60)};
 
@@ -242,10 +244,10 @@ $("#salida").addEventListener("change",()=>{guardar("salida-"+$("#tramo").value,
 
 function tabla(){
   const t=tramoSel(); if(!t) return; const sal=salidaSel(); const pts=new Map();
-  for(let k=0;k<=t.fin_km+1e-9;k+=1) pts.set(+k.toFixed(2),"");
-  t.secciones.slice(1).forEach(s=>pts.set(s.desde_km,`Cambio a ${s.vel} km/h`));
+  pts.set(ini(t),"Salida"); for(let k=Math.ceil(ini(t));k<=t.fin_km+1e-9;k+=1) if(k>ini(t)) pts.set(+k.toFixed(2),"");
+  t.secciones.slice(1).forEach(s=>pts.set(s.desde_km,`Cambio a ${fmtVel(s.vel)}`));
   (t.controles||[]).forEach(c=>pts.set(c.km,c.nombre||"Control"));
-  pts.set(t.fin_km,"Fin del tramo");
+  if(!(t.controles||[]).some(c=>Math.abs(c.km-t.fin_km)<1e-6)) pts.set(t.fin_km,"Fin del tramo");
   const filas=[...pts.keys()].sort((a,b)=>a-b).map(k=>{const s=tiempoEnKm(t.secciones,k),n=pts.get(k);
     return `<tr class="${/control/i.test(n)?"ctl":""}"><td>${fmtKm(k)}</td><td>+${fmtDur(s)}</td><td>${sal?fmtHora(new Date(sal.getTime()+s*1000)):"—"}</td><td>${n}</td></tr>`});
   $("#tabla").innerHTML=`<table><thead><tr><th>Km</th><th>Desde salida</th><th>Hora</th><th>Nota</th></tr></thead><tbody>${filas.join("")}</tbody></table>`;
@@ -256,7 +258,7 @@ function aviso(t){$("#msg").textContent=t;$("#msg").hidden=!t}
 async function iniciar(sim,ya,ret){
   aviso(""); T=tramoSel(); salida=ya?new Date(typeof ya==="number"?ya:ahoraMs()):sim?new Date(ahoraMs()+10000):salidaSel();
   if(!salida){aviso("Escribe primero tu hora de salida.");return}
-  const kmIni=ret?ret.km:(!sim&&!ya?parseFloat(String($("#kmIni").value).replace(",","."))||0:0);
+  const kmIni=ret?ret.km:(!sim&&!ya?parseFloat(String($("#kmIni").value).replace(",","."))||ini(T):ini(T));
   run={gpsM:0,ultimo:null,offsetKm:kmIni,sim,velGps:null,prec:null,watch:null,hist:[],simKm:0};
   $("#kmIni").value="";
   if(!sim){ guardar("salida-"+T.id,fmtHora(salida)); $("#salida").value=fmtHora(salida) }   // queda escrita para retomar
@@ -268,7 +270,7 @@ async function iniciar(sim,ya,ret){
   }
   try{wake=await navigator.wakeLock?.request("screen")}catch(e){}
   $("#config").hidden=true; $("#enCurso").hidden=false; pintarSig(); rbParcialKm=ret?ret.km-(ret.parcial||0):kmIni; guardar("rb-"+T.id,String(ret?ret.rbI||0:0)); $("#rbLista").dataset.tramo="";
-  $("#retomarBox").hidden=true; avisoCurso(kmIni>0?`Arrancó en el km ${fmtKm(kmIni)}. Si no cuadra con la casilla del roadbook, corrígelo en «Ajuste opcional del km».`:"");
+  $("#retomarBox").hidden=true; avisoCurso(kmIni>ini(T)+0.001?`Arrancó en el km ${fmtKm(kmIni)}. Si no cuadra con la casilla del roadbook, corrígelo en «Ajuste opcional del km».`:"");
   abrirRb();
 }
 function errGps(e){ $("#gpsPrec").textContent = e.code===1 ? "Sin permiso de ubicación: actívalo en Ajustes > Safari" : "GPS sin señal"; }
@@ -314,12 +316,12 @@ function tic(){
   if(!run||!T) return;
   const r=(ahora-salida)/1000;
   // simulación: avanza a la velocidad ideal con un 8 % de más para ver el adelanto
-  if(run.sim && r>0){ const v=velEnKm(T.secciones,run.simKm)*1.08; run.simKm=Math.min(T.fin_km, run.simKm+v/3600*0.25); run.velGps=v }
+  if(run.sim && r>0){ const v=velEnKm(T.secciones,kmActual())*1.08; run.simKm=Math.min(T.fin_km-run.offsetKm, run.simKm+v/3600*0.25); run.velGps=v }
   const km=Math.max(0,kmActual()); const sec=T.secciones;
   $("#verTitulo").textContent=`${T.nombre} · salida ${fmtHora(salida)}`;
   $("#kmAct").textContent=fmtKm(km);
   $("#velAct").textContent=run.velGps!=null?Math.round(run.velGps)+" km/h":"--";
-  $("#velIdeal").textContent=velEnKm(sec,Math.min(km,T.fin_km))+" km/h";
+  $("#velIdeal").textContent=fmtVel(velEnKm(sec,Math.min(km,T.fin_km)));
 
   // próximo control (o fin)
   const pts=[...(T.controles||[]).map(c=>({km:c.km,n:c.nombre||"Control"})),{km:T.fin_km,n:"Fin del tramo"}].sort((a,b)=>a.km-b.km);
@@ -333,14 +335,14 @@ function tic(){
   if(r<0){
     $("#ver").className="veredicto"; $("#verSeg").textContent=fmtDur(r).replace("-","");
     $("#verTxt").textContent="Para la salida"; $("#verAcc").textContent="Quieto en la línea";
-    $("#velSug").textContent=velEnKm(sec,0)+" km/h"; $("#velSugNota").textContent="al salir"; $("#kmIdeal").textContent="ideal 0,00"; return;
+    $("#velSug").textContent=fmtVel(velEnKm(sec,ini(T))); $("#velSugNota").textContent="al salir"; $("#kmIdeal").textContent="ideal "+fmtKm(ini(T)); return;
   }
   const tIdeal=tiempoEnKm(sec,Math.min(km,T.fin_km));
   let dif=tIdeal-r;                         // + adelantado, − atrasado
   run.hist.push(dif); if(run.hist.length>12) run.hist.shift();
   dif=run.hist.reduce((a,b)=>a+b,0)/run.hist.length;   // promedio de 3 s para quitar ruido del GPS
   // km ideal ahora
-  let lo=0,hi=T.fin_km; for(let i=0;i<30;i++){const m=(lo+hi)/2; if(tiempoEnKm(sec,m)<r) lo=m; else hi=m}
+  let lo=ini(T),hi=T.fin_km; for(let i=0;i<30;i++){const m=(lo+hi)/2; if(tiempoEnKm(sec,m)<r) lo=m; else hi=m}
   $("#kmIdeal").textContent="ideal "+fmtKm(lo);
 
   const a=Math.abs(dif), s=Math.round(dif);
@@ -351,7 +353,7 @@ function tic(){
 
   const falta=tProx-r, dist=prox.km-km;
   if(falta>5&&dist>0){ const v=dist/falta*3600; $("#velSug").textContent=Math.round(v)+" km/h"; $("#velSugNota").textContent="para llegar justo"; }
-  else { $("#velSug").textContent=velEnKm(sec,km)+" km/h"; $("#velSugNota").textContent="velocidad del tramo"; }
+  else { $("#velSug").textContent=fmtVel(velEnKm(sec,km)); $("#velSugNota").textContent="velocidad del tramo"; }
 }
 
 // ---- Hora exacta: el QR lo escanea el organizador, así que la referencia es la hora global.

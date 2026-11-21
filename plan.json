@@ -1,66 +1,23 @@
 {
- "evento": "BMW Motorrad Rally Paipa 2026",
+ "evento": "Rally BMW Motorrad Off Road · Paipa - Monguí - Paipa · salida 7:00",
  "tramos": [
   {
-   "id": "prueba",
-   "nombre": "Tramo de prueba (5 km)",
-   "nota": "Para probar en la moto esta semana. Los tramos reales se cargan el viernes con el Road Book.",
-   "fin_km": 5.0,
-   "secciones": [
-    {
-     "desde_km": 0,
-     "vel": 30
-    },
-    {
-     "desde_km": 2.0,
-     "vel": 40
-    }
-   ],
-   "controles": [
-    {
-     "km": 3.5,
-     "nombre": "Control de prueba"
-    }
-   ],
-   "roadbook": {
-    "tipo": "casillas",
-    "imagenes": [
-     "rb/prueba/001.png",
-     "rb/prueba/002.png",
-     "rb/prueba/003.png",
-     "rb/prueba/004.png",
-     "rb/prueba/005.png",
-     "rb/prueba/006.png"
-    ]
-   }
-  },
-  {
    "id": "t1",
-   "nombre": "Tramo 1 (ejemplo) · 42 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 42.0,
+   "nombre": "Tramo 1 · Paipa → Corrales · 59,1 km · 95 min",
+   "nota": "Road Book real. Casillas 1 a 48. Tiempo ideal 95 min.",
+   "km_inicio": 0.0,
+   "fin_km": 59.1,
+   "tiempo_ideal_min": 95,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 40
-    },
-    {
-     "desde_km": 12.5,
-     "vel": 30
-    },
-    {
-     "desde_km": 20.0,
-     "vel": 45
+     "desde_km": 0.0,
+     "vel": 37.3263
     }
    ],
    "controles": [
     {
-     "km": 18.3,
-     "nombre": "Control 1A"
-    },
-    {
-     "km": 33.7,
-     "nombre": "Control 1B"
+     "km": 59.1,
+     "nombre": "Control Corrales"
     }
    ],
    "roadbook": {
@@ -85,37 +42,55 @@
      "rb/t1/017.png",
      "rb/t1/018.png",
      "rb/t1/019.png",
-     "rb/t1/020.png"
+     "rb/t1/020.png",
+     "rb/t1/021.png",
+     "rb/t1/022.png",
+     "rb/t1/023.png",
+     "rb/t1/024.png",
+     "rb/t1/025.png",
+     "rb/t1/026.png",
+     "rb/t1/027.png",
+     "rb/t1/028.png",
+     "rb/t1/029.png",
+     "rb/t1/030.png",
+     "rb/t1/031.png",
+     "rb/t1/032.png",
+     "rb/t1/033.png",
+     "rb/t1/034.png",
+     "rb/t1/035.png",
+     "rb/t1/036.png",
+     "rb/t1/037.png",
+     "rb/t1/038.png",
+     "rb/t1/039.png",
+     "rb/t1/040.png",
+     "rb/t1/041.png",
+     "rb/t1/042.png",
+     "rb/t1/043.png",
+     "rb/t1/044.png",
+     "rb/t1/045.png",
+     "rb/t1/046.png",
+     "rb/t1/047.png",
+     "rb/t1/048.png"
     ]
    }
   },
   {
    "id": "t2",
-   "nombre": "Tramo 2 (ejemplo) · 48 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 48.0,
+   "nombre": "Tramo 2 · Corrales → Monguí · 16,6 km · 30 min",
+   "nota": "Road Book real. Casillas 48 a 63. Tiempo ideal 30 min.",
+   "km_inicio": 59.1,
+   "fin_km": 75.7,
+   "tiempo_ideal_min": 30,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 35
-    },
-    {
-     "desde_km": 15.0,
-     "vel": 50
-    },
-    {
-     "desde_km": 38.2,
-     "vel": 32
+     "desde_km": 59.1,
+     "vel": 33.2
     }
    ],
    "controles": [
     {
-     "km": 21.4,
-     "nombre": "Control 2A"
-    },
-    {
-     "km": 40.0,
-     "nombre": "Control 2B"
+     "km": 75.7,
+     "nombre": "Control Monguí"
     }
    ],
    "roadbook": {
@@ -136,39 +111,27 @@
      "rb/t2/013.png",
      "rb/t2/014.png",
      "rb/t2/015.png",
-     "rb/t2/016.png",
-     "rb/t2/017.png",
-     "rb/t2/018.png",
-     "rb/t2/019.png",
-     "rb/t2/020.png",
-     "rb/t2/021.png",
-     "rb/t2/022.png"
+     "rb/t2/016.png"
     ]
    }
   },
   {
    "id": "t3",
-   "nombre": "Tramo 3 (ejemplo) · 44 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 44.0,
+   "nombre": "Tramo 3 · Monguí → El Crucero · 20,05 km · 40 min",
+   "nota": "Road Book real. Casillas 64 a 86. Tiempo ideal 40 min.",
+   "km_inicio": 75.85,
+   "fin_km": 95.9,
+   "tiempo_ideal_min": 40,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 30
-    },
-    {
-     "desde_km": 9.6,
-     "vel": 42
+     "desde_km": 75.85,
+     "vel": 30.075
     }
    ],
    "controles": [
     {
-     "km": 16.0,
-     "nombre": "Control 3A"
-    },
-    {
-     "km": 29.5,
-     "nombre": "Control 3B"
+     "km": 95.9,
+     "nombre": "Control El Crucero"
     }
    ],
    "roadbook": {
@@ -193,37 +156,30 @@
      "rb/t3/017.png",
      "rb/t3/018.png",
      "rb/t3/019.png",
-     "rb/t3/020.png"
+     "rb/t3/020.png",
+     "rb/t3/021.png",
+     "rb/t3/022.png",
+     "rb/t3/023.png"
     ]
    }
   },
   {
    "id": "t4",
-   "nombre": "Tramo 4 (ejemplo) · 46 km",
-   "nota": "EJEMPLO inventado para ver cómo funciona. Se reemplaza el viernes con el Road Book real.",
-   "fin_km": 46.0,
+   "nombre": "Tramo 4 · El Crucero → Paipa · 81,63 km · 130 min",
+   "nota": "Road Book real. Casillas 86 a 138. Tiempo ideal 130 min.",
+   "km_inicio": 95.9,
+   "fin_km": 177.53,
+   "tiempo_ideal_min": 130,
    "secciones": [
     {
-     "desde_km": 0,
-     "vel": 45
-    },
-    {
-     "desde_km": 22.0,
-     "vel": 35
-    },
-    {
-     "desde_km": 31.5,
-     "vel": 40
+     "desde_km": 95.9,
+     "vel": 37.6754
     }
    ],
    "controles": [
     {
-     "km": 14.8,
-     "nombre": "Control 4A"
-    },
-    {
-     "km": 35.2,
-     "nombre": "Control 4B"
+     "km": 177.53,
+     "nombre": "Meta Hotel Estelar Paipa"
     }
    ],
    "roadbook": {
@@ -249,7 +205,39 @@
      "rb/t4/018.png",
      "rb/t4/019.png",
      "rb/t4/020.png",
-     "rb/t4/021.png"
+     "rb/t4/021.png",
+     "rb/t4/022.png",
+     "rb/t4/023.png",
+     "rb/t4/024.png",
+     "rb/t4/025.png",
+     "rb/t4/026.png",
+     "rb/t4/027.png",
+     "rb/t4/028.png",
+     "rb/t4/029.png",
+     "rb/t4/030.png",
+     "rb/t4/031.png",
+     "rb/t4/032.png",
+     "rb/t4/033.png",
+     "rb/t4/034.png",
+     "rb/t4/035.png",
+     "rb/t4/036.png",
+     "rb/t4/037.png",
+     "rb/t4/038.png",
+     "rb/t4/039.png",
+     "rb/t4/040.png",
+     "rb/t4/041.png",
+     "rb/t4/042.png",
+     "rb/t4/043.png",
+     "rb/t4/044.png",
+     "rb/t4/045.png",
+     "rb/t4/046.png",
+     "rb/t4/047.png",
+     "rb/t4/048.png",
+     "rb/t4/049.png",
+     "rb/t4/050.png",
+     "rb/t4/051.png",
+     "rb/t4/052.png",
+     "rb/t4/053.png"
     ]
    }
   }
