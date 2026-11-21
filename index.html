@@ -77,7 +77,7 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 .cas.act{outline:5px solid #f0a800;outline-offset:-5px}
 .cas{position:relative}
 .cas.ideal::after{content:"⏱ IDEAL";position:absolute;right:6px;top:4px;font:800 12px var(--f-body);letter-spacing:.04em;color:#fff;background:#0b5cad;border-radius:6px;padding:2px 6px}
-.cas.ideal.act::after{content:"⏱ IDEAL ✓";background:#12a63c}
+.cas.ideal.ritmo::after{content:"⏱ IDEAL ✓";background:#12a63c}
 .cOrig{grid-column:1/-1;width:100%;display:block;border-top:1px solid #ddd}
 .cFoto{grid-column:1/-1;min-height:0;padding:3px;font-size:12px;font-weight:600;color:#666;border:0;border-top:1px dashed #ccc;border-radius:0;background:#fafafa}
 .fin{color:#333;text-align:center;padding:30px 10px 55vh;font:700 18px var(--f-body)}
@@ -200,14 +200,20 @@ function tic(){
   $("#tCorre").textContent=corre<0?"−"+fmtDur(corre):fmtDur(corre);
   $("#hLlegar").textContent=fmtHora(new Date(ideal));
   $("#kmIdeal").textContent=fmtKm(Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600));
-  if(!ll){ const r=ritmo(t,sal), a=Math.abs(r.d), R=$("#ritmo");
+  if(!ll){ const r=ritmo(t,sal), R=$("#ritmo");
     // parcial ideal en vivo: lo que debería marcar el trip (puesto en 0 en la casilla anterior a «voy para»)
     const base=r.base, kmId=Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600), pid=kmId-base;
-    marcarIdeal(t,kmId);
-    R.className="rt "+(a<=10?"ok":a<=30?"warn":"bad");
+    // Desfase coherente con la casilla ideal: vas entre la casilla anterior (lo) y la marcada (hi).
+    // Si el ideal ya pasó la marcada, vas atrasado al menos ese tiempo; si no ha llegado a la anterior, vas adelantado.
+    const cs=t.roadbook.casillas, lo=rbI>0?cs[rbI-1].tot:ini, hi=cs[rbI].tot; let d=r.d;
+    if(kmId>hi+1e-6) d=Math.max(d,Math.round((kmId-hi)/vel*3600));
+    else if(kmId<lo-1e-6) d=Math.min(d,-Math.round((lo-kmId)/vel*3600));
+    const a=Math.abs(d), enRitmo=a<=10;
+    marcarIdeal(t,kmId,enRitmo);
+    R.className="rt "+(enRitmo?"ok":a<=30?"warn":"bad");
     $("#rtSeg").textContent=(pid<0?"−":"")+fmtKm(Math.abs(pid));
     const dd=(a<60?a+" s":fmtDur(a));
-    $("#rtTxt").textContent=a<=10?"✓ en ritmo":r.d>0?"▲ más rápido +"+dd:"▼ más lento −"+dd;
+    $("#rtTxt").textContent=enRitmo?"✓ en ritmo":d>0?"▲ más rápido +"+dd:"▼ más lento −"+dd;
   } else { $("#ritmo").className="rt"; $("#rtSeg").textContent="--"; $("#rtTxt").textContent="llegaste"; quitarIdeal() }
   if(ll){
     const d=Math.round((ll-ideal)/1000), a=Math.abs(d), cl=a<=3?"ok":a<=15?"warn":"bad";
@@ -224,13 +230,14 @@ function tic(){
 
 // ---- Casilla ideal: hacia la que deberías ir ahora según el cronómetro ----
 let idealI=-1;
-function marcarIdeal(t,kmId){
+function marcarIdeal(t,kmId,ok){
   const cs=t.roadbook.casillas; let i=cs.findIndex(c=>c.tot>kmId+1e-6); if(i<0) i=cs.length-1;
-  if(i===idealI&&$("#lista .cas.ideal")) return; idealI=i;
-  $("#lista").querySelectorAll(".cas.ideal").forEach(c=>c.classList.remove("ideal"));
-  $(`#lista .cas[data-i="${i}"]`)?.classList.add("ideal");
+  const el=$(`#lista .cas[data-i="${i}"]`);
+  if(i!==idealI||!el?.classList.contains("ideal")){ idealI=i;
+    $("#lista").querySelectorAll(".cas.ideal").forEach(c=>c.classList.remove("ideal","ritmo")); el?.classList.add("ideal") }
+  el?.classList.toggle("ritmo",!!ok&&i===rbI);   // ✓ solo si la ideal es la marcada Y el desfase está en ritmo
 }
-function quitarIdeal(){ idealI=-1; $("#lista").querySelectorAll(".cas.ideal").forEach(c=>c.classList.remove("ideal")) }
+function quitarIdeal(){ idealI=-1; $("#lista").querySelectorAll(".cas.ideal").forEach(c=>c.classList.remove("ideal","ritmo")) }
 
 // ---- Roadbook ----
 function pintarLista(){ idealI=-1;
