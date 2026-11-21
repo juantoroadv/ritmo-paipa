@@ -588,7 +588,6 @@
    "roadbook": {
     "tipo": "casillas",
     "imagenes": [
-     "rb/t2/001.png",
      "rb/t2/002.png",
      "rb/t2/003.png",
      "rb/t2/004.png",
@@ -605,18 +604,8 @@
      "rb/t2/015.png",
      "rb/t2/016.png"
     ],
-    "giros": "RGPRRRGRRPRRGPGG",
+    "giros": "GPRRRGRRPRRGPGG",
     "casillas": [
-     {
-      "n": 48,
-      "par": 0.25,
-      "tot": 59.1,
-      "dir": "DERECHA",
-      "det": "Vía ppal · FIN TRAMO 1 · CONTROL CORRALES",
-      "c": "R",
-      "ico": "rb/t2/i001.png",
-      "foto": "rb/t2/001.png"
-     },
      {
       "n": 49,
       "par": 3.6,
@@ -1077,7 +1066,6 @@
    "roadbook": {
     "tipo": "casillas",
     "imagenes": [
-     "rb/t4/001.png",
      "rb/t4/002.png",
      "rb/t4/003.png",
      "rb/t4/004.png",
@@ -1131,18 +1119,8 @@
      "rb/t4/052.png",
      "rb/t4/053.png"
     ],
-    "giros": "GRRGGRRPGGRRGGGPRGRRGGRRRRGRGRRRGRGRPRGGGRRRGGGRRGRGR",
+    "giros": "RRGGRRPGGRRGGGPRGRRGGRRRRGRGRRRGRGRPRGGGRRRGGGRRGRGR",
     "casillas": [
-     {
-      "n": 86,
-      "par": 0.5,
-      "tot": 95.9,
-      "dir": "FIN TRAMO 3",
-      "det": "El Crucero · control · inicio tramo 4",
-      "c": "G",
-      "ico": "rb/t4/i001.png",
-      "foto": "rb/t4/001.png"
-     },
      {
       "n": 87,
       "par": 1.2,
