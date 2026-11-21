@@ -63,6 +63,7 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 .cas.c-R{border-left-color:#e01e12} .cas.c-P{border-left:20px solid #7b2cbf}
 .cPar{display:flex;flex-direction:column;justify-content:space-between;padding:4px 6px;background:#ecf8ef;font-family:var(--f-num)}
 .c-R .cPar{background:#ffecea} .c-P .cPar{background:#f1e6fb}
+.emo{font-style:normal;font-size:20px;letter-spacing:0;line-height:1}
 .cPar small{font:700 11px var(--f-body);letter-spacing:.06em;color:#555} .c-P .cPar small{color:#7b2cbf}
 .cPar b{font-size:clamp(40px,12.5vw,60px);font-weight:700;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
 .cPar span{font-size:clamp(15px,4.4vw,19px);font-weight:600;color:#333;font-variant-numeric:tabular-nums}
@@ -208,7 +209,7 @@ function tic(){
 // ---- Roadbook ----
 function pintarLista(){
   const t=T(), cs=t.roadbook?.casillas||[], L=$("#lista");
-  L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}" data-f="${c.foto}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div></div>`).join("")
+  L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}" data-f="${c.foto}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}${c.emo?` <i class="emo">${c.emo}</i>`:""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div></div>`).join("")
     +`<div class="fin">Fin de la etapa ${E+1} · ${destino(t)}</div>`;
   rbI=Math.min(+(leer("rb-"+t.id)||0),cs.length-1); setTimeout(()=>irCasilla(rbI,false),30);
 }
