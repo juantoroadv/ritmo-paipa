@@ -76,6 +76,11 @@ button{border-radius:10px;border:1px solid var(--line);background:transparent;pa
 .cTxt span{font-size:clamp(14px,4vw,17px);line-height:1.2} .c-P .cTxt span{font-weight:700}
 .cas.act{outline:5px solid #f0a800;outline-offset:-5px}
 .cas{position:relative}
+/* casillas encadenadas: a 300 m o menos de la anterior */
+.cas.pegada{border-top:0}
+.cas.pegada::before{content:"⛓ " attr(data-m);position:absolute;z-index:2;top:-13px;left:calc(clamp(104px,31vw,150px) + 6px);
+  font:800 12px var(--f-body);color:#444;background:#fff;border:2px dashed #999;border-radius:12px;padding:1px 8px;white-space:nowrap}
+.cas.pegada.c-P::before{border-color:#7b2cbf;color:#7b2cbf} .cas.pegada.c-R::before{border-color:#e01e12;color:#c4150a}
 .cas.ideal::after{content:"⏱ IDEAL";position:absolute;right:6px;top:4px;font:800 12px var(--f-body);letter-spacing:.04em;color:#fff;background:#0b5cad;border-radius:6px;padding:2px 6px}
 .cas.ideal.ritmo::after{content:"⏱ IDEAL ✓";background:#12a63c}
 .cOrig{grid-column:1/-1;width:100%;display:block;border-top:1px solid #ddd}
@@ -242,7 +247,7 @@ function quitarIdeal(){ idealI=-1; $("#lista").querySelectorAll(".cas.ideal").fo
 // ---- Roadbook ----
 function pintarLista(){ idealI=-1;
   const t=T(), cs=t.roadbook?.casillas||[], L=$("#lista");
-  L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}" data-i="${i}" data-f="${c.foto}"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}${c.emo?` <i class="emo">${c.emo}</i>`:""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div></div>`).join("")
+  L.innerHTML=cs.map((c,i)=>`<div class="cas c-${c.c}${i>0&&c.par<=0.3?" pegada":""}" data-i="${i}" data-f="${c.foto}" data-m="${Math.round(c.par*1000)} m"><div class="cPar"><small>PARCIAL${c.c==="P"?" · ¡OJO!":""}${c.emo?` <i class="emo">${c.emo}</i>`:""}</small><b>${fmtKm(c.par)}</b><span>#${c.n} · total ${fmtKm(c.tot)}</span></div><img class="cIco" src="${c.ico}" alt=""><div class="cTxt"><b>${c.dir}</b>${c.det?`<span>${c.det}</span>`:""}</div></div>`).join("")
     +`<div class="fin">Fin de la etapa ${E+1} · ${destino(t)}</div>`;
   rbI=Math.min(+(leer("rb-"+t.id)||0),cs.length-1); setTimeout(()=>irCasilla(rbI,false),30);
 }
