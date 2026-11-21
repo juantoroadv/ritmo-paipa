@@ -72,7 +72,7 @@
      "rb/t1/047.png",
      "rb/t1/048.png"
     ],
-    "giros": "GRRRRRRGRRGGRRGRRRRRRRRGGGRRRRGRGGRRRRGGRRGGRRGR"
+    "giros": "GRRRRRRGRRGGRRGRRRRRRGRGGGRRRRGGGGRRRRGGRRGGRGGR"
    }
   },
   {
@@ -114,7 +114,7 @@
      "rb/t2/015.png",
      "rb/t2/016.png"
     ],
-    "giros": "RGRRRRRRRRRRGRGR"
+    "giros": "RGRRRRGRRRRRGRGG"
    }
   },
   {
@@ -163,7 +163,7 @@
      "rb/t3/022.png",
      "rb/t3/023.png"
     ],
-    "giros": "RRRRRRRRRRRRGGRRRRRRGRG"
+    "giros": "GGRRGRRRGRRRGGRRRRGRGRG"
    }
   },
   {
@@ -242,7 +242,7 @@
      "rb/t4/052.png",
      "rb/t4/053.png"
     ],
-    "giros": "GRRGGRRRGRRRRRRRRGRRGRRRRRGGGRRRRRGRRRGGGRRRGRRRRRRRR"
+    "giros": "GRRGGRRRGGRRGGGRRGRRGGRRRRGRGRRRGRGRRRGGGRRRGGGRRGRGR"
    }
   }
  ]
