@@ -239,7 +239,11 @@ document.addEventListener("click",pedirPantalla,{once:true});
 setInterval(tic,250); pintarSync(); sincronizar(); setInterval(()=>{ if(!PLAN||!salidaDe(T())||llegDe(T())) sincronizar() },10*60*1000);
 fetch("plan.json",{cache:"no-cache"}).then(r=>r.json()).then(p=>{guardar("plan",JSON.stringify(p));cargar(p)})
  .catch(()=>{const g=leer("plan"); if(g) cargar(JSON.parse(g)); else $("#lista").innerHTML='<div class="fin">Ábrela una vez con señal para guardar el roadbook.</div>'});
-if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>r.update()).catch(()=>{});
+  // cuando entra una versión nueva, recarga una sola vez para mostrarla
+  let recargado=false; navigator.serviceWorker.addEventListener("controllerchange",()=>{ if(!recargado){ recargado=true; location.reload() } });
+}
 </script>
 </body>
 </html>
