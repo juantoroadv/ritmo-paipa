@@ -71,7 +71,8 @@
      "rb/t1/046.png",
      "rb/t1/047.png",
      "rb/t1/048.png"
-    ]
+    ],
+    "giros": "GRRRRRRGRRGGRRGRRRRRRRRGGGRRRRGRGGRRRRGGRRGGRRGR"
    }
   },
   {
@@ -112,7 +113,8 @@
      "rb/t2/014.png",
      "rb/t2/015.png",
      "rb/t2/016.png"
-    ]
+    ],
+    "giros": "RGRRRRRRRRRRGRGR"
    }
   },
   {
@@ -160,7 +162,8 @@
      "rb/t3/021.png",
      "rb/t3/022.png",
      "rb/t3/023.png"
-    ]
+    ],
+    "giros": "RRRRRRRRRRRRGGRRRRRRGRG"
    }
   },
   {
@@ -238,7 +241,8 @@
      "rb/t4/051.png",
      "rb/t4/052.png",
      "rb/t4/053.png"
-    ]
+    ],
+    "giros": "GRRGGRRRGRRRRRRRRGRRGRRRRRGGGRRRRRGRRRGGGRRRGRRRRRRRR"
    }
   }
  ]
