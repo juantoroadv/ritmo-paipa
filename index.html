@@ -199,7 +199,7 @@ function tic(){
   $("#kmIdeal").textContent=fmtKm(Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600));
   if(!ll){ const r=ritmo(t,sal), a=Math.abs(r.d), R=$("#ritmo");
     // parcial ideal en vivo: lo que debería marcar el trip (puesto en 0 en la casilla anterior a «voy para»)
-    const cs=t.roadbook.casillas, base=rbI>0?cs[rbI-1].tot:ini, kmId=Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600), pid=kmId-base;
+    const base=r.base, kmId=Math.min(t.fin_km,ini+vel*Math.max(0,corre)/3600), pid=kmId-base;
     R.className="rt "+(a<=10?"ok":a<=30?"warn":"bad");
     $("#rtSeg").textContent=(pid<0?"−":"")+fmtKm(Math.abs(pid));
     $("#rtTxt").textContent="ideal · "+(a<=10?"en ritmo":(r.d>0?"+":"−")+(a<60?a+" s":fmtDur(a)));
@@ -233,7 +233,8 @@ $("#lista").addEventListener("click",e=>{
   const c=e.target.closest(".cas"); if(!c) return;
   // tocar la casilla marcada otra vez abre o cierra la foto original del libro
   if(c.classList.contains("act")){ const im=c.querySelector(".cOrig"); if(im) im.remove(); else { const n=document.createElement("img"); n.className="cOrig"; n.src=c.dataset.f; c.appendChild(n) } return }
-  irCasilla(+c.dataset.i); marcarPaso(+c.dataset.i);
+  // solo cuenta como «pasé la casilla» si avanzas a la siguiente; tocar otras para mirarlas no toca el ritmo
+  const i=+c.dataset.i, sig=i===rbI+1; irCasilla(i); if(sig) marcarPaso(i);
 });
 // Al tocar la casilla «voy para» N, estás justo en la casilla anterior: ese km y esa hora miden el desfase.
 function marcarPaso(i){
@@ -248,7 +249,7 @@ function ritmo(t,sal){
   const d=Math.round((p.ms-sal)/1000-(p.km-ini)/vel*3600);   // + atrasado, − adelantado
   const dest=cs[Math.min(p.i,cs.length-1)], tObj=sal+(dest.tot-ini)/vel*3600000, quedan=(tObj-p.ms)/3600000, dist=dest.tot-p.km;
   const v=quedan>0&&dist>0?dist/quedan:null;
-  return {d,v};
+  return {d,v,base:p.km};
 }
 // botonera Bluetooth que funcione como teclado
 document.addEventListener("keydown",e=>{
